@@ -1,64 +1,66 @@
 import React, { useState } from "react";
 import { RouteComponentProps } from "@reach/router";
-import { Container, Grid, Button, Divider } from "semantic-ui-react";
+import {
+  Container,
+  Grid,
+  Button,
+  Divider,
+  Segment,
+  Rail,
+  Label
+} from "semantic-ui-react";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import produce from "immer";
 
 import Field from "../../components/Field";
 import Roster from "../../components/Roster";
+import TeamLayout from "../../components/TeamLayout";
 
-import { IPosition, IPlayer } from "./types";
-import {
-  positions as initialPositions,
-  players as initialPlayers
-} from "./dataset";
+import { IPlayer, ILayout } from "./types";
+import { layouts, players as initialPlayers } from "./dataset";
 
 export interface IProps extends RouteComponentProps {}
 
 export default function MakeTeam(props: IProps) {
-  const [positions, setPositions] = useState(initialPositions);
+  const [layout, setLayout] = useState(layouts[0]);
   const [players, setPlayers] = useState(initialPlayers);
 
-  function handlePlayerDropInPosition(player: IPlayer, position: IPosition) {
-    assignPlayerToPosition(player, position);
+  function handlePlayerDropInPosition(player: IPlayer, positionIndex: number) {
+    assignPlayerToPosition(player, positionIndex);
   }
 
   function handlePlayerClick(player: IPlayer) {
-    const firstPositionAvailable = positions.find(p => !p.player);
-    if (firstPositionAvailable) {
+    const firstPositionAvailable = layout.positions.findIndex(p => !p.player);
+    if (firstPositionAvailable > -1) {
       assignPlayerToPosition(player, firstPositionAvailable);
     }
   }
 
   function handlePositionDropInPosition(
-    positionDragged: IPosition,
-    positionDropped: IPosition
+    positionDraggedIndex: number,
+    positionDroppedIndex: number
   ) {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        positions[
-          positions.findIndex(p => p.id === positionDropped.id)
-        ].player = positionDragged.player;
-
-        positions[
-          positions.findIndex(p => p.id === positionDragged.id)
-        ].player = positionDropped.player;
+    setLayout(
+      produce((layout: ILayout) => {
+        const playerDropped = layout.positions[positionDroppedIndex].player;
+        const playerDragged = layout.positions[positionDraggedIndex].player;
+        layout.positions[positionDroppedIndex].player = playerDragged;
+        layout.positions[positionDraggedIndex].player = playerDropped;
       })
     );
   }
 
   function handleOnClear() {
-    setPositions(initialPositions);
+    const initialLayout = layouts.find(l => l.id === layout.id);
+    setLayout(initialLayout as ILayout);
     setPlayers(initialPlayers);
   }
 
-  function assignPlayerToPosition(player: IPlayer, position: IPosition) {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        positions[
-          positions.findIndex(p => p.id === position.id)
-        ].player = player;
+  function assignPlayerToPosition(player: IPlayer, positionIndex: number) {
+    setLayout(
+      produce((layout: ILayout) => {
+        layout.positions[positionIndex].player = player;
       })
     );
 
@@ -72,25 +74,58 @@ export default function MakeTeam(props: IProps) {
     );
   }
 
+  function handleLayoutChange(selectedLayout: ILayout) {
+    setLayout(selectedLayout);
+    setPlayers(initialPlayers);
+  }
+
   return (
     <Container>
       <DndProvider backend={Backend}>
-        <Grid>
-          <Grid.Column textAlign="right" width={8}>
-            <Field
-              positions={positions}
-              onPositionDropInPosition={handlePositionDropInPosition}
-            />
-          </Grid.Column>
-          <Grid.Column textAlign="left" width={8}>
-            <Roster
-              players={players}
-              onPlayerDropInPosition={handlePlayerDropInPosition}
-              onPlayerClick={handlePlayerClick}
-            />
-            <Divider />
-            <Button onClick={handleOnClear}>Reset positions</Button>
-          </Grid.Column>
+        <Grid centered columns={3}>
+          <Grid.Row>
+            <Grid.Column>
+              <Segment>
+                <Field
+                  positions={layout.positions}
+                  onPositionDropInPosition={handlePositionDropInPosition}
+                />
+
+                <Rail position="left">
+                  <Segment>
+                    <TeamLayout
+                      layouts={layouts}
+                      selected={layout}
+                      onChange={handleLayoutChange}
+                    />
+                  </Segment>
+                </Rail>
+
+                <Rail position="right">
+                  <Segment>
+                    <Roster
+                      players={players}
+                      onPlayerDropInPosition={handlePlayerDropInPosition}
+                      onPlayerClick={handlePlayerClick}
+                    />
+                    <Divider />
+                    <Button onClick={handleOnClear}>Reset positions</Button>
+                  </Segment>
+                </Rail>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column textAlign="center">
+              <Button positive disabled>
+                Share your team!
+              </Button>
+              <br />
+              <Label basic pointing>
+                Coming soon
+              </Label>
+            </Grid.Column>
+          </Grid.Row>
         </Grid>
       </DndProvider>
     </Container>

@@ -8,17 +8,18 @@ import Position from "../Position";
 export interface IProps {
   positions: Array<IPosition>;
   onPositionDropInPosition: (
-    positionDragged: IPosition,
-    positionDropped: IPosition
+    positionDraggedIndex: number,
+    positionDroppedIndex: number
   ) => void;
 }
 
 export default function Field(props: IProps) {
   return (
     <FieldWrapper>
-      {props.positions.map(position => (
+      {props.positions.map((position, index) => (
         <Position
-          key={position.id}
+          key={index}
+          index={index}
           position={position}
           onPositionDropInPosition={props.onPositionDropInPosition}
         />
@@ -29,7 +30,6 @@ export default function Field(props: IProps) {
 
 const FieldWrapper = styled.div`
   position: relative;
-  width: 400px;
-  height: 600px;
+  height: 500px;
   background-color: lightgreen;
 `;

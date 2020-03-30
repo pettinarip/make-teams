@@ -1,13 +1,12 @@
 import React from "react";
-import styled from "@emotion/styled";
-import { List } from "semantic-ui-react";
+import { List, Header } from "semantic-ui-react";
 
 import { IPlayer, IPosition } from "../../containers/MakeTeam/types";
 import Player from "../Player";
 
 export interface IProps {
   players: Array<IPlayer>;
-  onPlayerDropInPosition: (player: IPlayer, position: IPosition) => void;
+  onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
 }
 
@@ -17,8 +16,8 @@ export default function Roster({
   onPlayerClick
 }: IProps) {
   return (
-    <Wrapper>
-      <h1>Roster ({players.length})</h1>
+    <div>
+      <Header as="h2">Roster ({players.length})</Header>
       <List>
         {players.map(player => (
           <List.Item key={player.id}>
@@ -30,10 +29,6 @@ export default function Roster({
           </List.Item>
         ))}
       </List>
-    </Wrapper>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  width: 200px;
-`;

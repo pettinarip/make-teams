@@ -3,12 +3,12 @@ import styled from "@emotion/styled";
 import { Label } from "semantic-ui-react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
-import { IPlayer, IPosition } from "../../containers/MakeTeam/types";
+import { IPlayer } from "../../containers/MakeTeam/types";
 import ItemTypes from "../Position/ItemTypes";
 
 export interface IProps {
   player: IPlayer;
-  onDropInPosition: (player: IPlayer, position: IPosition) => void;
+  onDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onClick: (player: IPlayer) => void;
 }
 
@@ -19,9 +19,9 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
       item: { player: IPlayer } | undefined,
       monitor: DragSourceMonitor
     ) => {
-      const position = monitor.getDropResult();
-      if (player && position) {
-        onDropInPosition(player, position);
+      const dropResult = monitor.getDropResult();
+      if (player && dropResult && dropResult.index > -1) {
+        onDropInPosition(player, dropResult.index);
       }
     }
   });

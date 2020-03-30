@@ -8,20 +8,22 @@ import { IPosition } from "../../containers/MakeTeam/types";
 import ItemTypes from "./ItemTypes";
 
 export interface IProps {
+  index: number;
   position: IPosition;
   onPositionDropInPosition: (
-    positionDragged: IPosition,
-    positionDropped: IPosition
+    positionDraggedIndex: number,
+    positionDroppedIndex: number
   ) => void;
 }
 
 export default function Position({
+  index,
   position,
   onPositionDropInPosition
 }: IProps) {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.POSITION,
-    drop: () => position,
+    drop: () => ({ index }),
     collect: monitor => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop()
@@ -29,14 +31,11 @@ export default function Position({
   });
 
   const [collecedProps, drag] = useDrag({
-    item: { position, type: ItemTypes.POSITION },
-    end: (
-      item: { position: IPosition } | undefined,
-      monitor: DragSourceMonitor
-    ) => {
-      const positionDropped = monitor.getDropResult();
-      if (position && positionDropped) {
-        onPositionDropInPosition(position, positionDropped);
+    item: { index, type: ItemTypes.POSITION },
+    end: (item: { index: number } | undefined, monitor: DragSourceMonitor) => {
+      const dropResult = monitor.getDropResult();
+      if (index > -1 && dropResult && dropResult.index > -1) {
+        onPositionDropInPosition(index, dropResult.index);
       }
     },
     collect: () => ({})
@@ -75,12 +74,12 @@ const PositionStyled = styled.div<IStyledProps>(
     height: 40,
     textAlign: "center",
     lineHeight: "40px",
-    marginLeft: -20
+    marginLeft: -20,
+    borderRadius: "50%"
   },
   props => ({
     left: `${props.x}%`,
     top: `${props.y}%`,
-    backgroundColor: props.isActive ? "gray" : "lightgray",
-    border: props.isActive ? "1px solid black" : "none"
+    backgroundColor: props.isActive ? "lightgray" : "white"
   })
 );
