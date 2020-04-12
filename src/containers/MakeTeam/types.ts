@@ -17,4 +17,5 @@ export interface IPlayer {
   number: number;
   nickName?: string;
   age?: number;
+  createdAt?: string;
 }

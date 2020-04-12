@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "@emotion/styled";
 import { Label } from "semantic-ui-react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
 import ItemTypes from "../Position/ItemTypes";
+import playerImg from "../../images/christian.jpg";
 
 export interface IProps {
   player: IPlayer;
@@ -23,7 +23,7 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
       if (player && dropResult && dropResult.index > -1) {
         onDropInPosition(player, dropResult.index);
       }
-    }
+    },
   });
 
   function handleOnClick() {
@@ -32,14 +32,11 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
 
   return (
     <div ref={drag}>
-      <LabelStyled as="a" onClick={handleOnClick}>
+      <Label as="a" onClick={handleOnClick} image>
+        <img src={playerImg} />
         {`${player.lastName}, ${player.firstName}`}
         <Label.Detail>{player.number}</Label.Detail>
-      </LabelStyled>
+      </Label>
     </div>
   );
 }
-
-const LabelStyled = styled(Label)`
-  display: block !important;
-`;

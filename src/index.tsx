@@ -1,22 +1,34 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Router } from "@reach/router";
+import Amplify from "aws-amplify";
+import { ReactQueryConfigProvider } from "react-query";
 
 import Layout from "./components/Layout";
 import MakeTeam from "./containers/MakeTeam";
 
 import * as serviceWorker from "./serviceWorker";
+import awsconfig from "./aws-exports";
 
 import "semantic-ui-css/semantic.min.css";
 
+Amplify.configure(awsconfig);
+
+const queryConfig = {
+  retry: 3,
+  throwOnError: true,
+  refetchAllOnWindowFocus: false,
+  staleTime: 10 * 1000,
+};
+
 ReactDOM.render(
-  <React.StrictMode>
+  <ReactQueryConfigProvider config={queryConfig}>
     <Layout>
       <Router>
         <MakeTeam path="/" />
       </Router>
     </Layout>
-  </React.StrictMode>,
+  </ReactQueryConfigProvider>,
   document.getElementById("root")
 );
 

@@ -1,0 +1,15 @@
+{
+    "test": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-make-teams-test-122047-authRole",
+            "UnauthRoleArn": "arn:aws:iam::550025331301:role/amplify-make-teams-test-122047-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::550025331301:role/amplify-make-teams-test-122047-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "amplify-make-teams-test-122047-deployment",
+            "UnauthRoleName": "amplify-make-teams-test-122047-unauthRole",
+            "StackName": "amplify-make-teams-test-122047",
+            "StackId": "arn:aws:cloudformation:eu-west-1:550025331301:stack/amplify-make-teams-test-122047/1354b140-76e4-11ea-9b09-06135fdfc858",
+            "AmplifyAppId": "d2n8x4otjsx5m9"
+        }
+    }
+}

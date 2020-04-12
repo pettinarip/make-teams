@@ -1,7 +1,8 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
 import { List, Header } from "semantic-ui-react";
 
-import { IPlayer, IPosition } from "../../containers/MakeTeam/types";
+import { IPlayer } from "../../containers/MakeTeam/types";
 import Player from "../Player";
 
 export interface IProps {
@@ -13,13 +14,18 @@ export interface IProps {
 export default function Roster({
   players,
   onPlayerDropInPosition,
-  onPlayerClick
+  onPlayerClick,
 }: IProps) {
   return (
     <div>
       <Header as="h2">Roster ({players.length})</Header>
-      <List>
-        {players.map(player => (
+      <List
+        css={css`
+          max-height: 300px;
+          overflow: auto;
+        `}
+      >
+        {players.map((player) => (
           <List.Item key={player.id}>
             <Player
               player={player}

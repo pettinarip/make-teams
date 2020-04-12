@@ -1,10 +1,12 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { useDrop, useDrag, DragSourceMonitor } from "react-dnd";
 import { Label } from "semantic-ui-react";
 import composeRefs from "@seznam/compose-react-refs";
 
 import { IPosition } from "../../containers/MakeTeam/types";
+import playerImg from "../../images/christian.jpg";
 import ItemTypes from "./ItemTypes";
 
 export interface IProps {
@@ -19,15 +21,15 @@ export interface IProps {
 export default function Position({
   index,
   position,
-  onPositionDropInPosition
+  onPositionDropInPosition,
 }: IProps) {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.POSITION,
     drop: () => ({ index }),
-    collect: monitor => ({
+    collect: (monitor) => ({
       isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
-    })
+      canDrop: monitor.canDrop(),
+    }),
   });
 
   const [collecedProps, drag] = useDrag({
@@ -38,48 +40,59 @@ export default function Position({
         onPositionDropInPosition(index, dropResult.index);
       }
     },
-    collect: () => ({})
+    collect: () => ({}),
   });
 
   const isActive = canDrop && isOver;
 
   return (
-    <PositionStyled
+    <Wrapper
       ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
       x={position.x}
       y={position.y}
-      isActive={isActive}
     >
-      {position.player ? position.player.number : ""}
+      <Img isActive={isActive}>
+        {position.player ? (
+          <img
+            css={css`
+              width: 100%;
+            `}
+            src={playerImg}
+          />
+        ) : (
+          ""
+        )}
+      </Img>
       {position.player && (
         <Label color="teal" floating>
           {position.player.number}
         </Label>
       )}
-    </PositionStyled>
+    </Wrapper>
   );
 }
 
-type IStyledProps = {
-  x: number;
-  y: number;
-  isActive: boolean;
-};
-
-const PositionStyled = styled.div<IStyledProps>(
+const Wrapper = styled.div<{ x: number; y: number }>(
   {
     position: "absolute",
-    display: "inline-block",
-    width: 40,
-    height: 40,
     textAlign: "center",
     lineHeight: "40px",
     marginLeft: -20,
-    borderRadius: "50%"
   },
-  props => ({
+  (props) => ({
     left: `${props.x}%`,
     top: `${props.y}%`,
-    backgroundColor: props.isActive ? "lightgray" : "white"
+  })
+);
+
+const Img = styled.div<{ isActive: boolean }>(
+  {
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    overflow: "hidden",
+  },
+  (props) => ({
+    backgroundColor: props.isActive ? "lightgray" : "white",
   })
 );

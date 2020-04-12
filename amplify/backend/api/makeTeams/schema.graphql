@@ -1,0 +1,23 @@
+type Layout @model {
+  id: ID!
+  name: String!
+  createdAt: AWSDateTime
+  positions: [Position] @connection(name: "LayoutPositions")
+}
+
+type Position @model {
+  id: ID!
+  x: Float!
+  y: Float!
+  layout: Layout @connection(name: "LayoutPositions")
+}
+
+type Player @model {
+  id: ID!
+  firstName: String!
+  lastName: String
+  number: Int!
+  nickName: String
+  age: Int
+  createdAt: AWSDateTime
+}
