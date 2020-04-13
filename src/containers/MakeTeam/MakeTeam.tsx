@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import { Grid, Button, Divider, Segment, Rail, Label } from "semantic-ui-react";
+import { Grid, Button, Segment, Rail, Label } from "semantic-ui-react";
 import produce from "immer";
 
 import Field from "../../components/Field";
-import Roster from "../../components/Roster";
-import TeamLayout from "../../components/TeamLayout";
+import TeamLayout from "../TeamLayout";
+import Roster from "../Roster";
 
 import { IPlayer, ILayout, IPosition } from "./types";
-import CreatePlayerButton from "../../components/CreatePlayerButton";
 
-export interface IProps {
-  players: Array<IPlayer>;
-}
+export interface IProps {}
 
 export default function MakeTeam(props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
-  const [players, setPlayers] = useState(props.players);
+  const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
 
   function handlePlayerDropInPosition(player: IPlayer, positionIndex: number) {
     assignPlayerToPosition(player, positionIndex);
@@ -50,7 +47,7 @@ export default function MakeTeam(props: IProps) {
         });
       })
     );
-    setPlayers(props.players);
+    setUsedPlayersIds([]);
   }
 
   function assignPlayerToPosition(player: IPlayer, positionIndex: number) {
@@ -60,19 +57,12 @@ export default function MakeTeam(props: IProps) {
       })
     );
 
-    setPlayers(
-      produce((players: Array<IPlayer>) => {
-        players.splice(
-          players.findIndex((p) => p.id === player.id),
-          1
-        );
-      })
-    );
+    setUsedPlayersIds([...usedPlayersIds, player.id]);
   }
 
   function handleLayoutChange(layout: ILayout) {
     setPositions(layout.positions);
-    setPlayers(props.players);
+    setUsedPlayersIds([]);
   }
 
   return (
@@ -94,13 +84,11 @@ export default function MakeTeam(props: IProps) {
             <Rail position="right">
               <Segment>
                 <Roster
-                  players={players}
+                  usedPlayersIds={usedPlayersIds}
                   onPlayerDropInPosition={handlePlayerDropInPosition}
                   onPlayerClick={handlePlayerClick}
+                  onResetClick={handleOnClear}
                 />
-                <Divider />
-                <CreatePlayerButton>New</CreatePlayerButton>
-                <Button onClick={handleOnClear}>Reset</Button>
               </Segment>
             </Rail>
           </Segment>

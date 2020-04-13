@@ -7,7 +7,7 @@ import {
   Placeholder,
 } from "semantic-ui-react";
 
-import { ILayout } from "../../containers/MakeTeam/types";
+import { ILayout } from "../MakeTeam/types";
 import useGetLayouts from "../../graphql/queries/useGetLayouts";
 
 export interface IProps {
