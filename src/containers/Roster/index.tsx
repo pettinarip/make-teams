@@ -9,10 +9,11 @@ import {
   Loader,
 } from "semantic-ui-react";
 
+import { IPlayer } from "../MakeTeam/types";
 import useGetPlayers from "../../graphql/queries/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import Player from "../../components/Player";
-import { IPlayer } from "../MakeTeam/types";
+import RemovePlayerButton from "../../components/RemovePlayerButton";
 
 export interface IProps {
   usedPlayersIds: Array<number>;
@@ -53,6 +54,9 @@ export default function Roster({
           .filter((p) => !usedPlayersIds.includes(p.id))
           .map((player) => (
             <List.Item key={player.id}>
+              <List.Content floated="right">
+                <RemovePlayerButton player={player} />
+              </List.Content>
               <Player
                 player={player}
                 onDropInPosition={onPlayerDropInPosition}

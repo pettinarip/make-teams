@@ -2,12 +2,14 @@ import { useMutation, queryCache } from "react-query";
 import { graphqlOperation, API } from "aws-amplify";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import { createPlayer } from "../mutations";
+import { deletePlayer } from "../mutations";
 
-export default function useAddNewPlayer() {
+export default function useRemovePlayer() {
   return useMutation(
     (player: Partial<IPlayer>) => {
-      return API.graphql(graphqlOperation(createPlayer, { input: player }));
+      return API.graphql(
+        graphqlOperation(deletePlayer, { playerId: player.id })
+      );
     },
     {
       onSuccess: () => {
