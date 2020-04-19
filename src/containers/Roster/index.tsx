@@ -12,8 +12,8 @@ import {
 import { IPlayer } from "../MakeTeam/types";
 import useGetPlayers from "../../graphql/queries/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
-import Player from "../../components/Player";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
+import Player from "../../components/Player";
 
 export interface IProps {
   usedPlayersIds: Array<number>;

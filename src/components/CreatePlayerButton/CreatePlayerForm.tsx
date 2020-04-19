@@ -2,6 +2,8 @@ import React from "react";
 import { Form } from "semantic-ui-react";
 import { Formik, FormikProps, FormikHelpers } from "formik";
 
+import validate from "./validate";
+
 export interface IFormValues {
   firstName: string;
   lastName: string;
@@ -15,7 +17,7 @@ export interface IProps {
   bindSubmitForm: (submitForm: Function) => void;
 }
 
-const options = [
+const GENDER_OPTIONS = [
   { key: "m", text: "Male", value: "male" },
   { key: "f", text: "Female", value: "female" },
   { key: "o", text: "Other", value: "other" },
@@ -31,8 +33,20 @@ export default function CreatePlayerForm(props: IProps) {
   };
 
   return (
-    <Formik initialValues={initialState} onSubmit={props.onSubmit}>
-      {({ values, handleChange, submitForm }: FormikProps<IFormValues>) => {
+    <Formik
+      initialValues={initialState}
+      onSubmit={props.onSubmit}
+      validate={validate}
+      validateOnChange={false}
+      validateOnBlur={false}
+    >
+      {({
+        values,
+        errors,
+        handleChange,
+        submitForm,
+        setFieldValue,
+      }: FormikProps<IFormValues>) => {
         props.bindSubmitForm(submitForm);
         return (
           <Form>
@@ -46,6 +60,7 @@ export default function CreatePlayerForm(props: IProps) {
                 value={values.firstName}
                 onChange={handleChange}
                 required
+                error={!!errors.firstName}
               />
               <Form.Input
                 fluid
@@ -55,6 +70,7 @@ export default function CreatePlayerForm(props: IProps) {
                 value={values.lastName}
                 onChange={handleChange}
                 required
+                error={!!errors.lastName}
               />
             </Form.Group>
             <Form.Select
@@ -62,9 +78,9 @@ export default function CreatePlayerForm(props: IProps) {
               name="gender"
               label="Gender"
               placeholder="Gender"
-              options={options}
+              options={GENDER_OPTIONS}
               value={values.gender}
-              onChange={handleChange}
+              onChange={(e, { name, value }) => setFieldValue(name, value)}
             />
             <Form.Input
               name="number"
@@ -74,18 +90,42 @@ export default function CreatePlayerForm(props: IProps) {
               onChange={handleChange}
               max={99}
               required
+              error={!!errors.number}
             />
-            <Form.Group
-              inline
-              name="position"
-              value={values.position}
-              onChange={handleChange}
-            >
+            <Form.Group inline name="position">
               <label>Position</label>
-              <Form.Radio label="Goalkeeper" value="gl" />
-              <Form.Radio label="Defender" value="def" />
-              <Form.Radio label="Mid" value="mid" />
-              <Form.Radio label="Forward" value="fwd" />
+              <Form.Radio
+                id="position-gl"
+                name="position"
+                label="Goalkeeper"
+                value="gl"
+                checked={values.position === "gl"}
+                onChange={handleChange}
+              />
+              <Form.Radio
+                id="position-def"
+                name="position"
+                label="Defender"
+                value="def"
+                checked={values.position === "def"}
+                onChange={handleChange}
+              />
+              <Form.Radio
+                id="position-mid"
+                name="position"
+                label="Mid"
+                value="mid"
+                checked={values.position === "mid"}
+                onChange={handleChange}
+              />
+              <Form.Radio
+                id="position-fwd"
+                name="position"
+                label="Forward"
+                value="fwd"
+                checked={values.position === "fwd"}
+                onChange={handleChange}
+              />
             </Form.Group>
           </Form>
         );

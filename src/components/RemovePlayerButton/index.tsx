@@ -28,6 +28,10 @@ export default function RemovePlayerButton(props: IProps) {
         open={isConfirmOpen}
         onCancel={toggleConfirmModal}
         onConfirm={handleOnRemove}
+        header="Remove player from the roster"
+        content={`Are you sure you want to end up the contract with ${props.player.lastName}?`}
+        cancelButton="Never mind"
+        confirmButton="Do it!"
       />
     </>
   );
