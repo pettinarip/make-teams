@@ -10,6 +10,11 @@
             "StackName": "amplify-make-teams-test-122047",
             "StackId": "arn:aws:cloudformation:eu-west-1:550025331301:stack/amplify-make-teams-test-122047/1354b140-76e4-11ea-9b09-06135fdfc858",
             "AmplifyAppId": "d2n8x4otjsx5m9"
+        },
+        "categories": {
+            "auth": {
+                "maketeams31458582": {}
+            }
         }
     }
 }
