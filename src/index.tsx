@@ -4,16 +4,17 @@ import { Router } from "@reach/router";
 import { ReactQueryConfigProvider } from "react-query";
 import Amplify from "aws-amplify";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import MakeTeam from "./containers/MakeTeam";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
 
 import * as serviceWorker from "./serviceWorker";
 import awsconfig from "./aws-exports";
 
 import "@aws-amplify/ui/dist/style.css";
 import "semantic-ui-css/semantic.min.css";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
 
 Amplify.configure(awsconfig);
 
@@ -30,7 +31,7 @@ ReactDOM.render(
       <Router>
         <Login path="/login" />
         <SignUp path="/sign-up" />
-        <MakeTeam path="/" />
+        <ProtectedRoute path="/" component={MakeTeam} />
       </Router>
     </Layout>
   </ReactQueryConfigProvider>,
