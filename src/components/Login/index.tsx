@@ -71,10 +71,10 @@ export default function Login(__props: IProps) {
                   disabled={isSubmitting}
                   error={errors.password}
                 />
-                <Form.Field>
+                {/* <Form.Field>
                   Forgot password?{" "}
                   <Link to="/reset-password">Reset password</Link>
-                </Form.Field>
+                </Form.Field> */}
 
                 <Button
                   type="submit"

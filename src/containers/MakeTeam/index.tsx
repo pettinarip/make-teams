@@ -5,12 +5,14 @@ import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 
 import MakeTeam from "./MakeTeam";
+import Menu from "../../components/Menu";
 
 export interface IProps extends RouteComponentProps {}
 
 function MakeTeamManager(__props: IProps) {
   return (
     <Container>
+      <Menu />
       <DndProvider backend={Backend}>
         <MakeTeam />
       </DndProvider>
