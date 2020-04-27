@@ -1,24 +1,7 @@
-// tslint:disable
-// eslint-disable
+/* tslint:disable */
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getLayout = /* GraphQL */ `
-  query GetLayout($id: ID!) {
-    getLayout(id: $id) {
-      id
-      name
-      createdAt
-      positions {
-        items {
-          id
-          x
-          y
-        }
-        nextToken
-      }
-    }
-  }
-`;
 export const listLayouts = /* GraphQL */ `
   query ListLayouts(
     $filter: ModelLayoutFilterInput
@@ -30,32 +13,19 @@ export const listLayouts = /* GraphQL */ `
         id
         name
         createdAt
-        positions(limit: 11) {
-          items {
-            id
-            x
-            y
-          }
-          nextToken
-        }
       }
       nextToken
     }
   }
 `;
-export const getPosition = /* GraphQL */ `
-  query GetPosition($id: ID!) {
-    getPosition(id: $id) {
+export const getLayout = /* GraphQL */ `
+  query GetLayout($id: ID!) {
+    getLayout(id: $id) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
-        positions {
-          nextToken
-        }
+      name
+      createdAt
+      positions {
+        nextToken
       }
     }
   }
@@ -71,26 +41,22 @@ export const listPositions = /* GraphQL */ `
         id
         x
         y
-        layout {
-          id
-          name
-          createdAt
-        }
       }
       nextToken
     }
   }
 `;
-export const getPlayer = /* GraphQL */ `
-  query GetPlayer($id: ID!) {
-    getPlayer(id: $id) {
+export const getPosition = /* GraphQL */ `
+  query GetPosition($id: ID!) {
+    getPosition(id: $id) {
       id
-      firstName
-      lastName
-      number
-      nickName
-      age
-      createdAt
+      x
+      y
+      layout {
+        id
+        name
+        createdAt
+      }
     }
   }
 `;
@@ -108,7 +74,102 @@ export const listPlayers = /* GraphQL */ `
         number
         nickName
         age
+        createdBy
         createdAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getPlayer = /* GraphQL */ `
+  query GetPlayer($id: ID!) {
+    getPlayer(id: $id) {
+      id
+      firstName
+      lastName
+      number
+      nickName
+      age
+      createdBy
+      createdAt
+    }
+  }
+`;
+export const listShareLinks = /* GraphQL */ `
+  query ListShareLinks(
+    $filter: ModelShareLinkFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listShareLinks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdBy
+      }
+      nextToken
+    }
+  }
+`;
+export const getShareLink = /* GraphQL */ `
+  query GetShareLink($id: ID!) {
+    getShareLink(id: $id) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const getShareLinkPosition = /* GraphQL */ `
+  query GetShareLinkPosition($id: ID!) {
+    getShareLinkPosition(id: $id) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
+    }
+  }
+`;
+export const listShareLinkPositions = /* GraphQL */ `
+  query ListShareLinkPositions(
+    $filter: ModelShareLinkPositionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listShareLinkPositions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdBy
       }
       nextToken
     }

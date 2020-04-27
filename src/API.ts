@@ -111,6 +111,7 @@ export type CreatePlayerInput = {
   number: number,
   nickName?: string | null,
   age?: number | null,
+  createdBy?: string | null,
   createdAt?: string | null,
 };
 
@@ -145,10 +146,62 @@ export type UpdatePlayerInput = {
   number?: number | null,
   nickName?: string | null,
   age?: number | null,
+  createdBy?: string | null,
   createdAt?: string | null,
 };
 
 export type DeletePlayerInput = {
+  id?: string | null,
+};
+
+export type CreateShareLinkInput = {
+  id?: string | null,
+  name?: string | null,
+  createdBy?: string | null,
+  shareLinkLayoutId?: string | null,
+};
+
+export type ModelShareLinkConditionInput = {
+  name?: ModelStringInput | null,
+  and?: Array< ModelShareLinkConditionInput | null > | null,
+  or?: Array< ModelShareLinkConditionInput | null > | null,
+  not?: ModelShareLinkConditionInput | null,
+};
+
+export type UpdateShareLinkInput = {
+  id: string,
+  name?: string | null,
+  createdBy?: string | null,
+  shareLinkLayoutId?: string | null,
+};
+
+export type DeleteShareLinkInput = {
+  id?: string | null,
+};
+
+export type CreateShareLinkPositionInput = {
+  id?: string | null,
+  createdBy?: string | null,
+  shareLinkPositionShareLinkId?: string | null,
+  shareLinkPositionPositionId?: string | null,
+  shareLinkPositionPlayerId?: string | null,
+};
+
+export type ModelShareLinkPositionConditionInput = {
+  and?: Array< ModelShareLinkPositionConditionInput | null > | null,
+  or?: Array< ModelShareLinkPositionConditionInput | null > | null,
+  not?: ModelShareLinkPositionConditionInput | null,
+};
+
+export type UpdateShareLinkPositionInput = {
+  id: string,
+  createdBy?: string | null,
+  shareLinkPositionShareLinkId?: string | null,
+  shareLinkPositionPositionId?: string | null,
+  shareLinkPositionPlayerId?: string | null,
+};
+
+export type DeleteShareLinkPositionInput = {
   id?: string | null,
 };
 
@@ -193,10 +246,28 @@ export type ModelPlayerFilterInput = {
   number?: ModelIntInput | null,
   nickName?: ModelStringInput | null,
   age?: ModelIntInput | null,
+  createdBy?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   and?: Array< ModelPlayerFilterInput | null > | null,
   or?: Array< ModelPlayerFilterInput | null > | null,
   not?: ModelPlayerFilterInput | null,
+};
+
+export type ModelShareLinkFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  createdBy?: ModelStringInput | null,
+  and?: Array< ModelShareLinkFilterInput | null > | null,
+  or?: Array< ModelShareLinkFilterInput | null > | null,
+  not?: ModelShareLinkFilterInput | null,
+};
+
+export type ModelShareLinkPositionFilterInput = {
+  id?: ModelIDInput | null,
+  createdBy?: ModelStringInput | null,
+  and?: Array< ModelShareLinkPositionFilterInput | null > | null,
+  or?: Array< ModelShareLinkPositionFilterInput | null > | null,
+  not?: ModelShareLinkPositionFilterInput | null,
 };
 
 export type CreateLayoutMutationVariables = {
@@ -212,12 +283,6 @@ export type CreateLayoutMutation = {
     createdAt: string | null,
     positions:  {
       __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
       nextToken: string | null,
     } | null,
   } | null,
@@ -236,12 +301,6 @@ export type UpdateLayoutMutation = {
     createdAt: string | null,
     positions:  {
       __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
       nextToken: string | null,
     } | null,
   } | null,
@@ -260,12 +319,6 @@ export type DeleteLayoutMutation = {
     createdAt: string | null,
     positions:  {
       __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
       nextToken: string | null,
     } | null,
   } | null,
@@ -287,10 +340,6 @@ export type CreatePositionMutation = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
   } | null,
 };
@@ -311,10 +360,6 @@ export type UpdatePositionMutation = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
   } | null,
 };
@@ -335,10 +380,6 @@ export type DeletePositionMutation = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
   } | null,
 };
@@ -357,6 +398,7 @@ export type CreatePlayerMutation = {
     number: number,
     nickName: string | null,
     age: number | null,
+    createdBy: string | null,
     createdAt: string | null,
   } | null,
 };
@@ -375,6 +417,7 @@ export type UpdatePlayerMutation = {
     number: number,
     nickName: string | null,
     age: number | null,
+    createdBy: string | null,
     createdAt: string | null,
   } | null,
 };
@@ -393,29 +436,187 @@ export type DeletePlayerMutation = {
     number: number,
     nickName: string | null,
     age: number | null,
+    createdBy: string | null,
     createdAt: string | null,
   } | null,
 };
 
-export type GetLayoutQueryVariables = {
-  id: string,
+export type CreateShareLinkMutationVariables = {
+  input: CreateShareLinkInput,
+  condition?: ModelShareLinkConditionInput | null,
 };
 
-export type GetLayoutQuery = {
-  getLayout:  {
-    __typename: "Layout",
+export type CreateShareLinkMutation = {
+  createShareLink:  {
+    __typename: "ShareLink",
     id: string,
-    name: string,
-    createdAt: string | null,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
     positions:  {
-      __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
+      __typename: "ModelShareLinkPositionConnection",
       nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type UpdateShareLinkMutationVariables = {
+  input: UpdateShareLinkInput,
+  condition?: ModelShareLinkConditionInput | null,
+};
+
+export type UpdateShareLinkMutation = {
+  updateShareLink:  {
+    __typename: "ShareLink",
+    id: string,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
+    positions:  {
+      __typename: "ModelShareLinkPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type DeleteShareLinkMutationVariables = {
+  input: DeleteShareLinkInput,
+  condition?: ModelShareLinkConditionInput | null,
+};
+
+export type DeleteShareLinkMutation = {
+  deleteShareLink:  {
+    __typename: "ShareLink",
+    id: string,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
+    positions:  {
+      __typename: "ModelShareLinkPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type CreateShareLinkPositionMutationVariables = {
+  input: CreateShareLinkPositionInput,
+  condition?: ModelShareLinkPositionConditionInput | null,
+};
+
+export type CreateShareLinkPositionMutation = {
+  createShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null,
+  } | null,
+};
+
+export type UpdateShareLinkPositionMutationVariables = {
+  input: UpdateShareLinkPositionInput,
+  condition?: ModelShareLinkPositionConditionInput | null,
+};
+
+export type UpdateShareLinkPositionMutation = {
+  updateShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null,
+  } | null,
+};
+
+export type DeleteShareLinkPositionMutationVariables = {
+  input: DeleteShareLinkPositionInput,
+  condition?: ModelShareLinkPositionConditionInput | null,
+};
+
+export type DeleteShareLinkPositionMutation = {
+  deleteShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
     } | null,
   } | null,
 };
@@ -434,10 +635,42 @@ export type ListLayoutsQuery = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetLayoutQueryVariables = {
+  id: string,
+};
+
+export type GetLayoutQuery = {
+  getLayout:  {
+    __typename: "Layout",
+    id: string,
+    name: string,
+    createdAt: string | null,
+    positions:  {
+      __typename: "ModelPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type ListPositionsQueryVariables = {
+  filter?: ModelPositionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPositionsQuery = {
+  listPositions:  {
+    __typename: "ModelPositionConnection",
+    items:  Array< {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -458,53 +691,7 @@ export type GetPositionQuery = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
-  } | null,
-};
-
-export type ListPositionsQueryVariables = {
-  filter?: ModelPositionFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListPositionsQuery = {
-  listPositions:  {
-    __typename: "ModelPositionConnection",
-    items:  Array< {
-      __typename: "Position",
-      id: string,
-      x: number,
-      y: number,
-      layout:  {
-        __typename: "Layout",
-        id: string,
-        name: string,
-        createdAt: string | null,
-      } | null,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type GetPlayerQueryVariables = {
-  id: string,
-};
-
-export type GetPlayerQuery = {
-  getPlayer:  {
-    __typename: "Player",
-    id: string,
-    firstName: string,
-    lastName: string | null,
-    number: number,
-    nickName: string | null,
-    age: number | null,
-    createdAt: string | null,
   } | null,
 };
 
@@ -525,14 +712,124 @@ export type ListPlayersQuery = {
       number: number,
       nickName: string | null,
       age: number | null,
+      createdBy: string | null,
       createdAt: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
 };
 
-export type getDataQueryVariables = {
+export type GetPlayerQueryVariables = {
+  id: string,
+};
+
+export type GetPlayerQuery = {
+  getPlayer:  {
+    __typename: "Player",
+    id: string,
+    firstName: string,
+    lastName: string | null,
+    number: number,
+    nickName: string | null,
+    age: number | null,
+    createdBy: string | null,
+    createdAt: string | null,
+  } | null,
+};
+
+export type ListShareLinksQueryVariables = {
+  filter?: ModelShareLinkFilterInput | null,
   limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListShareLinksQuery = {
+  listShareLinks:  {
+    __typename: "ModelShareLinkConnection",
+    items:  Array< {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetShareLinkQueryVariables = {
+  id: string,
+};
+
+export type GetShareLinkQuery = {
+  getShareLink:  {
+    __typename: "ShareLink",
+    id: string,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
+    positions:  {
+      __typename: "ModelShareLinkPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type GetShareLinkPositionQueryVariables = {
+  id: string,
+};
+
+export type GetShareLinkPositionQuery = {
+  getShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null,
+  } | null,
+};
+
+export type ListShareLinkPositionsQueryVariables = {
+  filter?: ModelShareLinkPositionFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListShareLinkPositionsQuery = {
+  listShareLinkPositions:  {
+    __typename: "ModelShareLinkPositionConnection",
+    items:  Array< {
+      __typename: "ShareLinkPosition",
+      id: string,
+      createdBy: string | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
 };
 
 export type getDataQuery = {
@@ -573,12 +870,6 @@ export type OnCreateLayoutSubscription = {
     createdAt: string | null,
     positions:  {
       __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
       nextToken: string | null,
     } | null,
   } | null,
@@ -592,12 +883,6 @@ export type OnUpdateLayoutSubscription = {
     createdAt: string | null,
     positions:  {
       __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
       nextToken: string | null,
     } | null,
   } | null,
@@ -611,12 +896,6 @@ export type OnDeleteLayoutSubscription = {
     createdAt: string | null,
     positions:  {
       __typename: "ModelPositionConnection",
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
       nextToken: string | null,
     } | null,
   } | null,
@@ -633,10 +912,6 @@ export type OnCreatePositionSubscription = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
   } | null,
 };
@@ -652,10 +927,6 @@ export type OnUpdatePositionSubscription = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
   } | null,
 };
@@ -671,12 +942,12 @@ export type OnDeletePositionSubscription = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-      } | null,
     } | null,
   } | null,
+};
+
+export type OnCreatePlayerSubscriptionVariables = {
+  createdBy: string,
 };
 
 export type OnCreatePlayerSubscription = {
@@ -688,8 +959,13 @@ export type OnCreatePlayerSubscription = {
     number: number,
     nickName: string | null,
     age: number | null,
+    createdBy: string | null,
     createdAt: string | null,
   } | null,
+};
+
+export type OnUpdatePlayerSubscriptionVariables = {
+  createdBy: string,
 };
 
 export type OnUpdatePlayerSubscription = {
@@ -701,8 +977,13 @@ export type OnUpdatePlayerSubscription = {
     number: number,
     nickName: string | null,
     age: number | null,
+    createdBy: string | null,
     createdAt: string | null,
   } | null,
+};
+
+export type OnDeletePlayerSubscriptionVariables = {
+  createdBy: string,
 };
 
 export type OnDeletePlayerSubscription = {
@@ -714,6 +995,181 @@ export type OnDeletePlayerSubscription = {
     number: number,
     nickName: string | null,
     age: number | null,
+    createdBy: string | null,
     createdAt: string | null,
+  } | null,
+};
+
+export type OnCreateShareLinkSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnCreateShareLinkSubscription = {
+  onCreateShareLink:  {
+    __typename: "ShareLink",
+    id: string,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
+    positions:  {
+      __typename: "ModelShareLinkPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateShareLinkSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnUpdateShareLinkSubscription = {
+  onUpdateShareLink:  {
+    __typename: "ShareLink",
+    id: string,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
+    positions:  {
+      __typename: "ModelShareLinkPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteShareLinkSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnDeleteShareLinkSubscription = {
+  onDeleteShareLink:  {
+    __typename: "ShareLink",
+    id: string,
+    name: string | null,
+    createdBy: string | null,
+    layout:  {
+      __typename: "Layout",
+      id: string,
+      name: string,
+      createdAt: string | null,
+    } | null,
+    positions:  {
+      __typename: "ModelShareLinkPositionConnection",
+      nextToken: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnCreateShareLinkPositionSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnCreateShareLinkPositionSubscription = {
+  onCreateShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnUpdateShareLinkPositionSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnUpdateShareLinkPositionSubscription = {
+  onUpdateShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null,
+  } | null,
+};
+
+export type OnDeleteShareLinkPositionSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnDeleteShareLinkPositionSubscription = {
+  onDeleteShareLinkPosition:  {
+    __typename: "ShareLinkPosition",
+    id: string,
+    createdBy: string | null,
+    position:  {
+      __typename: "Position",
+      id: string,
+      x: number,
+      y: number,
+    } | null,
+    player:  {
+      __typename: "Player",
+      id: string,
+      firstName: string,
+      lastName: string | null,
+      number: number,
+      nickName: string | null,
+      age: number | null,
+      createdBy: string | null,
+      createdAt: string | null,
+    } | null,
+    shareLink:  {
+      __typename: "ShareLink",
+      id: string,
+      name: string | null,
+      createdBy: string | null,
+    } | null,
   } | null,
 };

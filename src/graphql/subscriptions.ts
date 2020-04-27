@@ -1,5 +1,5 @@
-// tslint:disable
-// eslint-disable
+/* tslint:disable */
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const onCreateLayout = /* GraphQL */ `
@@ -9,11 +9,6 @@ export const onCreateLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        items {
-          id
-          x
-          y
-        }
         nextToken
       }
     }
@@ -26,11 +21,6 @@ export const onUpdateLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        items {
-          id
-          x
-          y
-        }
         nextToken
       }
     }
@@ -43,11 +33,6 @@ export const onDeleteLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        items {
-          id
-          x
-          y
-        }
         nextToken
       }
     }
@@ -63,9 +48,6 @@ export const onCreatePosition = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
-          nextToken
-        }
       }
     }
   }
@@ -80,9 +62,6 @@ export const onUpdatePosition = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
-          nextToken
-        }
       }
     }
   }
@@ -97,49 +76,184 @@ export const onDeletePosition = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
-          nextToken
-        }
       }
     }
   }
 `;
 export const onCreatePlayer = /* GraphQL */ `
-  subscription OnCreatePlayer {
-    onCreatePlayer {
+  subscription OnCreatePlayer($createdBy: String!) {
+    onCreatePlayer(createdBy: $createdBy) {
       id
       firstName
       lastName
       number
       nickName
       age
+      createdBy
       createdAt
     }
   }
 `;
 export const onUpdatePlayer = /* GraphQL */ `
-  subscription OnUpdatePlayer {
-    onUpdatePlayer {
+  subscription OnUpdatePlayer($createdBy: String!) {
+    onUpdatePlayer(createdBy: $createdBy) {
       id
       firstName
       lastName
       number
       nickName
       age
+      createdBy
       createdAt
     }
   }
 `;
 export const onDeletePlayer = /* GraphQL */ `
-  subscription OnDeletePlayer {
-    onDeletePlayer {
+  subscription OnDeletePlayer($createdBy: String!) {
+    onDeletePlayer(createdBy: $createdBy) {
       id
       firstName
       lastName
       number
       nickName
       age
+      createdBy
       createdAt
+    }
+  }
+`;
+export const onCreateShareLink = /* GraphQL */ `
+  subscription OnCreateShareLink($createdBy: String!) {
+    onCreateShareLink(createdBy: $createdBy) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onUpdateShareLink = /* GraphQL */ `
+  subscription OnUpdateShareLink($createdBy: String!) {
+    onUpdateShareLink(createdBy: $createdBy) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onDeleteShareLink = /* GraphQL */ `
+  subscription OnDeleteShareLink($createdBy: String!) {
+    onDeleteShareLink(createdBy: $createdBy) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateShareLinkPosition = /* GraphQL */ `
+  subscription OnCreateShareLinkPosition($createdBy: String!) {
+    onCreateShareLinkPosition(createdBy: $createdBy) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
+    }
+  }
+`;
+export const onUpdateShareLinkPosition = /* GraphQL */ `
+  subscription OnUpdateShareLinkPosition($createdBy: String!) {
+    onUpdateShareLinkPosition(createdBy: $createdBy) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
+    }
+  }
+`;
+export const onDeleteShareLinkPosition = /* GraphQL */ `
+  subscription OnDeleteShareLinkPosition($createdBy: String!) {
+    onDeleteShareLinkPosition(createdBy: $createdBy) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
     }
   }
 `;

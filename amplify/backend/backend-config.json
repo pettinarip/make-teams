@@ -1,28 +1,35 @@
 {
-	"api": {
-		"makeTeams": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "API_KEY",
-						"apiKeyConfig": {
-							"description": "",
-							"apiKeyExpirationDays": "365"
-						}
-					}
-				}
-			}
-		}
-	},
-	"auth": {
-		"maketeams31458582": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"customAuth": false
-		}
-	}
+    "api": {
+        "makeTeamsAPI": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [
+                        {
+                            "authenticationType": "API_KEY",
+                            "apiKeyConfig": {
+                                "description": "makeTeamsAPIKey",
+                                "apiKeyExpirationDays": "365"
+                            }
+                        }
+                    ],
+                    "defaultAuthentication": {
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authmaketeamsd7a2869c"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "auth": {
+        "maketeamsd7a2869c": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false
+        }
+    }
 }

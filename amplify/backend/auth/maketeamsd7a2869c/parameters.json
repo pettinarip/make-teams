@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "maketeams31458582_identitypool_31458582",
+    "identityPoolName": "maketeamsd7a2869c_identitypool_d7a2869c",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "makete31458582",
-    "userPoolName": "maketeams31458582_userpool_31458582",
+    "resourceNameTruncated": "maketed7a2869c",
+    "userPoolName": "maketeamsd7a2869c_userpool_d7a2869c",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,9 +28,9 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "makete31458582_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "maketed7a2869c_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "maketeams31458582",
+    "resourceName": "maketeamsd7a2869c",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [

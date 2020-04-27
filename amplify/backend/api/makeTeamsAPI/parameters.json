@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "makeTeamsAPI",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authmaketeamsd7a2869c",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

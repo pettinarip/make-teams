@@ -1,0 +1,90 @@
+type Layout
+  @model
+  @auth(
+    rules: [
+      { allow: private }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  createdAt: AWSDateTime
+  positions: [Position] @connection(name: "LayoutPositions")
+}
+
+type Position
+  @model
+  @auth(
+    rules: [
+      { allow: private }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  x: Float!
+  y: Float!
+  layout: Layout @connection(name: "LayoutPositions")
+}
+
+type Player
+  @model
+  @auth(
+    rules: [
+      {
+        allow: owner
+        ownerField: "createdBy"
+        operations: [create, update, delete, read]
+      }
+      { allow: private, operations: [read] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  firstName: String!
+  lastName: String
+  number: Int!
+  nickName: String
+  age: Int
+  createdBy: String
+  createdAt: AWSDateTime
+}
+
+type ShareLink
+  @model
+  @auth(
+    rules: [
+      {
+        allow: owner
+        ownerField: "createdBy"
+        operations: [create, update, delete, read]
+      }
+      { allow: private, operations: [read] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  name: String
+  layout: Layout @connection
+  positions: [ShareLinkPosition] @connection(name: "SharePositions")
+  createdBy: String
+}
+
+type ShareLinkPosition
+  @model
+  @auth(
+    rules: [
+      {
+        allow: owner
+        ownerField: "createdBy"
+        operations: [create, update, delete, read]
+      }
+      { allow: private, operations: [read] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
+  id: ID!
+  shareLink: ShareLink @connection(name: "SharePositions")
+  position: Position @connection
+  player: Player @connection
+  createdBy: String
+}

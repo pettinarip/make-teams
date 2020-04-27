@@ -1,5 +1,5 @@
-// tslint:disable
-// eslint-disable
+/* tslint:disable */
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const createLayout = /* GraphQL */ `
@@ -12,11 +12,6 @@ export const createLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        items {
-          id
-          x
-          y
-        }
         nextToken
       }
     }
@@ -32,11 +27,6 @@ export const updateLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        items {
-          id
-          x
-          y
-        }
         nextToken
       }
     }
@@ -52,11 +42,6 @@ export const deleteLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        items {
-          id
-          x
-          y
-        }
         nextToken
       }
     }
@@ -75,9 +60,6 @@ export const createPosition = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
-          nextToken
-        }
       }
     }
   }
@@ -95,9 +77,6 @@ export const updatePosition = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
-          nextToken
-        }
       }
     }
   }
@@ -115,9 +94,6 @@ export const deletePosition = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
-          nextToken
-        }
       }
     }
   }
@@ -134,6 +110,7 @@ export const createPlayer = /* GraphQL */ `
       number
       nickName
       age
+      createdBy
       createdAt
     }
   }
@@ -150,20 +127,178 @@ export const updatePlayer = /* GraphQL */ `
       number
       nickName
       age
+      createdBy
       createdAt
     }
   }
 `;
 export const deletePlayer = /* GraphQL */ `
-  mutation DeletePlayer($playerId: ID!) {
-    deletePlayer(input: { id: $playerId }) {
+  mutation DeletePlayer(
+    $input: DeletePlayerInput!
+    $condition: ModelPlayerConditionInput
+  ) {
+    deletePlayer(input: $input, condition: $condition) {
       id
       firstName
       lastName
       number
       nickName
       age
+      createdBy
       createdAt
+    }
+  }
+`;
+export const createShareLink = /* GraphQL */ `
+  mutation CreateShareLink(
+    $input: CreateShareLinkInput!
+    $condition: ModelShareLinkConditionInput
+  ) {
+    createShareLink(input: $input, condition: $condition) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const updateShareLink = /* GraphQL */ `
+  mutation UpdateShareLink(
+    $input: UpdateShareLinkInput!
+    $condition: ModelShareLinkConditionInput
+  ) {
+    updateShareLink(input: $input, condition: $condition) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const deleteShareLink = /* GraphQL */ `
+  mutation DeleteShareLink(
+    $input: DeleteShareLinkInput!
+    $condition: ModelShareLinkConditionInput
+  ) {
+    deleteShareLink(input: $input, condition: $condition) {
+      id
+      name
+      createdBy
+      layout {
+        id
+        name
+        createdAt
+      }
+      positions {
+        nextToken
+      }
+    }
+  }
+`;
+export const createShareLinkPosition = /* GraphQL */ `
+  mutation CreateShareLinkPosition(
+    $input: CreateShareLinkPositionInput!
+    $condition: ModelShareLinkPositionConditionInput
+  ) {
+    createShareLinkPosition(input: $input, condition: $condition) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
+    }
+  }
+`;
+export const updateShareLinkPosition = /* GraphQL */ `
+  mutation UpdateShareLinkPosition(
+    $input: UpdateShareLinkPositionInput!
+    $condition: ModelShareLinkPositionConditionInput
+  ) {
+    updateShareLinkPosition(input: $input, condition: $condition) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
+    }
+  }
+`;
+export const deleteShareLinkPosition = /* GraphQL */ `
+  mutation DeleteShareLinkPosition(
+    $input: DeleteShareLinkPositionInput!
+    $condition: ModelShareLinkPositionConditionInput
+  ) {
+    deleteShareLinkPosition(input: $input, condition: $condition) {
+      id
+      createdBy
+      position {
+        id
+        x
+        y
+      }
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+        createdBy
+        createdAt
+      }
+      shareLink {
+        id
+        name
+        createdBy
+      }
     }
   }
 `;
