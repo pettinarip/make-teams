@@ -13,6 +13,12 @@ export const listLayouts = /* GraphQL */ `
         id
         name
         createdAt
+        positions {
+          items {
+            x
+            y
+          }
+        }
       }
       nextToken
     }
