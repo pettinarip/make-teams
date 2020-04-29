@@ -13,7 +13,7 @@ export const listLayouts = /* GraphQL */ `
         id
         name
         createdAt
-        positions {
+        positions(limit: 11) {
           items {
             x
             y
