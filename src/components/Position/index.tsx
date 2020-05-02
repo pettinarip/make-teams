@@ -32,7 +32,7 @@ export default function Position({
     }),
   });
 
-  const [collecedProps, drag] = useDrag({
+  const [, drag] = useDrag({
     item: { index, type: ItemTypes.POSITION },
     end: (item: { index: number } | undefined, monitor: DragSourceMonitor) => {
       const dropResult = monitor.getDropResult();
@@ -58,6 +58,7 @@ export default function Position({
               width: 100%;
             `}
             src={playerImg}
+            alt=""
           />
         ) : (
           ""

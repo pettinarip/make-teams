@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Grid, Button, Segment, Rail, Label } from "semantic-ui-react";
 import produce from "immer";
 
@@ -60,10 +60,13 @@ export default function MakeTeam(__props: IProps) {
     setUsedPlayersIds([...usedPlayersIds, player.id]);
   }
 
-  function handleLayoutChange(layout: ILayout) {
-    setPositions(layout.positions);
-    setUsedPlayersIds([]);
-  }
+  const handleLayoutChange = useCallback(
+    (layout: ILayout) => {
+      setPositions(layout.positions);
+      setUsedPlayersIds([]);
+    },
+    [setPositions, setUsedPlayersIds]
+  );
 
   return (
     <Grid centered columns={3}>

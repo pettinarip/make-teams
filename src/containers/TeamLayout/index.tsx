@@ -22,7 +22,7 @@ export default function TeamLayout({ onChange }: IProps) {
     if (selected) {
       onChange(selected);
     }
-  }, [selected]);
+  }, [selected, onChange]);
 
   useEffect(() => {
     if (layouts.length) {

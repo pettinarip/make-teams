@@ -13,7 +13,7 @@ export interface IProps {
 }
 
 export default function Player({ player, onDropInPosition, onClick }: IProps) {
-  const [collectedProps, drag] = useDrag({
+  const [, drag] = useDrag({
     item: { player, type: ItemTypes.POSITION },
     end: (
       item: { player: IPlayer } | undefined,
@@ -33,7 +33,7 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
   return (
     <div ref={drag}>
       <Label as="a" onClick={handleOnClick} image>
-        <img src={playerImg} />
+        <img src={playerImg} alt="" />
         {`${player.lastName}, ${player.firstName}`}
         <Label.Detail>{player.number}</Label.Detail>
       </Label>

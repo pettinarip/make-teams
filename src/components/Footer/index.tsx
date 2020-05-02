@@ -11,7 +11,11 @@ export default function Footer() {
     >
       <Grid.Column textAlign="center">
         <small>by</small>{" "}
-        <a href="https://github.com/pettinarip" target="_blank">
+        <a
+          href="https://github.com/pettinarip"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           @pettinarip
         </a>
       </Grid.Column>
