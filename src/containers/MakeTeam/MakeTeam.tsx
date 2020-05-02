@@ -10,7 +10,7 @@ import { IPlayer, ILayout, IPosition } from "./types";
 
 export interface IProps {}
 
-export default function MakeTeam(props: IProps) {
+export default function MakeTeam(__props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
   const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
 

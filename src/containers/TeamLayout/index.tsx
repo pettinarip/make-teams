@@ -8,14 +8,14 @@ import {
 } from "semantic-ui-react";
 
 import { ILayout } from "../MakeTeam/types";
-import useGetLayouts from "../../graphql/queries/useGetLayouts";
+import useLayouts from "../../domain/Layout/useLayouts";
 
 export interface IProps {
   onChange: (layout: ILayout) => void;
 }
 
 export default function TeamLayout({ onChange }: IProps) {
-  const { status, data: layouts = [] } = useGetLayouts();
+  const { status, layouts } = useLayouts();
   const [selected, setSelected] = useState<ILayout>();
 
   useEffect(() => {

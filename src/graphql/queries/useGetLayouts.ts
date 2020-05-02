@@ -1,12 +1,12 @@
 import { useQuery } from "react-query";
 import { graphqlOperation, API } from "aws-amplify";
+import { QueryResult } from "react-query/types";
 
-import { IReactQuery } from "../types";
 import { listLayouts } from "../queries";
 import { ILayout } from "../../containers/MakeTeam/types";
 import useAuth from "../../components/ProtectedRoute/useAuth";
 
-export default function useGetLayouts(): IReactQuery<Array<ILayout>> {
+export default function useGetLayouts(): QueryResult<Array<ILayout>> {
   const { user = {} as any } = useAuth();
 
   return useQuery(
