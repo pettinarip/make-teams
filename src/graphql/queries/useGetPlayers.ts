@@ -4,11 +4,8 @@ import { QueryResult } from "react-query/types";
 
 import { listPlayers } from "../queries";
 import { IPlayer } from "../../containers/MakeTeam/types";
-import useAuth from "../../components/ProtectedRoute/useAuth";
 
-export default function useGetPlayers(): QueryResult<Array<IPlayer>> {
-  const { user = {} as any } = useAuth();
-
+export default function useGetPlayers(user: any): QueryResult<Array<IPlayer>> {
   return useQuery(
     user && ["players", user],
     async (): Promise<Array<IPlayer>> => {

@@ -9,13 +9,15 @@ import {
 
 import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/Layout/useLayouts";
+import useAuth from "../../components/ProtectedRoute/useAuth";
 
 export interface IProps {
   onChange: (layout: ILayout) => void;
 }
 
 export default function TeamLayout({ onChange }: IProps) {
-  const { status, layouts } = useLayouts();
+  const { user = {}, isLoading } = useAuth();
+  const { status, layouts } = useLayouts(user);
   const [selected, setSelected] = useState<ILayout>();
 
   useEffect(() => {
@@ -40,8 +42,8 @@ export default function TeamLayout({ onChange }: IProps) {
   return (
     <>
       <Header as="h2">Layout</Header>
-      {status === "loading" ? (
-        <Placeholder fluid>
+      {isLoading || status === "loading" ? (
+        <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
             <Placeholder.Line />
             <Placeholder.Line />

@@ -10,6 +10,7 @@ import {
 } from "semantic-ui-react";
 
 import { IPlayer } from "../MakeTeam/types";
+import useAuth from "../../components/ProtectedRoute/useAuth";
 import useGetPlayers from "../../graphql/queries/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
@@ -28,13 +29,14 @@ export default function Roster({
   onPlayerClick,
   onResetClick,
 }: IProps) {
-  const { status, data: players = [], isFetching } = useGetPlayers();
+  const { user = {}, isLoading } = useAuth();
+  const { status, data: players = [], isFetching } = useGetPlayers(user);
 
   return (
     <div>
       <Header as="h2">Roster ({players.length})</Header>
-      {status === "loading" && (
-        <Placeholder fluid>
+      {(isLoading || status === "loading") && (
+        <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
             <Placeholder.Line />
             <Placeholder.Line />

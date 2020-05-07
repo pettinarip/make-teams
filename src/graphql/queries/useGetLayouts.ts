@@ -4,11 +4,8 @@ import { QueryResult } from "react-query/types";
 
 import { listLayouts } from "../queries";
 import { ILayout } from "../../containers/MakeTeam/types";
-import useAuth from "../../components/ProtectedRoute/useAuth";
 
-export default function useGetLayouts(): QueryResult<Array<ILayout>> {
-  const { user = {} as any } = useAuth();
-
+export default function useGetLayouts(user: any): QueryResult<Array<ILayout>> {
   return useQuery(
     user && ["layouts", user],
     async (): Promise<Array<ILayout>> => {

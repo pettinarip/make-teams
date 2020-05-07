@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { ILayout } from "../../containers/MakeTeam/types";
 import useGetLayouts from "../../graphql/queries/useGetLayouts";
 
-export default function useLayouts() {
-  const { data: layouts = [], ...rest } = useGetLayouts();
+export default function useLayouts(user: any) {
+  const { data: layouts = [], ...rest } = useGetLayouts(user);
 
   const sortedLayouts = useMemo(() => {
     return layouts.map(sortByPositionY);
