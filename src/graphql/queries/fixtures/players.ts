@@ -1,0 +1,47 @@
+export const playersFixture = {
+  listPlayers: {
+    items: [
+      {
+        id: "726bf2c4-4caf-419e-95eb-592206e7e05e",
+        firstName: "Charles",
+        lastName: "Puyol",
+        number: 6,
+        nickName: null,
+        age: null,
+        createdBy: "ee9224b6-dfc8-4f35-a20b-e7de2c8e7ca2",
+        createdAt: "2020-05-02T15:13:10.779Z",
+      },
+      {
+        id: "64f72c22-28e4-4bff-b7f7-548d7e2ffbdf",
+        firstName: "Francesco",
+        lastName: "Totti",
+        number: 10,
+        nickName: null,
+        age: null,
+        createdBy: "ee9224b6-dfc8-4f35-a20b-e7de2c8e7ca2",
+        createdAt: "2020-05-02T15:12:48.814Z",
+      },
+      {
+        id: "5cd07967-1cda-4750-abba-e947d88357bd",
+        firstName: "Rodrigo",
+        lastName: "Palacios",
+        number: 14,
+        nickName: null,
+        age: null,
+        createdBy: "ee9224b6-dfc8-4f35-a20b-e7de2c8e7ca2",
+        createdAt: "2020-05-02T15:12:25.236Z",
+      },
+      {
+        id: "d5ff8c31-7074-46c4-90e0-7183bd5da4f5",
+        firstName: "Pablo",
+        lastName: "Pettinari",
+        number: 5,
+        nickName: null,
+        age: null,
+        createdBy: "ee9224b6-dfc8-4f35-a20b-e7de2c8e7ca2",
+        createdAt: "2020-04-27T07:58:02.717Z",
+      },
+    ],
+    nextToken: null,
+  },
+};
