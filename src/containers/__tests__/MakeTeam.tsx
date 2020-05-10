@@ -4,6 +4,7 @@ import {
   screen,
   waitForElementToBeRemoved,
   fireEvent,
+  dragAndDrop,
 } from "../../test/appTestUtils";
 
 import MakeTeam from "../MakeTeam";
@@ -212,11 +213,108 @@ describe("MakeTeam", () => {
     `);
   });
 
-  test.skip("a player can be dragged and dropped from the Roster into an empty position", async () => {
-    // TODO
+  test("a player can be dragged and dropped from the Roster into an empty position", async () => {
+    render(<MakeTeam />);
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+
+    // Drag the player named Pablo Pettinari into the first position
+    const player = screen.getByText(/pablo/i);
+    const positions = screen.getAllByTestId(/position/i);
+    dragAndDrop(player, positions[0]);
+
+    const newPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(newPositions).toMatchInlineSnapshot(`
+      Array [
+        "5",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
   });
 
-  test.skip("a player can be dragged and dropped from the Roster into an occupied position, putting the last one back to the Roster", async () => {
-    // TODO
+  test("a player can be dragged and dropped from the Roster into an occupied position, putting the last one back to the Roster", async () => {
+    render(<MakeTeam />);
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+
+    // Assign totti player to the first position
+    const totti = screen.getByText(/totti/i);
+    fireEvent.click(totti);
+
+    const positions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(positions).toMatchInlineSnapshot(`
+      Array [
+        "10",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+
+    // Assign pablo player to the same position
+    const pablo = screen.getByText(/pablo/i);
+    const firstPosition = screen.getAllByTestId(/position/i)[0];
+    dragAndDrop(pablo, firstPosition);
+
+    // Check that pablo is the new player in the first position
+    const newPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(newPositions).toMatchInlineSnapshot(`
+      Array [
+        "5",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+
+    // Check that totti return to the roster
+    const roster = screen
+      .getAllByTestId(/player/i)
+      .map((player) => player.textContent);
+    expect(roster).toMatchInlineSnapshot(`
+      Array [
+        "Puyol, Charles6",
+        "Totti, Francesco10",
+        "Palacios, Rodrigo14",
+        "Test, Test1",
+        "Test2, Test2",
+        "Test3, Test3",
+        "Test4, Test4",
+        "Test5, Test7",
+        "Test6, Test8",
+        "Test7, Test9",
+        "Test8, Test11",
+        "Test9, Test12",
+      ]
+    `);
   });
 });

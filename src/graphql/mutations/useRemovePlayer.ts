@@ -5,9 +5,9 @@ import { IPlayer } from "../../containers/MakeTeam/types";
 import { deletePlayer } from "../mutations";
 
 export default function useRemovePlayer() {
-  return useMutation(
-    (player: Partial<IPlayer>) => {
-      return API.graphql(
+  return useMutation<any, Partial<IPlayer>>(
+    async (player) => {
+      await API.graphql(
         graphqlOperation(deletePlayer, { playerId: player.id })
       );
     },

@@ -38,6 +38,14 @@ function sleep() {
   return Promise.resolve();
 }
 
+function dragAndDrop(src: Element, dst: Element) {
+  rtl.fireEvent.dragStart(src);
+  rtl.fireEvent.dragEnter(dst);
+  rtl.fireEvent.drop(dst);
+  rtl.fireEvent.dragLeave(dst);
+  rtl.fireEvent.dragEnd(src);
+}
+
 export { default as userEvent } from "@testing-library/user-event";
 export * from "@testing-library/react";
-export { render, waitForElementToBeRemoved, sleep };
+export { render, waitForElementToBeRemoved, sleep, dragAndDrop };

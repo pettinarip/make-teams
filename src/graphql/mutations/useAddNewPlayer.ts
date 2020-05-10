@@ -5,9 +5,9 @@ import { IPlayer } from "../../containers/MakeTeam/types";
 import { createPlayer } from "../mutations";
 
 export default function useAddNewPlayer() {
-  return useMutation(
-    (player: Partial<IPlayer>) => {
-      return API.graphql(graphqlOperation(createPlayer, { input: player }));
+  return useMutation<any, Partial<IPlayer>>(
+    async (player) => {
+      await API.graphql(graphqlOperation(createPlayer, { input: player }));
     },
     {
       onSuccess: () => {

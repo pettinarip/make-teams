@@ -51,13 +51,19 @@ export default function MakeTeam(__props: IProps) {
   }
 
   function assignPlayerToPosition(player: IPlayer, positionIndex: number) {
+    const previousPlayer = positions[positionIndex];
+
     setPositions(
       produce((positions: Array<IPosition>) => {
         positions[positionIndex].player = player;
       })
     );
 
-    setUsedPlayersIds([...usedPlayersIds, player.id]);
+    const newUsedPlayersIds = usedPlayersIds.filter(
+      (id) => id !== previousPlayer.player?.id
+    );
+
+    setUsedPlayersIds([...newUsedPlayersIds, player.id]);
   }
 
   const handleLayoutChange = useCallback(
