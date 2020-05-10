@@ -15,7 +15,7 @@ export interface IProps {
 
 export default function Field(props: IProps) {
   return (
-    <FieldWrapper>
+    <FieldWrapper data-testid="field">
       {props.positions.map((position, index) => (
         <Position
           key={index}

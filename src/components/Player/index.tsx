@@ -32,7 +32,7 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
 
   return (
     <div ref={drag}>
-      <Label as="a" onClick={handleOnClick} image>
+      <Label as="a" onClick={handleOnClick} image data-testid="player">
         <img src={playerImg} alt="" />
         {`${player.lastName}, ${player.firstName}`}
         <Label.Detail>{player.number}</Label.Detail>

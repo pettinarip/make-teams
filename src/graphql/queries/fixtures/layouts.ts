@@ -2,7 +2,7 @@ export const layoutsFixture = {
   listLayouts: {
     items: [
       {
-        id: "50051c91-9988-4864-8867-2853dd3b4431",
+        id: "1",
         name: "4-3-3",
         createdAt: "2020-04-27T08:06:36.977Z",
         positions: {
@@ -50,6 +50,19 @@ export const layoutsFixture = {
             {
               x: 62,
               y: 75,
+            },
+          ],
+        },
+      },
+      {
+        id: "2",
+        name: "4-4-2",
+        createdAt: "2020-04-30T08:06:36.977Z",
+        positions: {
+          items: [
+            {
+              x: 25,
+              y: 45,
             },
           ],
         },

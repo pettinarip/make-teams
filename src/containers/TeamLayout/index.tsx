@@ -53,12 +53,17 @@ export default function TeamLayout({ onChange }: IProps) {
           </Placeholder.Paragraph>
         </Placeholder>
       ) : (
-        <Form>
+        <Form data-testid="layouts">
           {layouts.map((layout) => (
             <Form.Field key={layout.id}>
               <Radio
-                label={layout.name}
+                id={`layout-${layout.id}`}
                 name="layout"
+                data-testid="layout"
+                label={{
+                  children: layout.name,
+                  htmlFor: `layout-${layout.id}`,
+                }}
                 value={layout.id}
                 checked={selected && selected.id === layout.id}
                 onChange={handleChange}

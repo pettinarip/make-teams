@@ -50,6 +50,7 @@ export default function Position({
       ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
       x={position.x}
       y={position.y}
+      data-testid="position"
     >
       <Img isActive={isActive}>
         {position.player ? (
