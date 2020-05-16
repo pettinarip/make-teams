@@ -157,15 +157,8 @@ export const createShareLink = /* GraphQL */ `
     createShareLink(input: $input, condition: $condition) {
       id
       name
+      positions
       createdBy
-      layout {
-        id
-        name
-        createdAt
-      }
-      positions {
-        nextToken
-      }
     }
   }
 `;
@@ -177,15 +170,8 @@ export const updateShareLink = /* GraphQL */ `
     updateShareLink(input: $input, condition: $condition) {
       id
       name
+      positions
       createdBy
-      layout {
-        id
-        name
-        createdAt
-      }
-      positions {
-        nextToken
-      }
     }
   }
 `;
@@ -197,108 +183,8 @@ export const deleteShareLink = /* GraphQL */ `
     deleteShareLink(input: $input, condition: $condition) {
       id
       name
+      positions
       createdBy
-      layout {
-        id
-        name
-        createdAt
-      }
-      positions {
-        nextToken
-      }
-    }
-  }
-`;
-export const createShareLinkPosition = /* GraphQL */ `
-  mutation CreateShareLinkPosition(
-    $input: CreateShareLinkPositionInput!
-    $condition: ModelShareLinkPositionConditionInput
-  ) {
-    createShareLinkPosition(input: $input, condition: $condition) {
-      id
-      createdBy
-      position {
-        id
-        x
-        y
-      }
-      player {
-        id
-        firstName
-        lastName
-        number
-        nickName
-        age
-        createdBy
-        createdAt
-      }
-      shareLink {
-        id
-        name
-        createdBy
-      }
-    }
-  }
-`;
-export const updateShareLinkPosition = /* GraphQL */ `
-  mutation UpdateShareLinkPosition(
-    $input: UpdateShareLinkPositionInput!
-    $condition: ModelShareLinkPositionConditionInput
-  ) {
-    updateShareLinkPosition(input: $input, condition: $condition) {
-      id
-      createdBy
-      position {
-        id
-        x
-        y
-      }
-      player {
-        id
-        firstName
-        lastName
-        number
-        nickName
-        age
-        createdBy
-        createdAt
-      }
-      shareLink {
-        id
-        name
-        createdBy
-      }
-    }
-  }
-`;
-export const deleteShareLinkPosition = /* GraphQL */ `
-  mutation DeleteShareLinkPosition(
-    $input: DeleteShareLinkPositionInput!
-    $condition: ModelShareLinkPositionConditionInput
-  ) {
-    deleteShareLinkPosition(input: $input, condition: $condition) {
-      id
-      createdBy
-      position {
-        id
-        x
-        y
-      }
-      player {
-        id
-        firstName
-        lastName
-        number
-        nickName
-        age
-        createdBy
-        createdAt
-      }
-      shareLink {
-        id
-        name
-        createdBy
-      }
     }
   }
 `;

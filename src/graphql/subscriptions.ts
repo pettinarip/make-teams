@@ -127,15 +127,8 @@ export const onCreateShareLink = /* GraphQL */ `
     onCreateShareLink(createdBy: $createdBy) {
       id
       name
+      positions
       createdBy
-      layout {
-        id
-        name
-        createdAt
-      }
-      positions {
-        nextToken
-      }
     }
   }
 `;
@@ -144,15 +137,8 @@ export const onUpdateShareLink = /* GraphQL */ `
     onUpdateShareLink(createdBy: $createdBy) {
       id
       name
+      positions
       createdBy
-      layout {
-        id
-        name
-        createdAt
-      }
-      positions {
-        nextToken
-      }
     }
   }
 `;
@@ -161,99 +147,8 @@ export const onDeleteShareLink = /* GraphQL */ `
     onDeleteShareLink(createdBy: $createdBy) {
       id
       name
+      positions
       createdBy
-      layout {
-        id
-        name
-        createdAt
-      }
-      positions {
-        nextToken
-      }
-    }
-  }
-`;
-export const onCreateShareLinkPosition = /* GraphQL */ `
-  subscription OnCreateShareLinkPosition($createdBy: String!) {
-    onCreateShareLinkPosition(createdBy: $createdBy) {
-      id
-      createdBy
-      position {
-        id
-        x
-        y
-      }
-      player {
-        id
-        firstName
-        lastName
-        number
-        nickName
-        age
-        createdBy
-        createdAt
-      }
-      shareLink {
-        id
-        name
-        createdBy
-      }
-    }
-  }
-`;
-export const onUpdateShareLinkPosition = /* GraphQL */ `
-  subscription OnUpdateShareLinkPosition($createdBy: String!) {
-    onUpdateShareLinkPosition(createdBy: $createdBy) {
-      id
-      createdBy
-      position {
-        id
-        x
-        y
-      }
-      player {
-        id
-        firstName
-        lastName
-        number
-        nickName
-        age
-        createdBy
-        createdAt
-      }
-      shareLink {
-        id
-        name
-        createdBy
-      }
-    }
-  }
-`;
-export const onDeleteShareLinkPosition = /* GraphQL */ `
-  subscription OnDeleteShareLinkPosition($createdBy: String!) {
-    onDeleteShareLinkPosition(createdBy: $createdBy) {
-      id
-      createdBy
-      position {
-        id
-        x
-        y
-      }
-      player {
-        id
-        firstName
-        lastName
-        number
-        nickName
-        age
-        createdBy
-        createdAt
-      }
-      shareLink {
-        id
-        name
-        createdBy
-      }
     }
   }
 `;

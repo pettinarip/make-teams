@@ -1,25 +1,11 @@
-type Layout
-  @model
-  @auth(
-    rules: [
-      { allow: private }
-      { allow: public, provider: apiKey, operations: [read] }
-    ]
-  ) {
+type Layout @model @auth(rules: [{ allow: private }]) {
   id: ID!
   name: String!
   createdAt: AWSDateTime
   positions: [Position] @connection(name: "LayoutPositions")
 }
 
-type Position
-  @model
-  @auth(
-    rules: [
-      { allow: private }
-      { allow: public, provider: apiKey, operations: [read] }
-    ]
-  ) {
+type Position @model @auth(rules: [{ allow: private }]) {
   id: ID!
   x: Float!
   y: Float!
@@ -35,8 +21,6 @@ type Player
         ownerField: "createdBy"
         operations: [create, update, delete, read]
       }
-      { allow: private, operations: [read] }
-      { allow: public, provider: apiKey, operations: [read] }
     ]
   ) {
   id: ID!
@@ -58,33 +42,11 @@ type ShareLink
         ownerField: "createdBy"
         operations: [create, update, delete, read]
       }
-      { allow: private, operations: [read] }
-      { allow: public, provider: apiKey, operations: [read] }
+      { allow: public, provider: iam }
     ]
   ) {
   id: ID!
-  name: String
-  layout: Layout @connection
-  positions: [ShareLinkPosition] @connection(name: "SharePositions")
-  createdBy: String
-}
-
-type ShareLinkPosition
-  @model
-  @auth(
-    rules: [
-      {
-        allow: owner
-        ownerField: "createdBy"
-        operations: [create, update, delete, read]
-      }
-      { allow: private, operations: [read] }
-      { allow: public, provider: apiKey, operations: [read] }
-    ]
-  ) {
-  id: ID!
-  shareLink: ShareLink @connection(name: "SharePositions")
-  position: Position @connection
-  player: Player @connection
+  name: String!
+  positions: String!
   createdBy: String
 }
