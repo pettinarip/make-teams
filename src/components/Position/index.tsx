@@ -1,58 +1,21 @@
 /** @jsx jsx */
+import { forwardRef, Ref } from "react";
 import { jsx, css } from "@emotion/core";
 import styled from "@emotion/styled";
-import { useDrop, useDrag, DragSourceMonitor } from "react-dnd";
 import { Label } from "semantic-ui-react";
-import composeRefs from "@seznam/compose-react-refs";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import playerImg from "../../images/christian.jpg";
-import ItemTypes from "./ItemTypes";
 
 export interface IProps {
-  index: number;
   position: IPosition;
-  onPositionDropInPosition: (
-    positionDraggedIndex: number,
-    positionDroppedIndex: number
-  ) => void;
+  isActive?: boolean;
 }
 
-export default function Position({
-  index,
-  position,
-  onPositionDropInPosition,
-}: IProps) {
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.POSITION,
-    drop: () => ({ index }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
-
-  const [, drag] = useDrag({
-    item: { index, type: ItemTypes.POSITION },
-    end: (item: { index: number } | undefined, monitor: DragSourceMonitor) => {
-      const dropResult = monitor.getDropResult();
-      if (index > -1 && dropResult && dropResult.index > -1) {
-        onPositionDropInPosition(index, dropResult.index);
-      }
-    },
-    collect: () => ({}),
-  });
-
-  const isActive = canDrop && isOver;
-
+function Position({ position, isActive }: IProps, ref: Ref<HTMLDivElement>) {
   return (
-    <Wrapper
-      ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
-      x={position.x}
-      y={position.y}
-      data-testid="position"
-    >
-      <Img isActive={isActive}>
+    <Wrapper ref={ref} x={position.x} y={position.y} data-testid="position">
+      <Img isActive={!!isActive}>
         {position.player ? (
           <img
             css={css`
@@ -98,3 +61,5 @@ const Img = styled.div<{ isActive: boolean }>(
     backgroundColor: props.isActive ? "lightgray" : "white",
   })
 );
+
+export default forwardRef(Position);

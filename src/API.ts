@@ -205,15 +205,6 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type ModelPositionFilterInput = {
-  id?: ModelIDInput | null,
-  x?: ModelFloatInput | null,
-  y?: ModelFloatInput | null,
-  and?: Array< ModelPositionFilterInput | null > | null,
-  or?: Array< ModelPositionFilterInput | null > | null,
-  not?: ModelPositionFilterInput | null,
-};
-
 export type ModelPlayerFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
@@ -226,16 +217,6 @@ export type ModelPlayerFilterInput = {
   and?: Array< ModelPlayerFilterInput | null > | null,
   or?: Array< ModelPlayerFilterInput | null > | null,
   not?: ModelPlayerFilterInput | null,
-};
-
-export type ModelShareLinkFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  positions?: ModelStringInput | null,
-  createdBy?: ModelStringInput | null,
-  and?: Array< ModelShareLinkFilterInput | null > | null,
-  or?: Array< ModelShareLinkFilterInput | null > | null,
-  not?: ModelShareLinkFilterInput | null,
 };
 
 export type CreateLayoutMutationVariables = {
@@ -467,6 +448,12 @@ export type GetLayoutQuery = {
     positions:  {
       __typename: "ModelPositionConnection",
       nextToken: string | null,
+      items:  Array< {
+        __typename: "Position",
+        id: string,
+        x: number,
+        y: number,
+      } | null > | null,
     } | null,
   } | null,
 };
@@ -485,44 +472,16 @@ export type ListLayoutsQuery = {
       id: string,
       name: string,
       createdAt: string | null,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type GetPositionQueryVariables = {
-  id: string,
-};
-
-export type GetPositionQuery = {
-  getPosition:  {
-    __typename: "Position",
-    id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
-  } | null,
-};
-
-export type ListPositionsQueryVariables = {
-  filter?: ModelPositionFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListPositionsQuery = {
-  listPositions:  {
-    __typename: "ModelPositionConnection",
-    items:  Array< {
-      __typename: "Position",
-      id: string,
-      x: number,
-      y: number,
+      positions:  {
+        __typename: "ModelPositionConnection",
+        nextToken: string | null,
+        items:  Array< {
+          __typename: "Position",
+          id: string,
+          x: number,
+          y: number,
+        } | null > | null,
+      } | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -581,26 +540,6 @@ export type GetShareLinkQuery = {
     name: string,
     positions: string,
     createdBy: string | null,
-  } | null,
-};
-
-export type ListShareLinksQueryVariables = {
-  filter?: ModelShareLinkFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListShareLinksQuery = {
-  listShareLinks:  {
-    __typename: "ModelShareLinkConnection",
-    items:  Array< {
-      __typename: "ShareLink",
-      id: string,
-      name: string,
-      positions: string,
-      createdBy: string | null,
-    } | null > | null,
-    nextToken: string | null,
   } | null,
 };
 

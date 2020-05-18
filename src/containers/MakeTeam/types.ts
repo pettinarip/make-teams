@@ -19,3 +19,9 @@ export interface IPlayer {
   age?: number;
   createdAt?: string;
 }
+
+export interface IShareTeam {
+  id: number;
+  name: string;
+  positions: any;
+}

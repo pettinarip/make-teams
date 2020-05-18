@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Grid, Button, Segment, Rail, Label } from "semantic-ui-react";
+import { Grid, Segment, Rail } from "semantic-ui-react";
 import produce from "immer";
 
 import Field from "../../components/Field";
@@ -7,6 +7,7 @@ import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
 
 import { IPlayer, ILayout, IPosition } from "./types";
+import ShareTeam from "../../components/ShareTeam";
 
 export interface IProps {}
 
@@ -105,13 +106,7 @@ export default function MakeTeam(__props: IProps) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign="center">
-          <Button positive disabled>
-            Share your team!
-          </Button>
-          <br />
-          <Label basic pointing>
-            Coming soon
-          </Label>
+          <ShareTeam positions={positions} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

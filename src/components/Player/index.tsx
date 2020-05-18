@@ -3,7 +3,7 @@ import { Label } from "semantic-ui-react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import ItemTypes from "../Position/ItemTypes";
+import ItemTypes from "../PositionDnD/ItemTypes";
 import playerImg from "../../images/christian.jpg";
 
 export interface IProps {

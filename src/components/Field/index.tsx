@@ -3,9 +3,11 @@ import styled from "@emotion/styled";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 
+import PositionDnD from "../PositionDnD";
 import Position from "../Position";
 
 export interface IProps {
+  readonly?: boolean;
   positions: Array<IPosition>;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
@@ -16,14 +18,18 @@ export interface IProps {
 export default function Field(props: IProps) {
   return (
     <FieldWrapper data-testid="field">
-      {props.positions.map((position, index) => (
-        <Position
-          key={index}
-          index={index}
-          position={position}
-          onPositionDropInPosition={props.onPositionDropInPosition}
-        />
-      ))}
+      {props.positions.map((position, index) =>
+        props.readonly ? (
+          <Position position={position} />
+        ) : (
+          <PositionDnD
+            key={index}
+            index={index}
+            position={position}
+            onPositionDropInPosition={props.onPositionDropInPosition}
+          />
+        )
+      )}
     </FieldWrapper>
   );
 }
