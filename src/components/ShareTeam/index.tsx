@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { Button, Input } from "semantic-ui-react";
+import React, { useState, useCallback } from "react";
+import { Button, Input, Popup, Form } from "semantic-ui-react";
+import copy from "copy-to-clipboard";
+import debounce from "lodash.debounce";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import useCreateShareTeam from "../../graphql/mutations/useCreateShareTeam";
@@ -10,6 +12,7 @@ interface IProps {
 
 export default function ShareTeam({ positions }: IProps) {
   const [link, setLink] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
   const [createShareTeam, { status }] = useCreateShareTeam();
 
   async function handleClick() {
@@ -21,18 +24,43 @@ export default function ShareTeam({ positions }: IProps) {
     }
   }
 
+  const clearCopiedTooltip = useCallback(
+    debounce(() => {
+      setIsCopied(false);
+    }, 2500),
+    []
+  );
+  function handleCopyClick() {
+    copy(link);
+
+    setIsCopied(true);
+    clearCopiedTooltip();
+  }
+
   return (
-    <>
-      <Button positive onClick={handleClick} loading={status === "loading"}>
-        Share your team!
-      </Button>
-      <Input
-        action={{
-          icon: "copy",
-        }}
-        defaultValue={link}
-        readOnly
-      />
-    </>
+    <Form>
+      <Form.Field inline>
+        <Button positive onClick={handleClick} loading={status === "loading"}>
+          Share your team!
+        </Button>
+      </Form.Field>
+      <Form.Field inline>
+        <Popup
+          open={isCopied}
+          position="right center"
+          content="Copied!"
+          trigger={
+            <Input
+              action={{
+                icon: "copy",
+                onClick: handleCopyClick,
+              }}
+              defaultValue={link}
+              readOnly
+            />
+          }
+        />
+      </Form.Field>
+    </Form>
   );
 }
