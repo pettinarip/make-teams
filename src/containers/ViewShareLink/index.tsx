@@ -9,12 +9,13 @@ import Field from "../../components/Field";
 interface IProps extends RouteComponentProps<{ shareId: string }> {}
 
 export default function ViewShareLink(props: IProps) {
-  const { data: shareTeam } = useGetShareTeam(props.shareId);
+  const { data: shareTeam, isFetching } = useGetShareTeam(props.shareId);
 
   return (
     <Wrapper>
       <Segment>
         <Field
+          loading={isFetching}
           readonly
           positions={shareTeam ? shareTeam.positions : []}
           onPositionDropInPosition={() => {}}

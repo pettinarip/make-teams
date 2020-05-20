@@ -5,12 +5,14 @@ import { IPosition } from "../../containers/MakeTeam/types";
 
 import PositionDnD from "../PositionDnD";
 import Position from "../Position";
+import { Loader, Dimmer } from "semantic-ui-react";
 
 export const ID_ATTR = "field";
 
 export interface IProps {
   readonly?: boolean;
   showNames?: boolean;
+  loading?: boolean;
   positions: Array<IPosition>;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
@@ -21,6 +23,11 @@ export interface IProps {
 export default function Field(props: IProps) {
   return (
     <FieldWrapper id={ID_ATTR} data-testid={ID_ATTR}>
+      {props.loading && (
+        <Dimmer active inverted>
+          <Loader inverted content="Loading" />
+        </Dimmer>
+      )}
       <Positions>
         {props.positions.map((position, index) => {
           const commonProps = {
