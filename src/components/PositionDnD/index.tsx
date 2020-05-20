@@ -19,6 +19,7 @@ export default function PositionDnD({
   index,
   position,
   onPositionDropInPosition,
+  ...restProps
 }: IProps) {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.POSITION,
@@ -47,6 +48,7 @@ export default function PositionDnD({
       ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
       position={position}
       isActive={isActive}
+      {...restProps}
     />
   );
 }

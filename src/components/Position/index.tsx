@@ -10,9 +10,15 @@ import playerImg from "../../images/christian.jpg";
 export interface IProps {
   position: IPosition;
   isActive?: boolean;
+  showName?: boolean;
 }
 
-function Position({ position, isActive }: IProps, ref: Ref<HTMLDivElement>) {
+function Position(
+  { position, isActive, showName }: IProps,
+  ref: Ref<HTMLDivElement>
+) {
+  const player = position.player;
+
   return (
     <Wrapper ref={ref} x={position.x} y={position.y} data-testid="position">
       <Img isActive={!!isActive}>
@@ -28,10 +34,13 @@ function Position({ position, isActive }: IProps, ref: Ref<HTMLDivElement>) {
           ""
         )}
       </Img>
-      {position.player && (
+      {player && (
         <Label color="teal" floating>
-          {position.player.number}
+          {player.number}
         </Label>
+      )}
+      {player && showName && (
+        <Name>{`${player.lastName}, ${player.firstName}`}</Name>
       )}
     </Wrapper>
   );
@@ -41,7 +50,6 @@ const Wrapper = styled.div<{ x: number; y: number }>(
   {
     position: "absolute",
     textAlign: "center",
-    lineHeight: "40px",
     marginLeft: -20,
   },
   (props) => ({
@@ -61,5 +69,15 @@ const Img = styled.div<{ isActive: boolean }>(
     backgroundColor: props.isActive ? "lightgray" : "white",
   })
 );
+
+const Name = styled.span`
+  position: absolute;
+  left: -20px;
+  width: 80px;
+  font-size: 0.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
 
 export default forwardRef(Position);

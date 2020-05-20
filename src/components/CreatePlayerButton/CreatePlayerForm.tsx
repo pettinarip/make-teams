@@ -92,7 +92,7 @@ export default function CreatePlayerForm(props: IProps) {
               required
               error={!!errors.number}
             />
-            <Form.Group inline name="position">
+            <Form.Group inline>
               <label>Position</label>
               <Form.Radio
                 id="position-gl"

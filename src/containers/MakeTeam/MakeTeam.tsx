@@ -14,6 +14,7 @@ export interface IProps {}
 export default function MakeTeam(__props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
   const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
+  const [showNames, setShowNames] = useState(false);
 
   function handlePlayerDropInPosition(player: IPlayer, positionIndex: number) {
     assignPlayerToPosition(player, positionIndex);
@@ -75,12 +76,17 @@ export default function MakeTeam(__props: IProps) {
     [setPositions, setUsedPlayersIds]
   );
 
+  const handleShowNamesChange = useCallback(() => {
+    setShowNames((showNames) => !showNames);
+  }, []);
+
   return (
     <Grid centered columns={3}>
       <Grid.Row>
         <Grid.Column>
           <Segment>
             <Field
+              showNames={showNames}
               positions={positions}
               onPositionDropInPosition={handlePositionDropInPosition}
             />
@@ -106,7 +112,10 @@ export default function MakeTeam(__props: IProps) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign="center">
-          <ShareTeam positions={positions} />
+          <ShareTeam
+            positions={positions}
+            onShowNamesChange={handleShowNamesChange}
+          />
         </Grid.Column>
       </Grid.Row>
     </Grid>
