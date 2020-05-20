@@ -7,10 +7,15 @@ import ExportForm from "./ExportForm";
 
 interface IProps {
   positions: Array<IPosition>;
+  showNames: boolean;
   onShowNamesChange: () => void;
 }
 
-export default function ShareTeam({ positions, onShowNamesChange }: IProps) {
+export default function ShareTeam({
+  positions,
+  showNames,
+  onShowNamesChange,
+}: IProps) {
   const [link, setLink] = useState("");
 
   const [createShareTeam, { status }] = useCreateShareTeam();
@@ -37,6 +42,7 @@ export default function ShareTeam({ positions, onShowNamesChange }: IProps) {
           <Form.Field>
             <ExportForm
               shareLink={link}
+              showNames={showNames}
               onShowNamesChange={onShowNamesChange}
             />
           </Form.Field>

@@ -12,6 +12,7 @@ export interface IFormValues {
 
 export interface IProps {
   shareLink: string;
+  showNames: boolean;
   onShowNamesChange: () => void;
 }
 
@@ -87,6 +88,7 @@ export default function ExportForm(props: IProps) {
           <Form.Field>
             <Checkbox
               toggle
+              checked={props.showNames}
               label="Show names"
               onChange={props.onShowNamesChange}
             />

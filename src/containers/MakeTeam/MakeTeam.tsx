@@ -113,6 +113,7 @@ export default function MakeTeam(__props: IProps) {
       <Grid.Row>
         <Grid.Column textAlign="center">
           <ShareTeam
+            showNames={showNames}
             positions={positions}
             onShowNamesChange={handleShowNamesChange}
           />
