@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Segment, Grid, Divider, Form } from "semantic-ui-react";
+import { Segment, Grid, Form } from "semantic-ui-react";
 import { RouteComponentProps } from "@reach/router";
 import styled from "@emotion/styled";
 
