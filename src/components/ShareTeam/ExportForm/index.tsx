@@ -1,4 +1,4 @@
-import React, { useCallback, useState, MouseEvent } from "react";
+import React, { useCallback, useState, MouseEvent, useEffect } from "react";
 import { Formik, FormikProps, FormikValues } from "formik";
 import { Form, Button, Popup, Input, Checkbox } from "semantic-ui-react";
 import copy from "copy-to-clipboard";
@@ -17,8 +17,12 @@ export interface IProps {
 }
 
 export default function ExportForm(props: IProps) {
-  const [link, setLink] = useState(props.shareLink);
+  const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    setLink(props.shareLink);
+  }, [props.shareLink]);
 
   const initialState = {
     size: "md",
@@ -88,8 +92,8 @@ export default function ExportForm(props: IProps) {
           <Form.Field>
             <Checkbox
               toggle
-              checked={props.showNames}
               label="Show names"
+              checked={props.showNames}
               onChange={props.onShowNamesChange}
             />
           </Form.Field>
@@ -105,7 +109,7 @@ export default function ExportForm(props: IProps) {
                     title: "Copy",
                     onClick: handleCopyClick,
                   }}
-                  defaultValue={link}
+                  value={link}
                   readOnly
                 />
               }
