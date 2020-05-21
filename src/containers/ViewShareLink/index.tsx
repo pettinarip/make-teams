@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
-import { Segment, Grid, Form } from "semantic-ui-react";
+import { Segment, Grid } from "semantic-ui-react";
 import { RouteComponentProps } from "@reach/router";
 import styled from "@emotion/styled";
 
 import useGetShareTeam from "../../graphql/queries/useGetShareTeam";
-import ExportForm from "../../components/ShareTeam/ExportForm";
+import Controls from "../../components/Controls";
 import Field from "../../components/Field";
 
 interface IProps extends RouteComponentProps<{ shareId: string }> {}
@@ -35,13 +35,10 @@ export default function ViewShareLink(props: IProps) {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column textAlign="center">
-            <Form.Field>
-              <ExportForm
-                shareLink={""}
-                showNames={showNames}
-                onShowNamesChange={handleShowNamesChange}
-              />
-            </Form.Field>
+            <Controls
+              showNames={showNames}
+              onShowNamesChange={handleShowNamesChange}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>

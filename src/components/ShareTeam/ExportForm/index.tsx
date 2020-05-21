@@ -1,6 +1,6 @@
 import React, { useCallback, useState, MouseEvent, useEffect } from "react";
 import { Formik, FormikProps, FormikValues } from "formik";
-import { Form, Button, Popup, Input, Checkbox } from "semantic-ui-react";
+import { Form, Button, Popup, Input } from "semantic-ui-react";
 import copy from "copy-to-clipboard";
 import debounce from "lodash.debounce";
 
@@ -12,8 +12,6 @@ export interface IFormValues {
 
 export interface IProps {
   shareLink: string;
-  showNames: boolean;
-  onShowNamesChange: () => void;
 }
 
 export default function ExportForm(props: IProps) {
@@ -89,14 +87,6 @@ export default function ExportForm(props: IProps) {
               onChange={handleChange}
             />
           </Form.Group> */}
-          <Form.Field>
-            <Checkbox
-              toggle
-              label="Show names"
-              checked={props.showNames}
-              onChange={props.onShowNamesChange}
-            />
-          </Form.Field>
           <Form.Field>
             <Popup
               open={isCopied}

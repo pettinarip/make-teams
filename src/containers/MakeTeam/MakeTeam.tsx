@@ -8,6 +8,7 @@ import Roster from "../Roster";
 
 import { IPlayer, ILayout, IPosition } from "./types";
 import ShareTeam from "../../components/ShareTeam";
+import Controls from "../../components/Controls";
 
 export interface IProps {}
 
@@ -112,11 +113,15 @@ export default function MakeTeam(__props: IProps) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign="center">
-          <ShareTeam
+          <Controls
             showNames={showNames}
-            positions={positions}
             onShowNamesChange={handleShowNamesChange}
           />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column textAlign="center">
+          <ShareTeam positions={positions} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
