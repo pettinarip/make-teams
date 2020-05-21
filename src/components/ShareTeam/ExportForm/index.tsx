@@ -6,8 +6,13 @@ import debounce from "lodash.debounce";
 
 import exportFieldToImage from "./exportFieldToImage";
 
+enum TSizes {
+  SM = "sm",
+  MD = "md",
+  LG = "lg",
+}
 export interface IFormValues {
-  size?: "sm" | "md" | "lg";
+  size?: TSizes;
 }
 
 export interface IProps {
@@ -21,10 +26,6 @@ export default function ExportForm(props: IProps) {
   useEffect(() => {
     setLink(props.shareLink);
   }, [props.shareLink]);
-
-  const initialState = {
-    size: "md",
-  };
 
   const clearCopiedTooltip = useCallback(
     debounce(() => {
@@ -48,18 +49,13 @@ export default function ExportForm(props: IProps) {
 
   return (
     <Formik<FormikValues>
-      initialValues={initialState}
+      initialValues={{ size: TSizes.MD }}
       onSubmit={handleSubmit}
       validate={() => {}}
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({
-        values,
-        errors,
-        handleSubmit,
-        handleChange,
-      }: FormikProps<IFormValues>) => (
+      {({ handleSubmit }: FormikProps<IFormValues>) => (
         <Form onSubmit={handleSubmit}>
           {/* <Form.Group widths="equal">
             <Form.Radio
