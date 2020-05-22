@@ -23,9 +23,7 @@ test("Roster", async () => {
     </DndProvider>
   );
 
-  await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i), {
-    timeout: 4000,
-  });
+  await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
   // TODO
 });

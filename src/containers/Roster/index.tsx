@@ -69,7 +69,7 @@ export default function Roster({
       </List>
       <Divider />
       {isFetching ? (
-        <Loader active inline="centered" />
+        <Loader active inline="centered" data-testid="loading" />
       ) : (
         <div>
           <CreatePlayerButton>New</CreatePlayerButton>

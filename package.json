@@ -7,9 +7,9 @@
     "@emotion/styled": "^10.0.27",
     "@reach/router": "^1.3.3",
     "@seznam/compose-react-refs": "^1.0.4",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@testing-library/jest-dom": "^5.8.0",
+    "@testing-library/react": "^10.0.4",
+    "@testing-library/user-event": "^10.3.4",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.34",
@@ -35,7 +35,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -58,6 +58,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/reach__router": "^1.3.1",
     "@types/yup": "^0.26.37",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "msw": "^0.15.5",
     "prettier": "^2.0.5"
   }

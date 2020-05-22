@@ -1,10 +1,12 @@
 import React from "react";
+
 import {
   render,
   screen,
-  waitForElementToBeRemoved,
+  waitFor,
   fireEvent,
   dragAndDrop,
+  waitForElementToBeRemoved,
 } from "../../test/appTestUtils";
 
 import MakeTeam from "../MakeTeam";
@@ -14,12 +16,15 @@ describe("MakeTeam", () => {
     render(<MakeTeam />);
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+    await waitFor(() => {
+      expect(screen.queryAllByTestId("position").length).toEqual(11);
+    });
 
     // First layout in the list is selected by default
     const layouts = screen.getAllByTestId("layout");
     expect(layouts[0].getElementsByTagName("input")[0].checked).toBeTruthy();
 
-    // Display the correct positions on the Field
+    // // Display the correct positions on the Field
     const positions = screen.getAllByTestId("position");
     expect(positions.length).toEqual(11);
   });
