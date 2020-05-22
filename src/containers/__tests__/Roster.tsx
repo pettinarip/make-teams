@@ -1,9 +1,11 @@
 import React from "react";
 import { DndProvider } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
+
 import {
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from "../../test/appTestUtils";
 
@@ -23,7 +25,11 @@ test("Roster", async () => {
     </DndProvider>
   );
 
+  // FIXME: don't like these two waits...find a way to use only one
   await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+  await waitFor(() => {
+    expect(screen.getByTestId("roster-buttons")).toBeInTheDocument();
+  });
 
   // TODO
 });

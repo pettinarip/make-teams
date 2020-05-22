@@ -68,10 +68,10 @@ export default function Roster({
           ))}
       </List>
       <Divider />
-      {isFetching ? (
+      {isLoading || isFetching ? (
         <Loader active inline="centered" data-testid="loading" />
       ) : (
-        <div>
+        <div data-testid="roster-buttons">
           <CreatePlayerButton>New</CreatePlayerButton>
           <Button onClick={onResetClick}>Reset</Button>
         </div>

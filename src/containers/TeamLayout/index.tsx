@@ -20,6 +20,8 @@ export default function TeamLayout({ onChange }: IProps) {
   const { status, layouts } = useLayouts(user);
   const [selected, setSelected] = useState<ILayout>();
 
+  // TODO: refactor, move all the layouts fetch to an upper level and avoid
+  // doing this dirty stuff
   useEffect(() => {
     if (selected) {
       onChange(selected);
@@ -42,7 +44,7 @@ export default function TeamLayout({ onChange }: IProps) {
   return (
     <>
       <Header as="h2">Layout</Header>
-      {isLoading || status === "loading" ? (
+      {isLoading || status === "loading" || (layouts.length && !selected) ? (
         <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
             <Placeholder.Line />
