@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form, Divider } from "semantic-ui-react";
 
-import { IPosition } from "../../containers/MakeTeam/types";
 import useCreateShareTeam from "../../graphql/mutations/useCreateShareTeam";
+import { IPosition } from "../MakeTeam/types";
 import ExportForm from "./ExportForm";
 
 interface IProps {
@@ -16,6 +16,7 @@ export default function ShareTeam({ positions }: IProps) {
 
   async function handleClick() {
     try {
+      // TODO: add a name to the share team
       const { data } = await createShareTeam({ name: "test", positions });
       setLink(`${window.location.origin}/share/${data.createShareLink.id}`);
     } catch (e) {
@@ -26,7 +27,12 @@ export default function ShareTeam({ positions }: IProps) {
   return (
     <Form>
       <Form.Field>
-        <Button positive onClick={handleClick} loading={status === "loading"}>
+        <Button
+          positive
+          onClick={handleClick}
+          loading={status === "loading"}
+          data-testid="share-team-btn"
+        >
           Share your team!
         </Button>
       </Form.Field>
@@ -34,7 +40,7 @@ export default function ShareTeam({ positions }: IProps) {
         <>
           <Divider />
           <Form.Field>
-            <ExportForm shareLink={link} />
+            <ExportForm shareLink={link} data-testid="share-team-form" />
           </Form.Field>
           <Divider />
         </>

@@ -5,9 +5,9 @@ import produce from "immer";
 import Field from "../../components/Field";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
+import ShareTeam from "../ShareTeam";
 
 import { IPlayer, ILayout, IPosition } from "./types";
-import ShareTeam from "../../components/ShareTeam";
 import Controls from "../../components/Controls";
 
 export interface IProps {}

@@ -1,6 +1,6 @@
 import domtoimage from "dom-to-image";
 
-import { ID_ATTR as FIELD_ID_ATTR } from "../../Field";
+import { ID_ATTR as FIELD_ID_ATTR } from "../../../components/Field";
 
 enum EImageExt {
   PNG = "png",

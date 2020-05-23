@@ -11,4 +11,10 @@ export default [
   graphql.query("ListPlayers", (req, res, ctx) => {
     return res(ctx.data(playersFixture));
   }),
+
+  graphql.mutation("CreateShareLink", (req, res, ctx) => {
+    const randomId = Math.floor(Math.random() * 100);
+    const shareLink = `http://test.com/share/test-id-${randomId}`;
+    return res(ctx.data(shareLink));
+  }),
 ];

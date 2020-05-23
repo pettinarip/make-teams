@@ -12,6 +12,19 @@ import {
 import MakeTeam from "../MakeTeam";
 
 describe("MakeTeam", () => {
+  test("renders the main components", async () => {
+    const { debug } = render(<MakeTeam />);
+
+    await waitFor(() => {
+      expect(screen.queryAllByTestId("position").length).toEqual(11);
+    });
+
+    screen.getByText(/layout/i);
+    screen.getByText(/roster/i);
+    screen.getByTestId("field");
+    screen.getByTestId("share-team-btn");
+  });
+
   test("on first load, renders the first layout by default", async () => {
     render(<MakeTeam />);
 

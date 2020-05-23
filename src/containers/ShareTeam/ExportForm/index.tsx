@@ -19,13 +19,16 @@ export interface IProps {
   shareLink: string;
 }
 
-export default function ExportForm(props: IProps) {
+export default function ExportForm({ shareLink, ...restProps }: IProps) {
   const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 
+  console.log("asdnasjndasd====================");
+  console.log(restProps);
+
   useEffect(() => {
-    setLink(props.shareLink);
-  }, [props.shareLink]);
+    setLink(shareLink);
+  }, [shareLink]);
 
   const clearCopiedTooltip = useCallback(
     debounce(() => {
@@ -56,7 +59,7 @@ export default function ExportForm(props: IProps) {
       validateOnBlur={false}
     >
       {({ handleSubmit }: FormikProps<IFormValues>) => (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} {...restProps}>
           {/* <Form.Group widths="equal">
             <Form.Radio
               id="size-sm"
@@ -97,6 +100,7 @@ export default function ExportForm(props: IProps) {
                   }}
                   value={link}
                   readOnly
+                  data-testid="share-team-input"
                 />
               }
             />
