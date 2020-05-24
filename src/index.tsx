@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Amplify from "aws-amplify";
 import { Router } from "@reach/router";
 import { ReactQueryConfigProvider } from "react-query";
-import Amplify from "aws-amplify";
+import { ToastProvider } from "react-toast-notifications";
 
 import ViewShareLink from "./containers/ViewShareLink";
 import MakeTeam from "./containers/MakeTeam";
@@ -29,14 +30,16 @@ const queryConfig = {
 
 ReactDOM.render(
   <ReactQueryConfigProvider config={queryConfig}>
-    <Layout>
-      <Router>
-        <Login path="/login" />
-        <SignUp path="/sign-up" />
-        <ViewShareLink path="/share/:shareId" />
-        <ProtectedRoute path="/" component={MakeTeam} />
-      </Router>
-    </Layout>
+    <ToastProvider>
+      <Layout>
+        <Router>
+          <Login path="/login" />
+          <SignUp path="/sign-up" />
+          <ViewShareLink path="/share/:shareId" />
+          <ProtectedRoute path="/" component={MakeTeam} />
+        </Router>
+      </Layout>
+    </ToastProvider>
   </ReactQueryConfigProvider>,
   document.getElementById("root")
 );

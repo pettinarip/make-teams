@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Divider } from "semantic-ui-react";
+import { useToasts } from "react-toast-notifications";
 
 import useCreateShareTeam from "../../graphql/mutations/useCreateShareTeam";
 import { IPosition } from "../MakeTeam/types";
@@ -11,6 +12,7 @@ interface IProps {
 
 export default function ShareTeam({ positions }: IProps) {
   const [link, setLink] = useState("");
+  const { addToast } = useToasts();
 
   const [createShareTeam, { status }] = useCreateShareTeam();
 
@@ -19,8 +21,14 @@ export default function ShareTeam({ positions }: IProps) {
       // TODO: add a name to the share team
       const { data } = await createShareTeam({ name: "test", positions });
       setLink(`${window.location.origin}/share/${data.createShareLink.id}`);
-    } catch (e) {
-      // TODO: display error
+    } catch (error) {
+      addToast(
+        "There was an error while trying to share your team. Please, try again.",
+        {
+          appearance: "error",
+          autoDismiss: true,
+        }
+      );
     }
   }
 
