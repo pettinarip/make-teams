@@ -23,9 +23,6 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
   const [link, setLink] = useState("");
   const [isCopied, setIsCopied] = useState(false);
 
-  console.log("asdnasjndasd====================");
-  console.log(restProps);
-
   useEffect(() => {
     setLink(shareLink);
   }, [shareLink]);

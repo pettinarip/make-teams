@@ -25,7 +25,7 @@ export default function ShareTeam({ positions }: IProps) {
   }
 
   return (
-    <Form>
+    <div>
       <Form.Field>
         <Button
           positive
@@ -45,6 +45,6 @@ export default function ShareTeam({ positions }: IProps) {
           <Divider />
         </>
       )}
-    </Form>
+    </div>
   );
 }
