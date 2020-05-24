@@ -335,4 +335,56 @@ describe("MakeTeam", () => {
       ]
     `);
   });
+
+  test("when show names toggle is on, players names dispalys", async () => {
+    render(<MakeTeam />);
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+
+    // Assign totti player to the first position
+    const totti = screen.getByText(/totti/i);
+    fireEvent.click(totti);
+
+    const positions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(positions).toMatchInlineSnapshot(`
+      Array [
+        "10",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+
+    // Turn show names on
+    const showNamesToggle = screen.getByLabelText(/show names/i);
+    fireEvent.click(showNamesToggle);
+
+    const newPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(newPositions).toMatchInlineSnapshot(`
+      Array [
+        "10Totti, Francesco",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+  });
 });

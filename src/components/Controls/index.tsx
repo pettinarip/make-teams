@@ -12,6 +12,7 @@ export default function Controls(props: IProps) {
       <Form.Field>
         <Checkbox
           toggle
+          id="show-names"
           label="Show names"
           checked={props.showNames}
           onChange={props.onShowNamesChange}
