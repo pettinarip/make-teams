@@ -1,6 +1,7 @@
 import React from "react";
 import * as rtl from "@testing-library/react";
 import { ReactQueryConfigProvider } from "react-query";
+import { ToastProvider } from "react-toast-notifications";
 
 const queryConfig = {
   retry: 0,
@@ -12,7 +13,7 @@ function render(ui: any, { ...renderOptions }: any = {}): any {
   function Wrapper({ children }: any) {
     return (
       <ReactQueryConfigProvider config={queryConfig}>
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </ReactQueryConfigProvider>
     );
   }

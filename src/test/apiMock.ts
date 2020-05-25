@@ -24,7 +24,9 @@ beforeEach(() => {
 
     const relevantRequestHandler = handlers.find((requestHandler) => {
       // @ts-ignore
-      return requestHandler.predicate(req);
+      const parsed = requestHandler.parse(req);
+      // @ts-ignore
+      return requestHandler.predicate(req, parsed);
     });
 
     if (!relevantRequestHandler) {

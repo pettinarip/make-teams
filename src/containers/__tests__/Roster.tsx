@@ -1,6 +1,6 @@
 import React from "react";
 import { DndProvider } from "react-dnd";
-import Backend from "react-dnd-html5-backend";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import {
   render,
@@ -15,7 +15,7 @@ const noop = () => {};
 
 test("Roster", async () => {
   render(
-    <DndProvider backend={Backend}>
+    <DndProvider backend={HTML5Backend}>
       <Roster
         onPlayerClick={noop}
         onPlayerDropInPosition={noop}
