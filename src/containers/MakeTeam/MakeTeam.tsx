@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Grid, Segment, Rail } from "semantic-ui-react";
-import produce from "immer";
 
 import Field from "../../components/Field";
+import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
 import ShareTeam from "../ShareTeam";
 
 import { IPlayer, ILayout, IPosition } from "./types";
-import Controls from "../../components/Controls";
+import useAssignments from "./useAssignments";
 
 export interface IProps {}
 
@@ -17,65 +17,45 @@ export default function MakeTeam(__props: IProps) {
   const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
   const [showNames, setShowNames] = useState(false);
 
-  function handlePlayerDropInPosition(player: IPlayer, positionIndex: number) {
-    assignPlayerToPosition(player, positionIndex);
-  }
+  const { assignments, assign, toggle, reset } = useAssignments(positions);
 
-  function handlePlayerClick(player: IPlayer) {
-    const firstPositionAvailable = positions.findIndex((p) => !p.player);
-    if (firstPositionAvailable > -1) {
-      assignPlayerToPosition(player, firstPositionAvailable);
-    }
-  }
-
-  function handlePositionDropInPosition(
-    positionDraggedIndex: number,
-    positionDroppedIndex: number
-  ) {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        const playerDropped = positions[positionDroppedIndex].player;
-        const playerDragged = positions[positionDraggedIndex].player;
-        positions[positionDroppedIndex].player = playerDragged;
-        positions[positionDraggedIndex].player = playerDropped;
-      })
+  useEffect(() => {
+    setUsedPlayersIds(
+      assignments.map((a) => a.player?.id).filter((id) => !!id) as number[]
     );
-  }
-
-  function handleOnClear() {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        positions.forEach((position) => {
-          delete position.player;
-        });
-      })
-    );
-    setUsedPlayersIds([]);
-  }
-
-  function assignPlayerToPosition(player: IPlayer, positionIndex: number) {
-    const previousPlayer = positions[positionIndex];
-
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        positions[positionIndex].player = player;
-      })
-    );
-
-    const newUsedPlayersIds = usedPlayersIds.filter(
-      (id) => id !== previousPlayer.player?.id
-    );
-
-    setUsedPlayersIds([...newUsedPlayersIds, player.id]);
-  }
+  }, [assignments]);
 
   const handleLayoutChange = useCallback(
     (layout: ILayout) => {
       setPositions(layout.positions);
-      setUsedPlayersIds([]);
     },
-    [setPositions, setUsedPlayersIds]
+    [setPositions]
   );
+
+  const handlePlayerDropInPosition = useCallback(
+    (player: IPlayer, positionIndex: number) => {
+      assign(player, positionIndex);
+    },
+    [assign]
+  );
+
+  const handlePlayerClick = useCallback(
+    (player: IPlayer) => {
+      assign(player);
+    },
+    [assign]
+  );
+
+  const handlePositionDropInPosition = useCallback(
+    (draggedIndex: number, droppedIndex: number) => {
+      toggle(draggedIndex, droppedIndex);
+    },
+    [toggle]
+  );
+
+  const handleOnClear = useCallback(() => {
+    reset();
+  }, [reset]);
 
   const handleShowNamesChange = useCallback(() => {
     setShowNames((showNames) => !showNames);
@@ -88,7 +68,7 @@ export default function MakeTeam(__props: IProps) {
           <Segment>
             <Field
               showNames={showNames}
-              positions={positions}
+              positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
             />
 
@@ -121,7 +101,7 @@ export default function MakeTeam(__props: IProps) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign="center">
-          <ShareTeam positions={positions} />
+          <ShareTeam positions={assignments} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
