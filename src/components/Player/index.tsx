@@ -1,6 +1,7 @@
 import React from "react";
-import { Label } from "semantic-ui-react";
+import { Label as LabelSem } from "semantic-ui-react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
+import styled from "@emotion/styled";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
 import ItemTypes from "../PositionDnD/ItemTypes";
@@ -34,9 +35,20 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
     <div ref={drag}>
       <Label as="a" onClick={handleOnClick} image data-testid="player">
         <img src={playerImg} alt="" />
-        {`${player.lastName}, ${player.firstName}`}
-        <Label.Detail>{player.number}</Label.Detail>
+        <Name>{`${player.lastName}, ${player.firstName}`}</Name>
+        <LabelSem.Detail>{player.number}</LabelSem.Detail>
       </Label>
     </div>
   );
 }
+
+const Label = styled(LabelSem)`
+  display: flex !important;
+`;
+
+const Name = styled.span`
+  flex: 1;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
