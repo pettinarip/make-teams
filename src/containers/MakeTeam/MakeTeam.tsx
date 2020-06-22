@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Grid, Segment, Rail } from "semantic-ui-react";
 
-import Field from "../../components/Field";
+import FieldStatic from "../../components/FieldStatic";
 import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
@@ -31,6 +31,21 @@ export default function MakeTeam(__props: IProps) {
     },
     [setPositions]
   );
+
+  const handleLayoutCreate = useCallback(() => {
+    // TODO
+    console.log("create");
+  }, []);
+
+  const handleLayoutSave = useCallback((name: string) => {
+    // TODO
+    console.log("save");
+  }, []);
+
+  const handleLayoutCancel = useCallback(() => {
+    // TODO
+    console.log("cancel");
+  }, []);
 
   const handlePlayerDropInPosition = useCallback(
     (player: IPlayer, positionIndex: number) => {
@@ -66,7 +81,7 @@ export default function MakeTeam(__props: IProps) {
       <Grid.Row>
         <Grid.Column>
           <Segment>
-            <Field
+            <FieldStatic
               showNames={showNames}
               positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
@@ -74,7 +89,12 @@ export default function MakeTeam(__props: IProps) {
 
             <Rail position="left">
               <Segment>
-                <TeamLayout onChange={handleLayoutChange} />
+                <TeamLayout
+                  onChange={handleLayoutChange}
+                  onCreate={handleLayoutCreate}
+                  onSave={handleLayoutSave}
+                  onCancel={handleLayoutCancel}
+                />
               </Segment>
             </Rail>
 

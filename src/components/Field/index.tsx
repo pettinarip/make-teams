@@ -1,23 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
-
-import { IPosition } from "../../containers/MakeTeam/types";
-
-import PositionDnD from "../PositionDnD";
-import Position from "../Position";
 import { Loader, Dimmer } from "semantic-ui-react";
 
 export const ID_ATTR = "field";
 
 export interface IProps {
-  readonly?: boolean;
-  showNames?: boolean;
   loading?: boolean;
-  positions: Array<IPosition>;
-  onPositionDropInPosition: (
-    positionDraggedIndex: number,
-    positionDroppedIndex: number
-  ) => void;
+  children: React.ReactElement;
 }
 
 export default function Field(props: IProps) {
@@ -28,25 +17,7 @@ export default function Field(props: IProps) {
           <Loader inverted content="Loading" />
         </Dimmer>
       )}
-      <Positions>
-        {props.positions.map((position, index) => {
-          const commonProps = {
-            position,
-            showName: props.showNames,
-          };
-
-          return props.readonly ? (
-            <Position {...commonProps} />
-          ) : (
-            <PositionDnD
-              key={index}
-              index={index}
-              onPositionDropInPosition={props.onPositionDropInPosition}
-              {...commonProps}
-            />
-          );
-        })}
-      </Positions>
+      <Positions>{props.children}</Positions>
     </FieldWrapper>
   );
 }

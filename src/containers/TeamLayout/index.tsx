@@ -5,6 +5,8 @@ import {
   CheckboxProps,
   Header,
   Placeholder,
+  Button,
+  Divider,
 } from "semantic-ui-react";
 
 import { ILayout } from "../MakeTeam/types";
@@ -13,12 +15,21 @@ import useAuth from "../../components/ProtectedRoute/useAuth";
 
 export interface IProps {
   onChange: (layout: ILayout) => void;
+  onCreate: () => void;
+  onSave: (name: string) => void;
+  onCancel: () => void;
 }
 
-export default function TeamLayout({ onChange }: IProps) {
+export default function TeamLayout({
+  onChange,
+  onCreate,
+  onSave,
+  onCancel,
+}: IProps) {
   const { user = {}, isLoading } = useAuth();
   const { status, layouts } = useLayouts(user);
   const [selected, setSelected] = useState<ILayout>();
+  const [creating, setCreating] = useState(false);
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
   // doing this dirty stuff
@@ -39,6 +50,16 @@ export default function TeamLayout({ onChange }: IProps) {
     if (layout) {
       setSelected(layout);
     }
+  }
+
+  function handleCreate() {
+    setCreating(true);
+    onCreate();
+  }
+
+  function handleCancel() {
+    setCreating(false);
+    onCancel();
   }
 
   return (
@@ -74,6 +95,21 @@ export default function TeamLayout({ onChange }: IProps) {
           ))}
         </Form>
       )}
+      <Divider />
+      <div data-testid="layout-buttons">
+        {creating ? (
+          <>
+            <Button positive onClick={onSave as any}>
+              Add
+            </Button>
+            <Button onClick={handleCancel}>Cancel</Button>
+          </>
+        ) : (
+          <Button primary onClick={handleCreate}>
+            New
+          </Button>
+        )}
+      </div>
     </>
   );
 }

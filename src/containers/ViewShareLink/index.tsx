@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 
 import useGetShareTeam from "../../graphql/queries/useGetShareTeam";
 import Controls from "../../components/Controls";
-import Field from "../../components/Field";
+import FieldStatic from "../../components/FieldStatic";
 
 interface IProps extends RouteComponentProps<{ shareId: string }> {}
 
@@ -23,7 +23,7 @@ export default function ViewShareLink(props: IProps) {
         <Grid.Row>
           <Grid.Column>
             <Segment>
-              <Field
+              <FieldStatic
                 readonly
                 showNames={showNames}
                 loading={isFetching}
