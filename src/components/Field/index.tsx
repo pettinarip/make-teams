@@ -25,7 +25,7 @@ export default function Field(props: IProps) {
 // The bottom padding is to have a safe space to allocate players names
 const FieldWrapper = styled.div`
   background-color: lightgreen;
-  padding-bottom: 10px;
+  // padding-bottom: 10px;
 `;
 
 const Positions = styled.div`
