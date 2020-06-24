@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, Ref } from "react";
 import styled from "@emotion/styled";
 import { Loader, Dimmer } from "semantic-ui-react";
 
@@ -6,12 +6,12 @@ export const ID_ATTR = "field";
 
 export interface IProps {
   loading?: boolean;
-  children: React.ReactElement;
+  children: React.ReactNode;
 }
 
-export default function Field(props: IProps) {
+function Field(props: IProps, ref: Ref<HTMLDivElement>) {
   return (
-    <FieldWrapper id={ID_ATTR} data-testid={ID_ATTR}>
+    <FieldWrapper id={ID_ATTR} data-testid={ID_ATTR} ref={ref}>
       {props.loading && (
         <Dimmer active inverted>
           <Loader inverted content="Loading" />
@@ -32,3 +32,5 @@ const Positions = styled.div`
   position: relative;
   height: 500px;
 `;
+
+export default forwardRef(Field);

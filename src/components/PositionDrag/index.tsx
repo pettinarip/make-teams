@@ -1,5 +1,5 @@
 import React from "react";
-import { useDrag, DragSourceMonitor } from "react-dnd";
+import { useDrag } from "react-dnd";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import Position from "../Position";
@@ -13,8 +13,7 @@ export interface IProps {
 
 export interface IDragPosition {
   index: number;
-  x: number;
-  y: number;
+  position: IPosition;
   type: string;
 }
 
@@ -25,20 +24,12 @@ export default function PositionDrag({
 }: IProps) {
   const dragPosition: IDragPosition = {
     index,
-    x: position.x,
-    y: position.y,
+    position,
     type: ITEM_TYPE,
   };
-  const [{ isDragging }, drag] = useDrag({
+  const [, drag] = useDrag({
     item: dragPosition,
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
   });
-
-  if (isDragging) {
-    return <div ref={drag} />;
-  }
 
   return <Position ref={drag} position={position} {...restProps} />;
 }
