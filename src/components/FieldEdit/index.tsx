@@ -1,17 +1,26 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useDrop, XYCoord } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
+import produce from "immer";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import PositionDrag, { ITEM_TYPE, IDragPosition } from "../PositionDrag";
 import Field from "../Field";
 
-interface IProps {
-  positions: Array<IPosition>;
-  onPositionChange: (index: number, position: IPosition) => void;
+function initialFormation() {
+  return new Array(11).fill(0).map((__item, index) => ({
+    x: (index % 3) * (100 / 3) + 15,
+    y: Math.floor(index / 3) * 20 + 15,
+  }));
 }
 
-export default function FieldEdit(props: IProps) {
+interface IProps {}
+
+export default function FieldEdit(__props: IProps) {
+  const [newPositions, setNewPositions] = useState<Array<IPosition>>(
+    initialFormation()
+  );
+
   const dropArea = useRef<HTMLDivElement>();
   const [, drop] = useDrop({
     accept: ITEM_TYPE,
@@ -22,14 +31,23 @@ export default function FieldEdit(props: IProps) {
       const x = Math.round(item.position.x + (delta.x / dropWidth) * 100);
       const y = Math.round(item.position.y + (delta.y / dropHeight) * 100);
 
-      props.onPositionChange(item.index, { x, y });
+      updatePositions(item.index, { x, y });
       return undefined;
     },
   });
 
+  const updatePositions = useCallback((index, position) => {
+    setNewPositions(
+      produce((positions: Array<IPosition>) => {
+        positions[index].x = position.x;
+        positions[index].y = position.y;
+      })
+    );
+  }, []);
+
   return (
     <Field ref={composeRefs(drop, dropArea) as (arg: HTMLDivElement) => void}>
-      {props.positions.map((position, index) => (
+      {newPositions.map((position, index) => (
         <PositionDrag key={index} index={index} position={position} />
       ))}
     </Field>

@@ -1,9 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Grid, Segment, Rail } from "semantic-ui-react";
-import produce from "immer";
 
 import FieldStatic from "../../components/FieldStatic";
-import FieldEdit from "../../components/FieldEdit";
 import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
@@ -19,10 +17,6 @@ export default function MakeTeam(__props: IProps) {
   const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
   const [showNames, setShowNames] = useState(false);
 
-  const [newPositions, setNewPositions] = useState<Array<IPosition>>([
-    { x: 15, y: 5 },
-  ]);
-
   const { assignments, assign, toggle, reset } = useAssignments(positions);
 
   useEffect(() => {
@@ -37,21 +31,6 @@ export default function MakeTeam(__props: IProps) {
     },
     [setPositions]
   );
-
-  const handleLayoutCreate = useCallback(() => {
-    // TODO
-    console.log("create");
-  }, []);
-
-  const handleLayoutSave = useCallback((name: string) => {
-    // TODO
-    console.log("save");
-  }, []);
-
-  const handleLayoutCancel = useCallback(() => {
-    // TODO
-    console.log("cancel");
-  }, []);
 
   const handlePlayerDropInPosition = useCallback(
     (player: IPlayer, positionIndex: number) => {
@@ -82,38 +61,20 @@ export default function MakeTeam(__props: IProps) {
     setShowNames((showNames) => !showNames);
   }, []);
 
-  const handlePositionChange = useCallback((index, position) => {
-    setNewPositions(
-      produce((positions: Array<IPosition>) => {
-        positions[index].x = position.x;
-        positions[index].y = position.y;
-      })
-    );
-  }, []);
-
   return (
     <Grid centered columns={3}>
       <Grid.Row>
         <Grid.Column>
           <Segment>
-            {/* <FieldStatic
+            <FieldStatic
               showNames={showNames}
               positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
-            /> */}
-            <FieldEdit
-              positions={newPositions}
-              onPositionChange={handlePositionChange}
             />
 
             <Rail position="left">
               <Segment>
-                <TeamLayout
-                  onChange={handleLayoutChange}
-                  onCreate={handleLayoutCreate}
-                  onSave={handleLayoutSave}
-                  onCancel={handleLayoutCancel}
-                />
+                <TeamLayout onChange={handleLayoutChange} />
               </Segment>
             </Rail>
 
