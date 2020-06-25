@@ -5,14 +5,8 @@ import produce from "immer";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import PositionDrag, { ITEM_TYPE, IDragPosition } from "../PositionDrag";
+import initialFormation from "./initialFormation";
 import Field from "../Field";
-
-function initialFormation() {
-  return new Array(11).fill(0).map((__item, index) => ({
-    x: (index % 3) * (100 / 3) + 15,
-    y: Math.floor(index / 3) * 20 + 15,
-  }));
-}
 
 interface IProps {}
 
