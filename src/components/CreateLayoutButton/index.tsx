@@ -1,8 +1,8 @@
 import React, { ReactNode, useState } from "react";
-import { Button, Modal, Header } from "semantic-ui-react";
+import { Button, Modal, Header, Message } from "semantic-ui-react";
 
-import FieldEdit from "../FieldEdit";
 import styled from "@emotion/styled";
+import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
 
 export interface IProps {
   children: ReactNode;
@@ -12,7 +12,6 @@ export default function CreateLayoutButton(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
-  // const [addNewPlayer] = useAddNewPlayer();
 
   let submitForm: Function = () => {};
 
@@ -28,17 +27,14 @@ export default function CreateLayoutButton(props: IProps) {
     submitForm = submitFormFn;
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(values: IFormValues) {
     setIsSubmitting(true);
     setHasErrors(false);
 
     try {
-      // const newPlayer: Partial<IPlayer> = {
-      //   firstName: values.firstName,
-      //   lastName: values.lastName,
-      //   number: values.number,
-      // };
-      // await addNewPlayer(newPlayer);
+      console.log("submitting!", values);
+      // TODO
+
       handleClose();
     } catch (e) {
       console.log(e);
@@ -57,13 +53,23 @@ export default function CreateLayoutButton(props: IProps) {
       }
       open={isOpen}
       onClose={handleClose}
-      size="tiny"
     >
       <Modal.Content>
         <Modal.Description>
           <Header>Add a new layout</Header>
+          {hasErrors && (
+            <Message negative>
+              <Message.Header>
+                There was an error with your submission
+              </Message.Header>
+              <p>Complete all the fields and try again.</p>
+            </Message>
+          )}
           <FieldWrapper>
-            <FieldEdit />
+            <CreateLayoutForm
+              onSubmit={handleSubmit}
+              bindSubmitForm={bindSubmitForm}
+            />
           </FieldWrapper>
         </Modal.Description>
       </Modal.Content>
@@ -82,6 +88,5 @@ const ModalStyled = styled(Modal)`
 `;
 
 const FieldWrapper = styled.div`
-  height: 500px;
   width: 327px;
 `;
