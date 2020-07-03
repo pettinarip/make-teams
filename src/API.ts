@@ -6,6 +6,12 @@ export type CreateLayoutInput = {
   id?: string | null,
   name: string,
   createdAt?: string | null,
+  positions: Array< PositionInput | null >,
+};
+
+export type PositionInput = {
+  x: number,
+  y: number,
 };
 
 export type ModelLayoutConditionInput = {
@@ -60,47 +66,38 @@ export type UpdateLayoutInput = {
   id: string,
   name?: string | null,
   createdAt?: string | null,
+  positions?: Array< PositionInput | null > | null,
 };
 
 export type DeleteLayoutInput = {
   id?: string | null,
 };
 
-export type CreatePositionInput = {
+export type CreateCustomLayoutInput = {
   id?: string | null,
-  x: number,
-  y: number,
-  positionLayoutId?: string | null,
+  name: string,
+  createdBy?: string | null,
+  createdAt?: string | null,
+  positions: Array< PositionInput | null >,
 };
 
-export type ModelPositionConditionInput = {
-  x?: ModelFloatInput | null,
-  y?: ModelFloatInput | null,
-  and?: Array< ModelPositionConditionInput | null > | null,
-  or?: Array< ModelPositionConditionInput | null > | null,
-  not?: ModelPositionConditionInput | null,
+export type ModelCustomLayoutConditionInput = {
+  name?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelCustomLayoutConditionInput | null > | null,
+  or?: Array< ModelCustomLayoutConditionInput | null > | null,
+  not?: ModelCustomLayoutConditionInput | null,
 };
 
-export type ModelFloatInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
-export type UpdatePositionInput = {
+export type UpdateCustomLayoutInput = {
   id: string,
-  x?: number | null,
-  y?: number | null,
-  positionLayoutId?: string | null,
+  name?: string | null,
+  createdBy?: string | null,
+  createdAt?: string | null,
+  positions?: Array< PositionInput | null > | null,
 };
 
-export type DeletePositionInput = {
+export type DeleteCustomLayoutInput = {
   id?: string | null,
 };
 
@@ -157,13 +154,12 @@ export type DeletePlayerInput = {
 export type CreateShareLinkInput = {
   id?: string | null,
   name: string,
-  positions: string,
+  positions: Array< PositionInput | null >,
   createdBy?: string | null,
 };
 
 export type ModelShareLinkConditionInput = {
   name?: ModelStringInput | null,
-  positions?: ModelStringInput | null,
   and?: Array< ModelShareLinkConditionInput | null > | null,
   or?: Array< ModelShareLinkConditionInput | null > | null,
   not?: ModelShareLinkConditionInput | null,
@@ -172,7 +168,7 @@ export type ModelShareLinkConditionInput = {
 export type UpdateShareLinkInput = {
   id: string,
   name?: string | null,
-  positions?: string | null,
+  positions?: Array< PositionInput | null > | null,
   createdBy?: string | null,
 };
 
@@ -205,6 +201,16 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export type ModelCustomLayoutFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  createdBy?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  and?: Array< ModelCustomLayoutFilterInput | null > | null,
+  or?: Array< ModelCustomLayoutFilterInput | null > | null,
+  not?: ModelCustomLayoutFilterInput | null,
+};
+
 export type ModelPlayerFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
@@ -219,6 +225,15 @@ export type ModelPlayerFilterInput = {
   not?: ModelPlayerFilterInput | null,
 };
 
+export type ModelShareLinkFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  createdBy?: ModelStringInput | null,
+  and?: Array< ModelShareLinkFilterInput | null > | null,
+  or?: Array< ModelShareLinkFilterInput | null > | null,
+  not?: ModelShareLinkFilterInput | null,
+};
+
 export type CreateLayoutMutationVariables = {
   input: CreateLayoutInput,
   condition?: ModelLayoutConditionInput | null,
@@ -230,10 +245,11 @@ export type CreateLayoutMutation = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -248,10 +264,11 @@ export type UpdateLayoutMutation = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -266,70 +283,71 @@ export type DeleteLayoutMutation = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
-export type CreatePositionMutationVariables = {
-  input: CreatePositionInput,
-  condition?: ModelPositionConditionInput | null,
+export type CreateCustomLayoutMutationVariables = {
+  input: CreateCustomLayoutInput,
+  condition?: ModelCustomLayoutConditionInput | null,
 };
 
-export type CreatePositionMutation = {
-  createPosition:  {
-    __typename: "Position",
+export type CreateCustomLayoutMutation = {
+  createCustomLayout:  {
+    __typename: "CustomLayout",
     id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
-export type UpdatePositionMutationVariables = {
-  input: UpdatePositionInput,
-  condition?: ModelPositionConditionInput | null,
+export type UpdateCustomLayoutMutationVariables = {
+  input: UpdateCustomLayoutInput,
+  condition?: ModelCustomLayoutConditionInput | null,
 };
 
-export type UpdatePositionMutation = {
-  updatePosition:  {
-    __typename: "Position",
+export type UpdateCustomLayoutMutation = {
+  updateCustomLayout:  {
+    __typename: "CustomLayout",
     id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
-export type DeletePositionMutationVariables = {
-  input: DeletePositionInput,
-  condition?: ModelPositionConditionInput | null,
+export type DeleteCustomLayoutMutationVariables = {
+  input: DeleteCustomLayoutInput,
+  condition?: ModelCustomLayoutConditionInput | null,
 };
 
-export type DeletePositionMutation = {
-  deletePosition:  {
-    __typename: "Position",
+export type DeleteCustomLayoutMutation = {
+  deleteCustomLayout:  {
+    __typename: "CustomLayout",
     id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -400,7 +418,11 @@ export type CreateShareLinkMutation = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
   } | null,
 };
@@ -415,7 +437,11 @@ export type UpdateShareLinkMutation = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
   } | null,
 };
@@ -430,7 +456,11 @@ export type DeleteShareLinkMutation = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
   } | null,
 };
@@ -445,16 +475,11 @@ export type GetLayoutQuery = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-      items:  Array< {
-        __typename: "Position",
-        id: string,
-        x: number,
-        y: number,
-      } | null > | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -472,16 +497,45 @@ export type ListLayoutsQuery = {
       id: string,
       name: string,
       createdAt: string | null,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        nextToken: string | null,
-        items:  Array< {
-          __typename: "Position",
-          id: string,
-          x: number,
-          y: number,
-        } | null > | null,
-      } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetCustomLayoutQueryVariables = {
+  id: string,
+};
+
+export type GetCustomLayoutQuery = {
+  getCustomLayout:  {
+    __typename: "CustomLayout",
+    id: string,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
+  } | null,
+};
+
+export type ListCustomLayoutsQueryVariables = {
+  filter?: ModelCustomLayoutFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListCustomLayoutsQuery = {
+  listCustomLayouts:  {
+    __typename: "ModelCustomLayoutConnection",
+    items:  Array< {
+      __typename: "CustomLayout",
+      id: string,
+      name: string,
+      createdBy: string | null,
+      createdAt: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -538,8 +592,31 @@ export type GetShareLinkQuery = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
+  } | null,
+};
+
+export type ListShareLinksQueryVariables = {
+  filter?: ModelShareLinkFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListShareLinksQuery = {
+  listShareLinks:  {
+    __typename: "ModelShareLinkConnection",
+    items:  Array< {
+      __typename: "ShareLink",
+      id: string,
+      name: string,
+      createdBy: string | null,
+    } | null > | null,
+    nextToken: string | null,
   } | null,
 };
 
@@ -550,15 +627,12 @@ export type getDataQuery = {
       __typename: "Layout",
       id: string,
       name: string,
-      positions:  {
-        __typename: "ModelPositionConnection",
-        items:  Array< {
-          __typename: "Position",
-          id: string,
-          x: number,
-          y: number,
-        } | null > | null,
-      } | null,
+      createdAt: string | null,
+      positions:  Array< {
+        __typename: "Position",
+        x: number,
+        y: number,
+      } | null >,
     } | null > | null,
   } | null,
   listPlayers:  {
@@ -579,10 +653,11 @@ export type OnCreateLayoutSubscription = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -592,10 +667,11 @@ export type OnUpdateLayoutSubscription = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -605,55 +681,68 @@ export type OnDeleteLayoutSubscription = {
     id: string,
     name: string,
     createdAt: string | null,
-    positions:  {
-      __typename: "ModelPositionConnection",
-      nextToken: string | null,
-    } | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
-export type OnCreatePositionSubscription = {
-  onCreatePosition:  {
-    __typename: "Position",
+export type OnCreateCustomLayoutSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnCreateCustomLayoutSubscription = {
+  onCreateCustomLayout:  {
+    __typename: "CustomLayout",
     id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
-export type OnUpdatePositionSubscription = {
-  onUpdatePosition:  {
-    __typename: "Position",
+export type OnUpdateCustomLayoutSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnUpdateCustomLayoutSubscription = {
+  onUpdateCustomLayout:  {
+    __typename: "CustomLayout",
     id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
-export type OnDeletePositionSubscription = {
-  onDeletePosition:  {
-    __typename: "Position",
+export type OnDeleteCustomLayoutSubscriptionVariables = {
+  createdBy: string,
+};
+
+export type OnDeleteCustomLayoutSubscription = {
+  onDeleteCustomLayout:  {
+    __typename: "CustomLayout",
     id: string,
-    x: number,
-    y: number,
-    layout:  {
-      __typename: "Layout",
-      id: string,
-      name: string,
-      createdAt: string | null,
-    } | null,
+    name: string,
+    createdBy: string | null,
+    createdAt: string | null,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
   } | null,
 };
 
@@ -720,7 +809,11 @@ export type OnCreateShareLinkSubscription = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
   } | null,
 };
@@ -734,7 +827,11 @@ export type OnUpdateShareLinkSubscription = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
   } | null,
 };
@@ -748,7 +845,11 @@ export type OnDeleteShareLinkSubscription = {
     __typename: "ShareLink",
     id: string,
     name: string,
-    positions: string,
+    positions:  Array< {
+      __typename: "Position",
+      x: number,
+      y: number,
+    } | null >,
     createdBy: string | null,
   } | null,
 };

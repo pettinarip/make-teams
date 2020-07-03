@@ -9,35 +9,76 @@ export const getLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
-        items {
-          id
-          x
-          y
-        }
+        x
+        y
       }
     }
   }
 `;
 export const listLayouts = /* GraphQL */ `
   query ListLayouts(
-    $filter: ModelLayoutFilterInput
+    $filterLayout: ModelLayoutFilterInput
+    $filterCustomLayout: ModelCustomLayoutFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listLayouts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listLayouts(filter: $filterLayout, nextToken: $nextToken) {
       items {
         id
         name
         createdAt
-        positions(limit: 11) {
-          nextToken
-          items {
-            id
-            x
-            y
-          }
+        positions {
+          x
+          y
         }
+      }
+      nextToken
+    }
+    listCustomLayouts(
+      filter: $filterCustomLayout
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        createdBy
+        createdAt
+        positions {
+          x
+          y
+        }
+      }
+      nextToken
+    }
+  }
+`;
+export const getCustomLayout = /* GraphQL */ `
+  query GetCustomLayout($id: ID!) {
+    getCustomLayout(id: $id) {
+      id
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
+      }
+    }
+  }
+`;
+export const listCustomLayouts = /* GraphQL */ `
+  query ListCustomLayouts(
+    $filter: ModelCustomLayoutFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCustomLayouts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdBy
+        createdAt
       }
       nextToken
     }
@@ -83,8 +124,27 @@ export const getShareLink = /* GraphQL */ `
     getShareLink(id: $id) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
+    }
+  }
+`;
+export const listShareLinks = /* GraphQL */ `
+  query ListShareLinks(
+    $filter: ModelShareLinkFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listShareLinks(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        createdBy
+      }
+      nextToken
     }
   }
 `;

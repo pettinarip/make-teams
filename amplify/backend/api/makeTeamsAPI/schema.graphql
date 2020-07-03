@@ -2,14 +2,30 @@ type Layout @model @auth(rules: [{ allow: private }]) {
   id: ID!
   name: String!
   createdAt: AWSDateTime
-  positions: [Position] @connection(name: "LayoutPositions")
+  positions: [Position]!
 }
 
-type Position @model @auth(rules: [{ allow: private }]) {
+type CustomLayout
+  @model
+  @auth(
+    rules: [
+      {
+        allow: owner
+        ownerField: "createdBy"
+        operations: [create, update, delete, read]
+      }
+    ]
+  ) {
   id: ID!
+  name: String!
+  createdBy: String
+  createdAt: AWSDateTime
+  positions: [Position]!
+}
+
+type Position {
   x: Float!
   y: Float!
-  layout: Layout @connection(name: "LayoutPositions")
 }
 
 type Player
@@ -47,6 +63,6 @@ type ShareLink
   ) {
   id: ID!
   name: String!
-  positions: String!
+  positions: [Position]!
   createdBy: String
 }

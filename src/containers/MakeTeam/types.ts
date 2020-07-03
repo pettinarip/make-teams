@@ -1,6 +1,7 @@
 export type ILayout = {
   id: number;
   name: string;
+  createdAt: string;
   positions: Array<IPosition>;
 };
 

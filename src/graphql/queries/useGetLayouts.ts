@@ -13,10 +13,16 @@ export default function useGetLayouts(user: any): QueryResult<Array<ILayout>> {
         graphqlOperation(listLayouts)
       )) as any;
 
-      return response.data.listLayouts.items.map((layout: any) => ({
-        ...layout,
-        positions: layout.positions.items,
-      }));
+      const layouts = response.data.listLayouts.items;
+
+      const customLayouts = response.data.listCustomLayouts.items.map(
+        (layout: any) => ({
+          ...layout,
+          isCustom: true,
+        })
+      );
+
+      return layouts.concat(customLayouts);
     }
   );
 }

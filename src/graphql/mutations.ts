@@ -12,7 +12,8 @@ export const createLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
+        x
+        y
       }
     }
   }
@@ -27,7 +28,8 @@ export const updateLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
+        x
+        y
       }
     }
   }
@@ -42,58 +44,59 @@ export const deleteLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
+        x
+        y
       }
     }
   }
 `;
-export const createPosition = /* GraphQL */ `
-  mutation CreatePosition(
-    $input: CreatePositionInput!
-    $condition: ModelPositionConditionInput
+export const createCustomLayout = /* GraphQL */ `
+  mutation CreateCustomLayout(
+    $input: CreateCustomLayoutInput!
+    $condition: ModelCustomLayoutConditionInput
   ) {
-    createPosition(input: $input, condition: $condition) {
+    createCustomLayout(input: $input, condition: $condition) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
       }
     }
   }
 `;
-export const updatePosition = /* GraphQL */ `
-  mutation UpdatePosition(
-    $input: UpdatePositionInput!
-    $condition: ModelPositionConditionInput
+export const updateCustomLayout = /* GraphQL */ `
+  mutation UpdateCustomLayout(
+    $input: UpdateCustomLayoutInput!
+    $condition: ModelCustomLayoutConditionInput
   ) {
-    updatePosition(input: $input, condition: $condition) {
+    updateCustomLayout(input: $input, condition: $condition) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
       }
     }
   }
 `;
-export const deletePosition = /* GraphQL */ `
-  mutation DeletePosition(
-    $input: DeletePositionInput!
-    $condition: ModelPositionConditionInput
+export const deleteCustomLayout = /* GraphQL */ `
+  mutation DeleteCustomLayout(
+    $input: DeleteCustomLayoutInput!
+    $condition: ModelCustomLayoutConditionInput
   ) {
-    deletePosition(input: $input, condition: $condition) {
+    deleteCustomLayout(input: $input, condition: $condition) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
       }
     }
   }
@@ -157,7 +160,10 @@ export const createShareLink = /* GraphQL */ `
     createShareLink(input: $input, condition: $condition) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
     }
   }
@@ -170,7 +176,10 @@ export const updateShareLink = /* GraphQL */ `
     updateShareLink(input: $input, condition: $condition) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
     }
   }
@@ -183,7 +192,10 @@ export const deleteShareLink = /* GraphQL */ `
     deleteShareLink(input: $input, condition: $condition) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
     }
   }

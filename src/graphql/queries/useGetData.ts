@@ -6,10 +6,7 @@ export default function useGetData() {
     const response = (await API.graphql(graphqlOperation(Data))) as any;
 
     return {
-      layouts: response.data.listLayouts.items.map((layout: any) => ({
-        ...layout,
-        positions: layout.positions.items,
-      })),
+      layouts: response.data.listLayouts.items,
       players: response.data.listPlayers.items,
     };
   });
@@ -21,12 +18,10 @@ const Data = `
       items {
         id
         name
-        positions(limit: 15) {
-          items {
-            id
-            x
-            y
-          }
+        createdAt
+        positions {
+          x
+          y
         }
       }
     }

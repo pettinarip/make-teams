@@ -9,7 +9,8 @@ export const onCreateLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
+        x
+        y
       }
     }
   }
@@ -21,7 +22,8 @@ export const onUpdateLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
+        x
+        y
       }
     }
   }
@@ -33,49 +35,50 @@ export const onDeleteLayout = /* GraphQL */ `
       name
       createdAt
       positions {
-        nextToken
+        x
+        y
       }
     }
   }
 `;
-export const onCreatePosition = /* GraphQL */ `
-  subscription OnCreatePosition {
-    onCreatePosition {
+export const onCreateCustomLayout = /* GraphQL */ `
+  subscription OnCreateCustomLayout($createdBy: String!) {
+    onCreateCustomLayout(createdBy: $createdBy) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
       }
     }
   }
 `;
-export const onUpdatePosition = /* GraphQL */ `
-  subscription OnUpdatePosition {
-    onUpdatePosition {
+export const onUpdateCustomLayout = /* GraphQL */ `
+  subscription OnUpdateCustomLayout($createdBy: String!) {
+    onUpdateCustomLayout(createdBy: $createdBy) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
       }
     }
   }
 `;
-export const onDeletePosition = /* GraphQL */ `
-  subscription OnDeletePosition {
-    onDeletePosition {
+export const onDeleteCustomLayout = /* GraphQL */ `
+  subscription OnDeleteCustomLayout($createdBy: String!) {
+    onDeleteCustomLayout(createdBy: $createdBy) {
       id
-      x
-      y
-      layout {
-        id
-        name
-        createdAt
+      name
+      createdBy
+      createdAt
+      positions {
+        x
+        y
       }
     }
   }
@@ -127,7 +130,10 @@ export const onCreateShareLink = /* GraphQL */ `
     onCreateShareLink(createdBy: $createdBy) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
     }
   }
@@ -137,7 +143,10 @@ export const onUpdateShareLink = /* GraphQL */ `
     onUpdateShareLink(createdBy: $createdBy) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
     }
   }
@@ -147,7 +156,10 @@ export const onDeleteShareLink = /* GraphQL */ `
     onDeleteShareLink(createdBy: $createdBy) {
       id
       name
-      positions
+      positions {
+        x
+        y
+      }
       createdBy
     }
   }
