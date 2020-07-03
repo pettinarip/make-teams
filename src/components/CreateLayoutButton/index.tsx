@@ -34,10 +34,7 @@ export default function CreateLayoutButton(props: IProps) {
     setHasErrors(false);
 
     try {
-      console.log("submitting!", values);
-      // TODO
-
-      addNewLayout(values);
+      await addNewLayout(values);
       handleClose();
     } catch (e) {
       console.log(e);
