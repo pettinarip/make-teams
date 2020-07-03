@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState, useEffect, useMemo } from "react";
 import {
   Form,
   Radio,
@@ -43,6 +43,14 @@ export default function TeamLayout({ onChange }: IProps) {
     }
   }
 
+  const defaultLayouts = useMemo(() => {
+    return layouts.filter((layout) => !layout.isCustom);
+  }, [layouts]);
+
+  const customLayouts = useMemo(() => {
+    return layouts.filter((layout) => layout.isCustom);
+  }, [layouts]);
+
   return (
     <>
       <Header as="h2">Layout</Header>
@@ -58,7 +66,26 @@ export default function TeamLayout({ onChange }: IProps) {
         </Placeholder>
       ) : (
         <Form data-testid="layouts">
-          {layouts.map((layout) => (
+          {defaultLayouts.map((layout) => (
+            <Form.Field key={layout.id}>
+              <Radio
+                id={`layout-${layout.id}`}
+                name="layout"
+                data-testid="layout"
+                label={{
+                  children: layout.name,
+                  htmlFor: `layout-${layout.id}`,
+                }}
+                value={layout.id}
+                checked={selected && selected.id === layout.id}
+                onChange={handleChange}
+              />
+            </Form.Field>
+          ))}
+
+          {customLayouts.length > 0 && <Divider />}
+
+          {customLayouts.map((layout) => (
             <Form.Field key={layout.id}>
               <Radio
                 id={`layout-${layout.id}`}

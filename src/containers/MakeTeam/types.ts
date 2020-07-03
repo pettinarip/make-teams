@@ -2,6 +2,8 @@ export type ILayout = {
   id: number;
   name: string;
   createdAt: string;
+  // Prop only used in the FE
+  isCustom?: boolean;
   positions: Array<IPosition>;
 };
 
