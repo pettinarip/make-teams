@@ -13,7 +13,7 @@ import MakeTeam from "../MakeTeam";
 
 describe("MakeTeam", () => {
   test("renders the main components", async () => {
-    const { debug } = render(<MakeTeam />);
+    render(<MakeTeam />);
 
     await waitFor(() => {
       expect(screen.queryAllByTestId("position").length).toEqual(11);
