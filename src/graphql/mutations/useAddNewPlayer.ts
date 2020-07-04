@@ -11,7 +11,7 @@ export default function useAddNewPlayer() {
     },
     {
       onSuccess: () => {
-        return queryCache.refetchQueries("players", { force: true });
+        return queryCache.invalidateQueries("players");
       },
     }
   );

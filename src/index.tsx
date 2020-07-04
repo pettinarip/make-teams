@@ -2,7 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Amplify from "aws-amplify";
 import { Router } from "@reach/router";
-import { ReactQueryConfigProvider } from "react-query";
+import {
+  ReactQueryConfigProvider,
+  ReactQueryProviderConfig,
+} from "react-query";
 import { ToastProvider } from "react-toast-notifications";
 
 import ViewShareLink from "./containers/ViewShareLink";
@@ -21,11 +24,15 @@ import "semantic-ui-css/semantic.min.css";
 
 Amplify.configure(awsconfig);
 
-const queryConfig = {
-  retry: 3,
-  throwOnError: true,
-  refetchAllOnWindowFocus: false,
-  staleTime: 10 * 1000,
+const queryConfig: ReactQueryProviderConfig = {
+  queries: {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    staleTime: 10 * 1000,
+  },
+  mutations: {
+    throwOnError: true,
+  },
 };
 
 ReactDOM.render(

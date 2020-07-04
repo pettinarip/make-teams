@@ -13,7 +13,7 @@ export default function useRemovePlayer() {
     },
     {
       onSuccess: () => {
-        return queryCache.refetchQueries("players", { force: true });
+        return queryCache.invalidateQueries("players");
       },
     }
   );

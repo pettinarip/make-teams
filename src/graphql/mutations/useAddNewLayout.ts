@@ -13,7 +13,7 @@ export default function useAddNewLayout() {
     },
     {
       onSuccess: () => {
-        return queryCache.refetchQueries("layouts", { force: true });
+        return queryCache.invalidateQueries("layouts");
       },
     }
   );

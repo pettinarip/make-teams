@@ -7,7 +7,7 @@ import { ILayout } from "../../containers/MakeTeam/types";
 
 export default function useGetLayouts(user: any): QueryResult<Array<ILayout>> {
   return useQuery(
-    user && ["layouts", user],
+    ["layouts", user],
     async (): Promise<Array<ILayout>> => {
       const response = (await API.graphql(
         graphqlOperation(listLayouts)
@@ -23,6 +23,9 @@ export default function useGetLayouts(user: any): QueryResult<Array<ILayout>> {
       );
 
       return layouts.concat(customLayouts);
+    },
+    {
+      enabled: !!user,
     }
   );
 }

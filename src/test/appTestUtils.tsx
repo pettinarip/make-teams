@@ -1,12 +1,20 @@
 import React from "react";
 import * as rtl from "@testing-library/react";
-import { ReactQueryConfigProvider } from "react-query";
+import {
+  ReactQueryConfigProvider,
+  ReactQueryProviderConfig,
+} from "react-query";
 import { ToastProvider } from "react-toast-notifications";
 
-const queryConfig = {
-  retry: 0,
-  useErrorBoundary: true,
-  refetchAllOnWindowFocus: false,
+const queryConfig: ReactQueryProviderConfig = {
+  queries: {
+    retry: 0,
+    refetchOnWindowFocus: false,
+    useErrorBoundary: true,
+  },
+  mutations: {
+    throwOnError: true,
+  },
 };
 
 function render(ui: any, { ...renderOptions }: any = {}): any {
