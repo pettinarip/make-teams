@@ -36,13 +36,6 @@ export default function TeamLayout({ onChange }: IProps) {
     }
   }, [layouts]);
 
-  function handleChange(e: FormEvent, { value }: CheckboxProps) {
-    const layout = layouts.find((l) => l.id === value);
-    if (layout) {
-      setSelected(layout);
-    }
-  }
-
   const defaultLayouts = useMemo(() => {
     return layouts.filter((layout) => !layout.isCustom);
   }, [layouts]);
@@ -50,6 +43,13 @@ export default function TeamLayout({ onChange }: IProps) {
   const customLayouts = useMemo(() => {
     return layouts.filter((layout) => layout.isCustom);
   }, [layouts]);
+
+  function handleChange(e: FormEvent, { value }: CheckboxProps) {
+    const layout = layouts.find((l) => l.id === value);
+    if (layout) {
+      setSelected(layout);
+    }
+  }
 
   return (
     <>

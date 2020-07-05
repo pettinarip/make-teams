@@ -42,10 +42,14 @@ export default function CreateLayoutForm(props: IProps) {
         return (
           <Form>
             <Form.Input
+              id="new-layout-name"
               fluid
               autoFocus
               name="name"
-              label="Name"
+              label={{
+                children: "Name",
+                htmlFor: "new-layout-name",
+              }}
               placeholder="4-4-2"
               value={values.name}
               onChange={handleChange}

@@ -47,7 +47,7 @@ export default function CreateLayoutButton(props: IProps) {
   return (
     <ModalStyled
       trigger={
-        <Button primary onClick={handleOpen}>
+        <Button primary onClick={handleOpen} data-testid="new-layout-button">
           {props.children}
         </Button>
       }
@@ -75,7 +75,12 @@ export default function CreateLayoutButton(props: IProps) {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button primary onClick={(e) => submitForm()} loading={isSubmitting}>
+        <Button
+          primary
+          onClick={(e) => submitForm()}
+          loading={isSubmitting}
+          data-testid="new-layout-submit-button"
+        >
           Create
         </Button>
       </Modal.Actions>
