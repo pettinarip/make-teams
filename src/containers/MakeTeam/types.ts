@@ -1,5 +1,5 @@
 export type ILayout = {
-  id: number;
+  id: string;
   name: string;
   createdAt: string;
   // Prop only used in the FE
@@ -14,7 +14,7 @@ export type IPosition = {
 };
 
 export interface IPlayer {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   number: number;
@@ -24,7 +24,7 @@ export interface IPlayer {
 }
 
 export interface IShareTeam {
-  id: number;
+  id: string;
   name: string;
-  positions: any;
+  positions: Array<IPosition>;
 }

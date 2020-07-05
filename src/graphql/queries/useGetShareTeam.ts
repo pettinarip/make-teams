@@ -1,9 +1,11 @@
 import { useQuery } from "react-query";
 import { graphqlOperation, API } from "aws-amplify";
+import { GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { QueryResult } from "react-query/types";
+import omit from "lodash.omit";
 
 import { getShareLink } from "../queries";
-import { IShareTeam } from "../../containers/MakeTeam/types";
+import { IShareTeam, IPosition } from "../../containers/MakeTeam/types";
 
 export default function useGetShareTeam(id?: string): QueryResult<IShareTeam> {
   return useQuery(
@@ -11,12 +13,25 @@ export default function useGetShareTeam(id?: string): QueryResult<IShareTeam> {
     async (): Promise<IShareTeam> => {
       const response = (await API.graphql({
         ...graphqlOperation(getShareLink, { id }),
-        authMode: "AWS_IAM" as any,
+        authMode: GRAPHQL_AUTH_MODE.AWS_IAM,
       })) as any;
 
-      const shareTeam = response.data.getShareLink;
+      return {
+        ...response.data.getShareLink,
+        positions: response.data.getShareLink.positions.map(
+          (position: IPosition) => {
+            // TODO: try to fix this imp later. For some reason, graphql or
+            // amplify send all the `ShareLinkPlayerInput` fields in null when the
+            // `position.player` field is null, instead of just send
+            // `position.player === null`
+            if (!position.player?.id) {
+              return omit(position, "player");
+            }
 
-      return { ...shareTeam, positions: JSON.parse(shareTeam.positions) };
+            return position;
+          }
+        ),
+      };
     }
   );
 }

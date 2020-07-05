@@ -6,6 +6,8 @@ import {
 } from "react-query";
 import { ToastProvider } from "react-toast-notifications";
 
+// TODO: shouldn't we just keep the same config used in the app? probably with
+// less staleTime
 const queryConfig: ReactQueryProviderConfig = {
   queries: {
     retry: 0,

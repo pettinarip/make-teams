@@ -17,7 +17,7 @@ import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
 
 export interface IProps {
-  usedPlayersIds: Array<number>;
+  usedPlayersIds: Array<string>;
   onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
   onResetClick: () => void;

@@ -1,8 +1,10 @@
 import faker from "faker";
 
-let shareLink = {};
+import { IShareTeam } from "../../containers/MakeTeam/types";
 
-export function create() {
+let shareLink: Partial<IShareTeam> = {};
+
+export function create(): Partial<IShareTeam> {
   const id = faker.random.alphaNumeric(30);
   shareLink = {
     ...shareLink,

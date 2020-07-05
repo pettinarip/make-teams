@@ -154,8 +154,23 @@ export type DeletePlayerInput = {
 export type CreateShareLinkInput = {
   id?: string | null,
   name: string,
-  positions: Array< PositionInput | null >,
+  positions: Array< ShareLinkPositionInput | null >,
   createdBy?: string | null,
+};
+
+export type ShareLinkPositionInput = {
+  x: number,
+  y: number,
+  player?: ShareLinkPlayerInput | null,
+};
+
+export type ShareLinkPlayerInput = {
+  id?: string | null,
+  firstName?: string | null,
+  lastName?: string | null,
+  number?: number | null,
+  nickName?: string | null,
+  age?: number | null,
 };
 
 export type ModelShareLinkConditionInput = {
@@ -168,7 +183,7 @@ export type ModelShareLinkConditionInput = {
 export type UpdateShareLinkInput = {
   id: string,
   name?: string | null,
-  positions?: Array< PositionInput | null > | null,
+  positions?: Array< ShareLinkPositionInput | null > | null,
   createdBy?: string | null,
 };
 
@@ -419,7 +434,7 @@ export type CreateShareLinkMutation = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,
@@ -438,7 +453,7 @@ export type UpdateShareLinkMutation = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,
@@ -457,7 +472,7 @@ export type DeleteShareLinkMutation = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,
@@ -593,7 +608,7 @@ export type GetShareLinkQuery = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,
@@ -810,7 +825,7 @@ export type OnCreateShareLinkSubscription = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,
@@ -828,7 +843,7 @@ export type OnUpdateShareLinkSubscription = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,
@@ -846,7 +861,7 @@ export type OnDeleteShareLinkSubscription = {
     id: string,
     name: string,
     positions:  Array< {
-      __typename: "Position",
+      __typename: "ShareLinkPosition",
       x: number,
       y: number,
     } | null >,

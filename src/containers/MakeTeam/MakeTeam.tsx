@@ -14,14 +14,14 @@ export interface IProps {}
 
 export default function MakeTeam(__props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
-  const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
+  const [usedPlayersIds, setUsedPlayersIds] = useState<Array<string>>([]);
   const [showNames, setShowNames] = useState(false);
 
   const { assignments, assign, toggle, reset } = useAssignments(positions);
 
   useEffect(() => {
     setUsedPlayersIds(
-      assignments.map((a) => a.player?.id).filter((id) => !!id) as number[]
+      assignments.map((a) => a.player?.id).filter((id) => !!id) as string[]
     );
   }, [assignments]);
 

@@ -1,5 +1,6 @@
 import { useMutation } from "react-query";
 import { graphqlOperation, API } from "aws-amplify";
+import omit from "lodash.omit";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import { createShareLink } from "../mutations";
@@ -11,9 +12,14 @@ interface IMutationProps {
 
 export default function useCreateShareTeam() {
   return useMutation<any, IMutationProps>(async ({ name, positions }) => {
+    const cleanedPositions = positions.map((position) => ({
+      ...position,
+      player: omit(position.player, ["createdAt", "createdBy"]),
+    }));
+
     return API.graphql(
       graphqlOperation(createShareLink, {
-        input: { name, positions: JSON.stringify(positions) },
+        input: { name, positions: cleanedPositions },
       })
     );
   });

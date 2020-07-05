@@ -127,6 +127,14 @@ export const getShareLink = /* GraphQL */ `
       positions {
         x
         y
+        player {
+          id
+          firstName
+          lastName
+          number
+          nickName
+          age
+        }
       }
       createdBy
     }

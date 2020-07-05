@@ -63,6 +63,21 @@ type ShareLink
   ) {
   id: ID!
   name: String!
-  positions: [Position]!
+  positions: [ShareLinkPosition]!
   createdBy: String
+}
+
+type ShareLinkPosition {
+  x: Float!
+  y: Float!
+  player: ShareLinkPlayer
+}
+
+type ShareLinkPlayer {
+  id: String
+  firstName: String
+  lastName: String
+  number: Int
+  nickName: String
+  age: Int
 }
