@@ -23,7 +23,7 @@ export default function TeamLayout({ onChange }: IProps) {
   const [selected, setSelected] = useState<ILayout>();
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
-  // doing this dirty stuff
+  // doing this dirty auto-select workaround
   useEffect(() => {
     if (selected) {
       onChange(selected);
@@ -32,16 +32,17 @@ export default function TeamLayout({ onChange }: IProps) {
 
   useEffect(() => {
     if (layouts.length) {
-      setSelected(layouts[0]);
+      const hasUserLayouts = layouts.some((layout) => layout.isCustom);
+      if (hasUserLayouts) {
+        // If the user has its own layouts then select the first custom layout
+        const firstCustomLayout = layouts.find((layout) => layout.isCustom);
+        setSelected(firstCustomLayout);
+      } else {
+        // If not then select the first default layout
+        setSelected(layouts[0]);
+      }
     }
   }, [layouts]);
-
-  function handleChange(e: FormEvent, { value }: CheckboxProps) {
-    const layout = layouts.find((l) => l.id === value);
-    if (layout) {
-      setSelected(layout);
-    }
-  }
 
   const defaultLayouts = useMemo(() => {
     return layouts.filter((layout) => !layout.isCustom);
@@ -50,6 +51,13 @@ export default function TeamLayout({ onChange }: IProps) {
   const customLayouts = useMemo(() => {
     return layouts.filter((layout) => layout.isCustom);
   }, [layouts]);
+
+  function handleChange(e: FormEvent, { value }: CheckboxProps) {
+    const layout = layouts.find((l) => l.id === value);
+    if (layout) {
+      setSelected(layout);
+    }
+  }
 
   return (
     <>
@@ -90,7 +98,7 @@ export default function TeamLayout({ onChange }: IProps) {
               <Radio
                 id={`layout-${layout.id}`}
                 name="layout"
-                data-testid="layout"
+                data-testid="custom-layout"
                 label={{
                   children: layout.name,
                   htmlFor: `layout-${layout.id}`,

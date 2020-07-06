@@ -19,7 +19,7 @@ const queryConfig: ReactQueryProviderConfig = {
   },
 };
 
-function render(ui: any, { ...renderOptions }: any = {}): any {
+function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   function Wrapper({ children }: any) {
     return (
       <ReactQueryConfigProvider config={queryConfig}>

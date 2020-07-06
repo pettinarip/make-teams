@@ -25,7 +25,7 @@ describe("MakeTeam", () => {
     screen.getByTestId("share-team-btn");
   });
 
-  test("on first load, renders the first layout by default", async () => {
+  test("on first load, renders the first user's layout by default", async () => {
     render(<MakeTeam />);
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
@@ -33,13 +33,17 @@ describe("MakeTeam", () => {
       expect(screen.queryAllByTestId("position").length).toEqual(11);
     });
 
-    // First layout in the list is selected by default
-    const layouts = screen.getAllByTestId("layout");
+    // First user's layout in the list is selected by default
+    const layouts = screen.getAllByTestId("custom-layout");
     expect(layouts[0].getElementsByTagName("input")[0].checked).toBeTruthy();
 
     // // Display the correct positions on the Field
     const positions = screen.getAllByTestId("position");
     expect(positions.length).toEqual(11);
+  });
+
+  test("on first load, renders the first default layout by default if there is no custom layout", async () => {
+    // TODO
   });
 
   test("when the layout is changed, the new positions are displayed on the field and all the players go back to the Roster", async () => {
