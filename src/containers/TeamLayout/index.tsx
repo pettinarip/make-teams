@@ -23,7 +23,7 @@ export default function TeamLayout({ onChange }: IProps) {
   const [selected, setSelected] = useState<ILayout>();
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
-  // doing this dirty stuff
+  // doing this dirty auto-select workaround
   useEffect(() => {
     if (selected) {
       onChange(selected);
@@ -32,7 +32,15 @@ export default function TeamLayout({ onChange }: IProps) {
 
   useEffect(() => {
     if (layouts.length) {
-      setSelected(layouts[0]);
+      const hasUserLayouts = layouts.some((layout) => layout.isCustom);
+      if (hasUserLayouts) {
+        // If the user has its own layouts then select the first custom layout
+        const firstCustomLayout = layouts.find((layout) => layout.isCustom);
+        setSelected(firstCustomLayout);
+      } else {
+        // If not then select the first default layout
+        setSelected(layouts[0]);
+      }
     }
   }, [layouts]);
 
@@ -90,7 +98,7 @@ export default function TeamLayout({ onChange }: IProps) {
               <Radio
                 id={`layout-${layout.id}`}
                 name="layout"
-                data-testid="layout"
+                data-testid="custom-layout"
                 label={{
                   children: layout.name,
                   htmlFor: `layout-${layout.id}`,

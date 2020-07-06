@@ -18,7 +18,7 @@ describe("TeamLayout", () => {
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
-    // Check that the layouts are displayed correctly in order
+    // Check that the default layouts are displayed correctly in order
     const layouts = screen
       .getAllByTestId("layout")
       .map((position) => position.textContent);
@@ -27,6 +27,15 @@ describe("TeamLayout", () => {
         "4-3-3",
         "4-4-2",
         "4-4-2 (new)",
+      ]
+    `);
+
+    // Check that the user's layouts are displayed correctly in order
+    const customLayouts = screen
+      .getAllByTestId("custom-layout")
+      .map((position) => position.textContent);
+    expect(customLayouts).toMatchInlineSnapshot(`
+      Array [
         "custom2",
         "custom3",
         "custom1",
@@ -67,13 +76,10 @@ describe("TeamLayout", () => {
 
       // Check that the new layout is at the bottom of the custom layouts list
       const layouts = screen
-        .getAllByTestId("layout")
+        .getAllByTestId("custom-layout")
         .map((position) => position.textContent);
       expect(layouts).toMatchInlineSnapshot(`
         Array [
-          "4-3-3",
-          "4-4-2",
-          "4-4-2 (new)",
           "custom2",
           "custom3",
           "custom1",
