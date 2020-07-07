@@ -6,6 +6,7 @@ import {
   screen,
   fireEvent,
   waitForElementToBeRemoved,
+  waitFor,
 } from "../../test/appTestUtils";
 
 import TeamLayout from "../TeamLayout";
@@ -88,8 +89,30 @@ describe("TeamLayout", () => {
       `);
     });
 
-    test("missing required fields should show error messages", async () => {
-      // TODO
+    test("missing required fields should show error messages and denied creating a new layout", async () => {
+      const { getByTestId } = render(
+        <DndProvider backend={HTML5Backend}>
+          <TeamLayout onChange={noop} />
+        </DndProvider>
+      );
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
+      );
+
+      // Click in New layout button
+      const newButton = getByTestId("new-layout-button");
+      fireEvent.click(newButton);
+
+      // Click on submit button
+      const submitButton = getByTestId("new-layout-submit-button");
+      fireEvent.click(submitButton);
+
+      // Wait for saving process
+      await waitFor(() => {
+        // Should show an error message on the required field
+        screen.getByText(/required/i);
+      });
     });
   });
 });

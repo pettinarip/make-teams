@@ -54,7 +54,7 @@ export default function CreateLayoutForm(props: IProps) {
               value={values.name}
               onChange={handleChange}
               required
-              error={!!errors.name}
+              error={errors.name}
             />
             <Field name="positions">
               {({ field }: FieldProps) => (
