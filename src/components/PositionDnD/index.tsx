@@ -4,7 +4,7 @@ import composeRefs from "@seznam/compose-react-refs";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import ItemTypes from "./ItemTypes";
-import Position from "../Position";
+import PositionStatic from "../PositionStatic";
 
 export interface IProps {
   index: number;
@@ -44,7 +44,7 @@ export default function PositionDnD({
   const isActive = canDrop && isOver;
 
   return (
-    <Position
+    <PositionStatic
       ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
       position={position}
       isActive={isActive}

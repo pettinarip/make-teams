@@ -2,7 +2,7 @@ import React from "react";
 import { useDrag } from "react-dnd";
 
 import { IPosition } from "../../containers/MakeTeam/types";
-import Position from "../Position";
+import PositionStatic from "../PositionStatic";
 
 export const ITEM_TYPE = "positionDrag";
 
@@ -31,5 +31,5 @@ export default function PositionDrag({
     item: dragPosition,
   });
 
-  return <Position ref={drag} position={position} {...restProps} />;
+  return <PositionStatic ref={drag} position={position} {...restProps} />;
 }
