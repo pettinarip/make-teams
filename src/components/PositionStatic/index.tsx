@@ -3,8 +3,6 @@ import styled from "@emotion/styled";
 
 import Position, { IProps as IPositionProps } from "../Position";
 
-export const ITEM_TYPE = "positionDrag";
-
 export interface IProps extends IPositionProps {}
 
 function PositionStatic(

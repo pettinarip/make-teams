@@ -4,9 +4,10 @@ export const SNAP_GRID_SIZE = 5;
 
 export default function snapToGrid(
   x: number,
-  y: number
+  y: number,
+  snapSize = SNAP_GRID_SIZE
 ): { x: number; y: number } {
-  const snappedX = Math.round(x / SNAP_GRID_SIZE) * SNAP_GRID_SIZE;
-  const snappedY = Math.round(y / SNAP_GRID_SIZE) * SNAP_GRID_SIZE;
+  const snappedX = Math.round(x / snapSize) * snapSize;
+  const snappedY = Math.round(y / snapSize) * snapSize;
   return { x: snappedX, y: snappedY };
 }
