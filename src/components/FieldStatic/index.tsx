@@ -4,7 +4,7 @@ import Field from "../Field";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import PositionDnD from "../PositionDnD";
-import Position from "../Position";
+import PositionStatic from "../PositionStatic";
 
 interface IProps {
   loading?: boolean;
@@ -28,7 +28,7 @@ export default function FieldStatic(props: IProps) {
           };
 
           return props.readonly ? (
-            <Position {...commonProps} />
+            <PositionStatic {...commonProps} />
           ) : (
             <PositionDnD
               key={index}

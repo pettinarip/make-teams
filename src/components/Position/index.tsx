@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import { forwardRef, Ref } from "react";
 import { jsx, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { Label } from "semantic-ui-react";
@@ -13,14 +12,11 @@ export interface IProps {
   showName?: boolean;
 }
 
-function Position(
-  { position, isActive, showName }: IProps,
-  ref: Ref<HTMLDivElement>
-) {
+export default function Position({ position, isActive, showName }: IProps) {
   const player = position.player;
 
   return (
-    <Wrapper ref={ref} x={position.x} y={position.y} data-testid="position">
+    <div data-testid="position">
       <Img isActive={!!isActive}>
         {position.player ? (
           <img
@@ -42,21 +38,9 @@ function Position(
       {player && showName && (
         <Name>{`${player.lastName}, ${player.firstName}`}</Name>
       )}
-    </Wrapper>
+    </div>
   );
 }
-
-const Wrapper = styled.div<{ x: number; y: number }>(
-  {
-    position: "absolute",
-    textAlign: "center",
-    marginLeft: -20,
-  },
-  (props) => ({
-    left: `${props.x}%`,
-    top: `${props.y}%`,
-  })
-);
 
 const Img = styled.div<{ isActive: boolean }>(
   {
@@ -79,5 +63,3 @@ const Name = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-
-export default forwardRef(Position);
