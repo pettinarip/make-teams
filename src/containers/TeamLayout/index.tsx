@@ -12,6 +12,7 @@ import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/Layout/useLayouts";
 import useAuth from "../../components/ProtectedRoute/useAuth";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
+import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
 export interface IProps {
   onChange: (layout: ILayout) => void;
@@ -107,6 +108,7 @@ export default function TeamLayout({ onChange }: IProps) {
                 checked={selected && selected.id === layout.id}
                 onChange={handleChange}
               />
+              <RemoveLayoutButton layout={layout} />
             </Form.Field>
           ))}
         </Form>
