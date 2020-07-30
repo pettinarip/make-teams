@@ -8,7 +8,7 @@ export default function useRemovePlayer() {
   return useMutation<any, Partial<IPlayer>>(
     async (player) => {
       await API.graphql(
-        graphqlOperation(deletePlayer, { playerId: player.id })
+        graphqlOperation(deletePlayer, { input: { id: player.id } })
       );
     },
     {
