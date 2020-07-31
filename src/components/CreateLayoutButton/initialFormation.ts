@@ -1,4 +1,4 @@
-export default function initialFormation() {
+export default function initialFormation(size: number) {
   return [
     ...new Array(2).fill(0).map((__item, index) => ({
       x: (index % 3) * (100 / 3) + 30,
@@ -16,5 +16,5 @@ export default function initialFormation() {
       x: 50,
       y: 90,
     },
-  ];
+  ].slice(0, size);
 }
