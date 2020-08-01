@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RouteComponentProps, useNavigate } from "@reach/router";
+import { RouteComponentProps, useNavigate, Link } from "@reach/router";
 import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import { Auth } from "aws-amplify";
@@ -71,10 +71,10 @@ export default function Login(__props: IProps) {
                   disabled={isSubmitting}
                   error={errors.password}
                 />
-                {/* <Form.Field>
+                <Form.Field>
                   Forgot password?{" "}
                   <Link to="/reset-password">Reset password</Link>
-                </Form.Field> */}
+                </Form.Field>
 
                 <Button
                   type="submit"
@@ -90,7 +90,7 @@ export default function Login(__props: IProps) {
           )}
         </Formik>
         <Message attached="bottom">
-          New to us? <a href="/sign-up">Sign Up</a>
+          New to us? <Link to="/sign-up">Sign Up</Link>
         </Message>
       </Grid.Column>
     </Grid>
