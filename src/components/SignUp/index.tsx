@@ -5,6 +5,8 @@ import { Formik, Field } from "formik";
 import { Auth } from "aws-amplify";
 import * as yup from "yup";
 
+import ResendCodeLink from "./ResendCodeLink";
+
 export interface IProps extends RouteComponentProps {}
 
 interface IFormValues {
@@ -59,6 +61,10 @@ export default function SignUp(__props: IProps) {
     }
   }
 
+  function handleResendCodeLinkError(error: string) {
+    setSignUpError(error);
+  }
+
   return (
     <Grid textAlign="center">
       <Grid.Column style={{ maxWidth: 450 }}>
@@ -70,7 +76,7 @@ export default function SignUp(__props: IProps) {
           validateOnBlur={false}
           onSubmit={handleSignUp}
         >
-          {({ handleSubmit, isSubmitting, errors }) => (
+          {({ handleSubmit, isSubmitting, errors, values }) => (
             <Form size="large" onSubmit={handleSubmit}>
               <Segment attached>
                 {!!signUpError && <Message negative>{signUpError}</Message>}
@@ -123,6 +129,15 @@ export default function SignUp(__props: IProps) {
                       placeholder="Enter your code"
                       error={errors.confirmationCode}
                     />
+
+                    <Form.Field>
+                      Lost your code?{" "}
+                      <ResendCodeLink
+                        email={values.email}
+                        onError={handleResendCodeLinkError}
+                      />
+                    </Form.Field>
+
                     <Button
                       type="submit"
                       primary
