@@ -142,18 +142,18 @@ describe("TeamLayout", () => {
     });
 
     test("missing required fields should show error messages and deny creating a new layout", async () => {
-      const { getByTestId } = renderTeamLayout();
+      renderTeamLayout();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
-      // Click in New layout button
-      const newButton = getByTestId("new-layout-button");
+      // Click in new layout button
+      const newButton = screen.getByTestId("new-layout-button");
       fireEvent.click(newButton);
 
       // Click on submit button
-      const submitButton = getByTestId("new-layout-submit-button");
+      const submitButton = screen.getByTestId("new-layout-submit-button");
       fireEvent.click(submitButton);
 
       // Wait for saving process
@@ -163,15 +163,35 @@ describe("TeamLayout", () => {
       });
     });
 
-    test("click cancel and no new layout should be added", async () => {
-      // TODO
+    test("click cancel and no new layout is added or removed", async () => {
+      renderTeamLayout();
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
+      );
+
+      // Click in new layout button
+      const newButton = screen.getByTestId("new-layout-button");
+      fireEvent.click(newButton);
+
+      // Click on cancel button
+      const cancelButton = screen.getByTestId("new-layout-cancel-button");
+      fireEvent.click(cancelButton);
+
+      // All the user's layouts are listed
+      const customLayoutsContent = screen
+        .getAllByTestId("custom-layout")
+        .map((position) => position.textContent);
+      expect(customLayoutsContent).toMatchInlineSnapshot(`
+        Array [
+          "custom2",
+          "custom3",
+          "custom1",
+        ]
+      `);
     });
 
     test("change size and save the new layout", async () => {
-      // TODO
-    });
-
-    test("move positions should snap them within intervals of 5%", async () => {
       // TODO
     });
   });

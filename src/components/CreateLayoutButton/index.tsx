@@ -74,7 +74,9 @@ export default function CreateLayoutButton(props: IProps) {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose} data-testid="new-layout-cancel-button">
+          Cancel
+        </Button>
         <Button
           primary
           onClick={(e) => submitForm()}
