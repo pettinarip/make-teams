@@ -192,7 +192,39 @@ describe("TeamLayout", () => {
     });
 
     test("change size and save the new layout", async () => {
-      // TODO
+      const { getAllByTestId } = renderTeamLayout();
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
+      );
+
+      // Click in new layout button
+      const newButton = screen.getByTestId("new-layout-button");
+      fireEvent.click(newButton);
+
+      // Assign a layout name
+      const nameInput = screen.getByLabelText(/name/i);
+      fireEvent.change(nameInput, {
+        target: {
+          value: "test",
+        },
+      });
+
+      // Check that we have the default number of positions displayed
+      const oldPositions = getAllByTestId(/position/i);
+      expect(oldPositions).toHaveLength(11);
+
+      // Change size to 5
+      const sizeInput = screen.getByLabelText(/size/i);
+      fireEvent.change(sizeInput, {
+        target: {
+          value: 5,
+        },
+      });
+
+      // Check that we have 5 positions displayed
+      const positions = getAllByTestId(/position/i);
+      expect(positions).toHaveLength(5);
     });
   });
 });
