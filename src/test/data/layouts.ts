@@ -7,7 +7,7 @@ import {
 import { ILayout, IPosition } from "../../containers/MakeTeam/types";
 
 const listLayouts: Array<ILayout> = [...listLayoutsFixture];
-const listCustomLayouts: Array<ILayout> = [...listCustomLayoutsFixture];
+let listCustomLayouts: Array<ILayout> = [...listCustomLayoutsFixture];
 
 export function create({
   name,
@@ -27,6 +27,16 @@ export function create({
   listCustomLayouts.push(newLayout);
 
   return newLayout;
+}
+
+export function remove({ id }: { id: string }): Array<ILayout> {
+  const index = listCustomLayouts.findIndex((layout) => layout.id === id);
+  listCustomLayouts.splice(index, 1);
+  return listCustomLayouts;
+}
+
+export function reset() {
+  listCustomLayouts = [...listCustomLayoutsFixture];
 }
 
 export function readLayouts(): Array<ILayout> {

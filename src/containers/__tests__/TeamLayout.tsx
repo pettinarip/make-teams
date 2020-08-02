@@ -7,15 +7,27 @@ import {
   fireEvent,
   waitForElementToBeRemoved,
   waitFor,
+  within,
+  RenderResult,
 } from "../../test/appTestUtils";
 
 import TeamLayout from "../TeamLayout";
+import * as layoutsDB from "../../test/data/layouts";
 
 const noop = () => {};
 
+function renderTeamLayout(): RenderResult {
+  layoutsDB.reset();
+  return render(
+    <DndProvider backend={HTML5Backend}>
+      <TeamLayout onChange={noop} />
+    </DndProvider>
+  );
+}
+
 describe("TeamLayout", () => {
   test("show layouts separated by defaults and custom (user's layouts) and sorted by created date", async () => {
-    render(<TeamLayout onChange={noop} />);
+    renderTeamLayout();
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
@@ -44,13 +56,53 @@ describe("TeamLayout", () => {
     `);
   });
 
+  test("delete layout", async () => {
+    const { getByTestId } = renderTeamLayout();
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+
+    // Check the current user's layouts
+    const customLayoutsContent = screen
+      .getAllByTestId("custom-layout")
+      .map((position) => position.textContent);
+    expect(customLayoutsContent).toMatchInlineSnapshot(`
+      Array [
+        "custom2",
+        "custom3",
+        "custom1",
+      ]
+    `);
+
+    // We are going to delete `custom3` layout, so here we grab the wrapper in
+    // order to get its delete button
+    const layoutWrapper = getByTestId((id, el) => {
+      return /custom-layout/i.test(id) && el.textContent === "custom3";
+    });
+    const utils = within(layoutWrapper);
+
+    // Click on delete the `custom3` layout
+    const deleteCustomBtn = utils.getByTestId("remove-layout-btn");
+    fireEvent.click(deleteCustomBtn);
+
+    // Confirm the delete action
+    const confirmBtn = screen.getByText(/do it!/i);
+    fireEvent.click(confirmBtn);
+
+    // Check the new layouts
+    const customLayoutsContentAgain = screen
+      .getAllByTestId("custom-layout")
+      .map((position) => position.textContent);
+    expect(customLayoutsContentAgain).toMatchInlineSnapshot(`
+      Array [
+        "custom2",
+        "custom1",
+      ]
+    `);
+  });
+
   describe("add new layout", () => {
     test("(happy path) complete the fields and create the layout", async () => {
-      const { getByTestId } = render(
-        <DndProvider backend={HTML5Backend}>
-          <TeamLayout onChange={noop} />
-        </DndProvider>
-      );
+      const { getByTestId } = renderTeamLayout();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
@@ -89,23 +141,19 @@ describe("TeamLayout", () => {
       `);
     });
 
-    test("missing required fields should show error messages and denied creating a new layout", async () => {
-      const { getByTestId } = render(
-        <DndProvider backend={HTML5Backend}>
-          <TeamLayout onChange={noop} />
-        </DndProvider>
-      );
+    test("missing required fields should show error messages and deny creating a new layout", async () => {
+      renderTeamLayout();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
-      // Click in New layout button
-      const newButton = getByTestId("new-layout-button");
+      // Click in new layout button
+      const newButton = screen.getByTestId("new-layout-button");
       fireEvent.click(newButton);
 
       // Click on submit button
-      const submitButton = getByTestId("new-layout-submit-button");
+      const submitButton = screen.getByTestId("new-layout-submit-button");
       fireEvent.click(submitButton);
 
       // Wait for saving process
@@ -113,6 +161,70 @@ describe("TeamLayout", () => {
         // Should show an error message on the required field
         screen.getByText(/required/i);
       });
+    });
+
+    test("click cancel and no new layout is added or removed", async () => {
+      renderTeamLayout();
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
+      );
+
+      // Click in new layout button
+      const newButton = screen.getByTestId("new-layout-button");
+      fireEvent.click(newButton);
+
+      // Click on cancel button
+      const cancelButton = screen.getByTestId("new-layout-cancel-button");
+      fireEvent.click(cancelButton);
+
+      // All the user's layouts are listed
+      const customLayoutsContent = screen
+        .getAllByTestId("custom-layout")
+        .map((position) => position.textContent);
+      expect(customLayoutsContent).toMatchInlineSnapshot(`
+        Array [
+          "custom2",
+          "custom3",
+          "custom1",
+        ]
+      `);
+    });
+
+    test("change size and save the new layout", async () => {
+      const { getAllByTestId } = renderTeamLayout();
+
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
+      );
+
+      // Click in new layout button
+      const newButton = screen.getByTestId("new-layout-button");
+      fireEvent.click(newButton);
+
+      // Assign a layout name
+      const nameInput = screen.getByLabelText(/name/i);
+      fireEvent.change(nameInput, {
+        target: {
+          value: "test",
+        },
+      });
+
+      // Check that we have the default number of positions displayed
+      const oldPositions = getAllByTestId(/position/i);
+      expect(oldPositions).toHaveLength(11);
+
+      // Change size to 5
+      const sizeInput = screen.getByLabelText(/size/i);
+      fireEvent.change(sizeInput, {
+        target: {
+          value: 5,
+        },
+      });
+
+      // Check that we have 5 positions displayed
+      const positions = getAllByTestId(/position/i);
+      expect(positions).toHaveLength(5);
     });
   });
 });

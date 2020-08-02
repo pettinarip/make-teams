@@ -25,4 +25,12 @@ export default [
       return res(ctx.data({ createCustomLayout: layout }));
     }
   ),
+
+  graphql.mutation<any, { input: any }>(
+    "DeleteCustomLayout",
+    (req, res, ctx) => {
+      const layout = layoutsDB.remove((req?.body as any).variables.input);
+      return res(ctx.data({ deleteCustomLayout: layout }));
+    }
+  ),
 ];
