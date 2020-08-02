@@ -7,7 +7,7 @@ import { IPlayer } from "../../containers/MakeTeam/types";
 
 export default function useGetPlayers(user: any): QueryResult<Array<IPlayer>> {
   return useQuery(
-    ["players", user],
+    "players",
     async (): Promise<Array<IPlayer>> => {
       const response = (await API.graphql(
         graphqlOperation(listPlayers, {

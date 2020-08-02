@@ -7,7 +7,7 @@ import { ILayout } from "../../containers/MakeTeam/types";
 
 export default function useGetLayouts(user: any): QueryResult<Array<ILayout>> {
   return useQuery(
-    ["layouts", user],
+    "layouts",
     async (): Promise<Array<ILayout>> => {
       const response = (await API.graphql(
         graphqlOperation(listLayouts)

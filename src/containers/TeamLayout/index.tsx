@@ -76,11 +76,10 @@ export default function TeamLayout({ onChange }: IProps) {
       ) : (
         <Form data-testid="layouts">
           {defaultLayouts.map((layout) => (
-            <Form.Field key={layout.id}>
+            <Form.Field key={layout.id} data-testid="layout">
               <Radio
                 id={`layout-${layout.id}`}
                 name="layout"
-                data-testid="layout"
                 label={{
                   children: layout.name,
                   htmlFor: `layout-${layout.id}`,
@@ -95,11 +94,10 @@ export default function TeamLayout({ onChange }: IProps) {
           {customLayouts.length > 0 && <Divider />}
 
           {customLayouts.map((layout) => (
-            <Form.Field key={layout.id}>
+            <Form.Field key={layout.id} data-testid="custom-layout">
               <Radio
                 id={`layout-${layout.id}`}
                 name="layout"
-                data-testid="custom-layout"
                 label={{
                   children: layout.name,
                   htmlFor: `layout-${layout.id}`,

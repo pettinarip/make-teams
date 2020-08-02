@@ -18,9 +18,11 @@ export default function RemoveLayoutButton(props: IProps) {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
-  async function handleOnRemove() {
-    await removeLayout(props.layout);
+  function handleOnRemove() {
+    // As we are performing optimistic updates, we just close the modal and
+    // assume the removal was executed ok
     toggleConfirmModal();
+    removeLayout(props.layout);
   }
 
   return (
@@ -31,6 +33,7 @@ export default function RemoveLayoutButton(props: IProps) {
         icon="trash"
         onClick={toggleConfirmModal}
         css={css(`float: right`)}
+        data-testid="remove-layout-btn"
       />
       <Confirm
         open={isConfirmOpen}
