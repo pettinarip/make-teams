@@ -2,7 +2,9 @@ import React, { ReactNode, useState } from "react";
 import { Button, Modal, Header, Message } from "semantic-ui-react";
 import styled from "@emotion/styled";
 
-import useAddNewLayout from "../../graphql/mutations/useAddNewLayout";
+import useAddNewLayout, {
+  newLayout,
+} from "../../graphql/mutations/useAddNewLayout";
 import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
 
 export interface IProps {
@@ -29,12 +31,12 @@ export default function CreateLayoutButton(props: IProps) {
     submitForm = submitFormFn;
   }
 
-  async function handleSubmit(values: IFormValues) {
+  function handleSubmit(values: IFormValues) {
     setIsSubmitting(true);
     setHasErrors(false);
 
     try {
-      await addNewLayout(values);
+      addNewLayout(newLayout(values));
       handleClose();
     } catch (e) {
       console.log(e);
