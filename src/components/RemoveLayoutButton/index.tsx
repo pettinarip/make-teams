@@ -8,6 +8,7 @@ import useRemoveLayout from "../../graphql/mutations/useRemoveLayout";
 
 export interface IProps {
   layout: ILayout;
+  onRemoved?: (layout: ILayout) => void;
 }
 
 export default function RemoveLayoutButton(props: IProps) {
@@ -23,6 +24,10 @@ export default function RemoveLayoutButton(props: IProps) {
     // assume the removal was executed ok
     toggleConfirmModal();
     removeLayout(props.layout);
+
+    if (props.onRemoved) {
+      props.onRemoved(props.layout);
+    }
   }
 
   return (
