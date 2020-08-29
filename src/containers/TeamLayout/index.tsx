@@ -32,7 +32,9 @@ export default function TeamLayout({ onChange }: IProps) {
   }, [selected, onChange]);
 
   useEffect(() => {
-    if (layouts.length) {
+    // Only autoselect the first layout in the list on the first load (when
+    // there is no layout selected)
+    if (layouts.length && !selected) {
       const hasUserLayouts = layouts.some((layout) => layout.isCustom);
       if (hasUserLayouts) {
         // If the user has its own layouts then select the first custom layout
