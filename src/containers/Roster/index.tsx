@@ -30,7 +30,7 @@ export default function Roster({
   onResetClick,
 }: IProps) {
   const { user = {}, isLoading } = useAuth();
-  const { status, data: players = [], isFetching } = useGetPlayers(user);
+  const { status, data: players = [] } = useGetPlayers(user);
 
   return (
     <div>
@@ -68,7 +68,7 @@ export default function Roster({
           ))}
       </List>
       <Divider />
-      {isLoading || isFetching ? (
+      {isLoading ? (
         <Loader active inline="centered" data-testid="loading" />
       ) : (
         <div data-testid="roster-buttons">

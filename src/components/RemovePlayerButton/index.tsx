@@ -18,7 +18,6 @@ export default function RemovePlayerButton(props: IProps) {
 
   async function handleOnRemove() {
     await removePlayer(props.player);
-    toggleConfirmModal();
   }
 
   return (
