@@ -7,9 +7,11 @@ import omit from "lodash.omit";
 import { getShareLink } from "../queries";
 import { IShareTeam, IPosition } from "../../containers/MakeTeam/types";
 
+export const QUERY_KEY = "shareTeam";
+
 export default function useGetShareTeam(id?: string): QueryResult<IShareTeam> {
   return useQuery(
-    id !== "" && ["shareTeam"],
+    QUERY_KEY,
     async (): Promise<IShareTeam> => {
       const response = (await API.graphql({
         ...graphqlOperation(getShareLink, { id }),
@@ -32,6 +34,9 @@ export default function useGetShareTeam(id?: string): QueryResult<IShareTeam> {
           }
         ),
       };
+    },
+    {
+      enabled: id !== "",
     }
   );
 }
