@@ -5,9 +5,11 @@ import { QueryResult } from "react-query/types";
 import { listPlayers } from "../queries";
 import { IPlayer } from "../../containers/MakeTeam/types";
 
+export const QUERY_KEY = "players";
+
 export default function useGetPlayers(user: any): QueryResult<Array<IPlayer>> {
   return useQuery(
-    "players",
+    QUERY_KEY,
     async (): Promise<Array<IPlayer>> => {
       const response = (await API.graphql(
         graphqlOperation(listPlayers, {

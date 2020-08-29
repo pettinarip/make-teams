@@ -5,9 +5,11 @@ import { QueryResult } from "react-query/types";
 import { listLayouts } from "../queries";
 import { ILayout } from "../../containers/MakeTeam/types";
 
+export const QUERY_KEY = "layouts";
+
 export default function useGetLayouts(user: any): QueryResult<Array<ILayout>> {
   return useQuery(
-    "layouts",
+    QUERY_KEY,
     async (): Promise<Array<ILayout>> => {
       const response = (await API.graphql(
         graphqlOperation(listLayouts)

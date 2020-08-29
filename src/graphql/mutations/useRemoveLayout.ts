@@ -3,6 +3,7 @@ import { graphqlOperation, API } from "aws-amplify";
 
 import { ILayout } from "../../containers/MakeTeam/types";
 import { deleteCustomLayout } from "../mutations";
+import { QUERY_KEY } from "../queries/useGetLayouts";
 
 export default function useRemoveLayout() {
   return useMutation<any, Partial<ILayout>>(
@@ -16,12 +17,12 @@ export default function useRemoveLayout() {
       // the old value and return it so that it's accessible in case of
       // an error
       onMutate: (layout) => {
-        queryCache.cancelQueries("layouts");
+        queryCache.cancelQueries(QUERY_KEY);
 
-        const previousValue = queryCache.getQueryData("layouts");
+        const previousValue = queryCache.getQueryData(QUERY_KEY);
 
         queryCache.setQueryData(
-          "layouts",
+          QUERY_KEY,
           (layouts: Array<ILayout> | undefined) => {
             if (!layouts) return;
             return layouts.filter((l) => l.id !== layout.id);
@@ -33,12 +34,12 @@ export default function useRemoveLayout() {
       // On failure, roll back to the previous value
       onError: (err, variables, previousValue) => {
         // TODO: we should show an error global message to the user
-        queryCache.setQueryData("layouts", previousValue);
+        queryCache.setQueryData(QUERY_KEY, previousValue);
       },
       // After success or failure, refetch the todos query
       onSettled: () => {
         // TODO: we should show a success global message to the user
-        queryCache.invalidateQueries("layouts");
+        queryCache.invalidateQueries(QUERY_KEY);
       },
     }
   );

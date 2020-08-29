@@ -32,7 +32,9 @@ export default function TeamLayout({ onChange }: IProps) {
   }, [selected, onChange]);
 
   useEffect(() => {
-    if (layouts.length) {
+    // Only autoselect the first layout in the list on the first load (when
+    // there is no layout selected)
+    if (layouts.length && !selected) {
       const hasUserLayouts = layouts.some((layout) => layout.isCustom);
       if (hasUserLayouts) {
         // If the user has its own layouts then select the first custom layout
@@ -43,7 +45,7 @@ export default function TeamLayout({ onChange }: IProps) {
         setSelected(layouts[0]);
       }
     }
-  }, [layouts]);
+  }, [layouts, selected]);
 
   const defaultLayouts = useMemo(() => {
     return layouts.filter((layout) => !layout.isCustom);
@@ -57,6 +59,14 @@ export default function TeamLayout({ onChange }: IProps) {
     const layout = layouts.find((l) => l.id === value);
     if (layout) {
       setSelected(layout);
+    }
+  }
+
+  function handleLayoutRemoved(layout: ILayout) {
+    // If the removed layout was selected, clear the `selected` state so that we
+    // can autoselect again the first layout in the list
+    if (layout.id === selected?.id) {
+      setSelected(undefined);
     }
   }
 
@@ -106,7 +116,10 @@ export default function TeamLayout({ onChange }: IProps) {
                 checked={selected && selected.id === layout.id}
                 onChange={handleChange}
               />
-              <RemoveLayoutButton layout={layout} />
+              <RemoveLayoutButton
+                layout={layout}
+                onRemoved={handleLayoutRemoved}
+              />
             </Form.Field>
           ))}
         </Form>

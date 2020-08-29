@@ -3,6 +3,7 @@ import { graphqlOperation, API } from "aws-amplify";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
 import { createPlayer } from "../mutations";
+import { QUERY_KEY } from "../queries/useGetPlayers";
 
 export default function useAddNewPlayer() {
   return useMutation<any, Partial<IPlayer>>(
@@ -11,7 +12,7 @@ export default function useAddNewPlayer() {
     },
     {
       onSuccess: () => {
-        return queryCache.invalidateQueries("players");
+        return queryCache.invalidateQueries(QUERY_KEY);
       },
     }
   );
