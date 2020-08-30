@@ -28,6 +28,7 @@ export default function PositionDrag({
     position,
     type: ITEM_TYPE,
   };
+
   const [{ isDragging }, drag, preview] = useDrag({
     item: dragPosition,
   });

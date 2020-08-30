@@ -1,10 +1,9 @@
 import React from "react";
-import { useDrop, useDrag, DragSourceMonitor } from "react-dnd";
-import composeRefs from "@seznam/compose-react-refs";
+import { useDrag, DragSourceMonitor } from "react-dnd";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import ItemTypes from "./ItemTypes";
-import PositionStatic from "../PositionStatic";
+import PositionDrop from "../PositionDrop";
 
 export interface IProps {
   index: number;
@@ -15,40 +14,38 @@ export interface IProps {
   ) => void;
 }
 
+export interface IDragPosition {
+  index: number;
+  position: IPosition;
+  type: string;
+}
+
 export default function PositionDnD({
   index,
   position,
   onPositionDropInPosition,
   ...restProps
 }: IProps) {
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.POSITION,
-    drop: () => ({ index }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
+  const dragPosition: IDragPosition = {
+    index,
+    position,
+    type: ItemTypes.POSITION,
+  };
 
   const [, drag] = useDrag({
-    item: { index, type: ItemTypes.POSITION },
-    end: (item: { index: number } | undefined, monitor: DragSourceMonitor) => {
+    item: dragPosition,
+    end: (
+      __item: { index: number } | undefined,
+      monitor: DragSourceMonitor
+    ) => {
       const dropResult = monitor.getDropResult();
-      if (index > -1 && dropResult && dropResult.index > -1) {
+      if (index > -1 && dropResult?.index > -1) {
         onPositionDropInPosition(index, dropResult.index);
       }
     },
-    collect: () => ({}),
   });
 
-  const isActive = canDrop && isOver;
-
   return (
-    <PositionStatic
-      ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
-      position={position}
-      isActive={isActive}
-      {...restProps}
-    />
+    <PositionDrop ref={drag} index={index} position={position} {...restProps} />
   );
 }

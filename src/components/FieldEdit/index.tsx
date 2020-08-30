@@ -6,7 +6,10 @@ import produce from "immer";
 import snapToGrid from "./snapToGrid";
 
 import { IPosition } from "../../containers/MakeTeam/types";
-import PositionDrag, { ITEM_TYPE, IDragPosition } from "../PositionDrag";
+import PositionDrag, {
+  ITEM_TYPE as POSITION_DRAG_ITEM_TYPE,
+  IDragPosition,
+} from "../PositionDrag";
 import FieldDragLayer from "../FieldDragLayer";
 import Field from "../Field";
 import useDimensions from "../../hooks/useDimensions";
@@ -20,7 +23,7 @@ export default function FieldEdit(props: IProps) {
   const [dropArea, dimensions] = useDimensions();
 
   const [, drop] = useDrop({
-    accept: ITEM_TYPE,
+    accept: POSITION_DRAG_ITEM_TYPE,
     drop: (item: IDragPosition, monitor) => {
       const delta = monitor.getDifferenceFromInitialOffset() as XYCoord;
 
