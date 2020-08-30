@@ -4,8 +4,9 @@ import { useDrag, DragSourceMonitor } from "react-dnd";
 import styled from "@emotion/styled";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import ItemTypes from "../PositionDnD/ItemTypes";
 import playerImg from "../../images/christian.jpg";
+
+export const ITEM_TYPE = "player";
 
 export interface IProps {
   player: IPlayer;
@@ -15,7 +16,7 @@ export interface IProps {
 
 export default function Player({ player, onDropInPosition, onClick }: IProps) {
   const [, drag] = useDrag({
-    item: { player, type: ItemTypes.POSITION },
+    item: { player, type: ITEM_TYPE },
     end: (
       item: { player: IPlayer } | undefined,
       monitor: DragSourceMonitor

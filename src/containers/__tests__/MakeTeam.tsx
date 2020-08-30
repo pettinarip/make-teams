@@ -340,6 +340,60 @@ describe("MakeTeam", () => {
     `);
   });
 
+  test("an empty position can not be dragged", async () => {
+    render(<MakeTeam />);
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+
+    // Drag the player named Pablo Pettinari into the first position
+    const player = screen.getByText(/pablo/i);
+    const positions = screen.getAllByTestId(/position/i);
+    dragAndDrop(player, positions[0]);
+
+    // Check what we have
+    const oldPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(oldPositions).toMatchInlineSnapshot(`
+      Array [
+        "5",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+
+    // Try to drag an empty position (the 2nd) into the previous
+    dragAndDrop(positions[1], positions[0]);
+
+    // Nothing should have changed
+    const newPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(newPositions).toMatchInlineSnapshot(`
+      Array [
+        "5",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+  });
+
   test("when show names toggle is on, players names dispalys", async () => {
     render(<MakeTeam />);
 
