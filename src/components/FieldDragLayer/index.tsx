@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useDragLayer } from "react-dnd";
+import clamp from "lodash.clamp";
 
 import snapToGrid from "../FieldEdit/snapToGrid";
 
@@ -34,7 +35,15 @@ export default function FieldDragLayer({ width, height }: IProps) {
 
   return (
     <Layer>
-      {item && <PositionStatic position={{ ...item.position, ...snapped }} />}
+      {item && (
+        <PositionStatic
+          position={{
+            ...item.position,
+            x: clamp(snapped.x, 0, 100),
+            y: clamp(snapped.y, 0, 100),
+          }}
+        />
+      )}
     </Layer>
   );
 }
