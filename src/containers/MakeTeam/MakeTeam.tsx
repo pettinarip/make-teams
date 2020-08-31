@@ -1,77 +1,74 @@
-import React, { useState } from "react";
-import { Grid, Button, Segment, Rail, Label } from "semantic-ui-react";
-import produce from "immer";
+import React, { useState, useCallback, useEffect } from "react";
+import { Grid, Segment, Rail } from "semantic-ui-react";
 
-import Field from "../../components/Field";
+import FieldStatic from "../../components/FieldStatic";
+import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
+import ShareTeam from "../ShareTeam";
 
 import { IPlayer, ILayout, IPosition } from "./types";
+import useAssignments from "./useAssignments";
 
 export interface IProps {}
 
-export default function MakeTeam(props: IProps) {
+export default function MakeTeam(__props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
-  const [usedPlayersIds, setUsedPlayersIds] = useState<Array<number>>([]);
+  const [usedPlayersIds, setUsedPlayersIds] = useState<Array<string>>([]);
+  const [showNames, setShowNames] = useState(false);
 
-  function handlePlayerDropInPosition(player: IPlayer, positionIndex: number) {
-    assignPlayerToPosition(player, positionIndex);
-  }
+  const { assignments, assign, toggle, reset } = useAssignments(positions);
 
-  function handlePlayerClick(player: IPlayer) {
-    const firstPositionAvailable = positions.findIndex((p) => !p.player);
-    if (firstPositionAvailable > -1) {
-      assignPlayerToPosition(player, firstPositionAvailable);
-    }
-  }
-
-  function handlePositionDropInPosition(
-    positionDraggedIndex: number,
-    positionDroppedIndex: number
-  ) {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        const playerDropped = positions[positionDroppedIndex].player;
-        const playerDragged = positions[positionDraggedIndex].player;
-        positions[positionDroppedIndex].player = playerDragged;
-        positions[positionDraggedIndex].player = playerDropped;
-      })
+  useEffect(() => {
+    setUsedPlayersIds(
+      assignments.map((a) => a.player?.id).filter((id) => !!id) as string[]
     );
-  }
+  }, [assignments]);
 
-  function handleOnClear() {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        positions.forEach((position) => {
-          delete position.player;
-        });
-      })
-    );
-    setUsedPlayersIds([]);
-  }
+  const handleLayoutChange = useCallback(
+    (layout: ILayout) => {
+      setPositions(layout.positions);
+    },
+    [setPositions]
+  );
 
-  function assignPlayerToPosition(player: IPlayer, positionIndex: number) {
-    setPositions(
-      produce((positions: Array<IPosition>) => {
-        positions[positionIndex].player = player;
-      })
-    );
+  const handlePlayerDropInPosition = useCallback(
+    (player: IPlayer, positionIndex: number) => {
+      assign(player, positionIndex);
+    },
+    [assign]
+  );
 
-    setUsedPlayersIds([...usedPlayersIds, player.id]);
-  }
+  const handlePlayerClick = useCallback(
+    (player: IPlayer) => {
+      assign(player);
+    },
+    [assign]
+  );
 
-  function handleLayoutChange(layout: ILayout) {
-    setPositions(layout.positions);
-    setUsedPlayersIds([]);
-  }
+  const handlePositionDropInPosition = useCallback(
+    (draggedIndex: number, droppedIndex: number) => {
+      toggle(draggedIndex, droppedIndex);
+    },
+    [toggle]
+  );
+
+  const handleOnClear = useCallback(() => {
+    reset();
+  }, [reset]);
+
+  const handleShowNamesChange = useCallback(() => {
+    setShowNames((showNames) => !showNames);
+  }, []);
 
   return (
     <Grid centered columns={3}>
       <Grid.Row>
         <Grid.Column>
           <Segment>
-            <Field
-              positions={positions}
+            <FieldStatic
+              showNames={showNames}
+              positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
             />
 
@@ -96,13 +93,15 @@ export default function MakeTeam(props: IProps) {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign="center">
-          <Button positive disabled>
-            Share your team!
-          </Button>
-          <br />
-          <Label basic pointing>
-            Coming soon
-          </Label>
+          <Controls
+            showNames={showNames}
+            onShowNamesChange={handleShowNamesChange}
+          />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column textAlign="center">
+          <ShareTeam positions={assignments} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

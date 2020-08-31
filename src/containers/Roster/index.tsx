@@ -10,13 +10,14 @@ import {
 } from "semantic-ui-react";
 
 import { IPlayer } from "../MakeTeam/types";
+import useAuth from "../../components/ProtectedRoute/useAuth";
 import useGetPlayers from "../../graphql/queries/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
 
 export interface IProps {
-  usedPlayersIds: Array<number>;
+  usedPlayersIds: Array<string>;
   onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
   onResetClick: () => void;
@@ -28,13 +29,14 @@ export default function Roster({
   onPlayerClick,
   onResetClick,
 }: IProps) {
-  const { status, data: players = [], isFetching } = useGetPlayers();
+  const { user = {}, isLoading } = useAuth();
+  const { status, data: players = [] } = useGetPlayers(user);
 
   return (
     <div>
       <Header as="h2">Roster ({players.length})</Header>
-      {status === "loading" && (
-        <Placeholder fluid>
+      {(isLoading || status === "loading") && (
+        <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
             <Placeholder.Line />
             <Placeholder.Line />
@@ -66,10 +68,10 @@ export default function Roster({
           ))}
       </List>
       <Divider />
-      {isFetching ? (
-        <Loader active inline="centered" />
+      {isLoading ? (
+        <Loader active inline="centered" data-testid="loading" />
       ) : (
-        <div>
+        <div data-testid="roster-buttons">
           <CreatePlayerButton>New</CreatePlayerButton>
           <Button onClick={onResetClick}>Reset</Button>
         </div>

@@ -1,14 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router } from "@reach/router";
-import { ReactQueryConfigProvider } from "react-query";
 import Amplify from "aws-amplify";
+import { Router } from "@reach/router";
+import {
+  ReactQueryConfigProvider,
+  ReactQueryProviderConfig,
+} from "react-query";
+import { ToastProvider } from "react-toast-notifications";
+
+import ViewShareLink from "./containers/ViewShareLink";
+import MakeTeam from "./containers/MakeTeam";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
-import MakeTeam from "./containers/MakeTeam";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
+import ResetPassword from "./components/ResetPassword";
 
 import * as serviceWorker from "./serviceWorker";
 import awsconfig from "./aws-exports";
@@ -18,22 +25,30 @@ import "semantic-ui-css/semantic.min.css";
 
 Amplify.configure(awsconfig);
 
-const queryConfig = {
-  retry: 3,
-  throwOnError: true,
-  refetchAllOnWindowFocus: false,
-  staleTime: 10 * 1000,
+const queryConfig: ReactQueryProviderConfig = {
+  queries: {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    staleTime: 10 * 1000,
+  },
+  mutations: {
+    throwOnError: true,
+  },
 };
 
 ReactDOM.render(
   <ReactQueryConfigProvider config={queryConfig}>
-    <Layout>
-      <Router>
-        <Login path="/login" />
-        <SignUp path="/sign-up" />
-        <ProtectedRoute path="/" component={MakeTeam} />
-      </Router>
-    </Layout>
+    <ToastProvider>
+      <Layout>
+        <Router>
+          <Login path="/login" />
+          <SignUp path="/sign-up" />
+          <ResetPassword path="/reset-password" />
+          <ViewShareLink path="/share/:shareId" />
+          <ProtectedRoute path="/" component={MakeTeam} />
+        </Router>
+      </Layout>
+    </ToastProvider>
   </ReactQueryConfigProvider>,
   document.getElementById("root")
 );

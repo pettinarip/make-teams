@@ -1,89 +1,46 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
 import styled from "@emotion/styled";
-import { useDrop, useDrag, DragSourceMonitor } from "react-dnd";
 import { Label } from "semantic-ui-react";
-import composeRefs from "@seznam/compose-react-refs";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import playerImg from "../../images/christian.jpg";
-import ItemTypes from "./ItemTypes";
 
 export interface IProps {
-  index: number;
   position: IPosition;
-  onPositionDropInPosition: (
-    positionDraggedIndex: number,
-    positionDroppedIndex: number
-  ) => void;
+  isActive?: boolean;
+  showName?: boolean;
 }
 
-export default function Position({
-  index,
-  position,
-  onPositionDropInPosition,
-}: IProps) {
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: ItemTypes.POSITION,
-    drop: () => ({ index }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
-
-  const [collecedProps, drag] = useDrag({
-    item: { index, type: ItemTypes.POSITION },
-    end: (item: { index: number } | undefined, monitor: DragSourceMonitor) => {
-      const dropResult = monitor.getDropResult();
-      if (index > -1 && dropResult && dropResult.index > -1) {
-        onPositionDropInPosition(index, dropResult.index);
-      }
-    },
-    collect: () => ({}),
-  });
-
-  const isActive = canDrop && isOver;
+export default function Position({ position, isActive, showName }: IProps) {
+  const player = position.player;
 
   return (
-    <Wrapper
-      ref={composeRefs(drag, drop) as (arg: HTMLDivElement) => void}
-      x={position.x}
-      y={position.y}
-    >
-      <Img isActive={isActive}>
+    <div data-testid="position">
+      <Img isActive={!!isActive}>
         {position.player ? (
           <img
             css={css`
               width: 100%;
             `}
             src={playerImg}
+            alt=""
           />
         ) : (
           ""
         )}
       </Img>
-      {position.player && (
+      {player && (
         <Label color="teal" floating>
-          {position.player.number}
+          {player.number}
         </Label>
       )}
-    </Wrapper>
+      {player && showName && (
+        <Name>{`${player.lastName}, ${player.firstName}`}</Name>
+      )}
+    </div>
   );
 }
-
-const Wrapper = styled.div<{ x: number; y: number }>(
-  {
-    position: "absolute",
-    textAlign: "center",
-    lineHeight: "40px",
-    marginLeft: -20,
-  },
-  (props) => ({
-    left: `${props.x}%`,
-    top: `${props.y}%`,
-  })
-);
 
 const Img = styled.div<{ isActive: boolean }>(
   {
@@ -96,3 +53,13 @@ const Img = styled.div<{ isActive: boolean }>(
     backgroundColor: props.isActive ? "lightgray" : "white",
   })
 );
+
+const Name = styled.span`
+  position: absolute;
+  left: -20px;
+  width: 80px;
+  font-size: 0.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;

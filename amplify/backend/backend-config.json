@@ -7,11 +7,7 @@
                 "authConfig": {
                     "additionalAuthenticationProviders": [
                         {
-                            "authenticationType": "API_KEY",
-                            "apiKeyConfig": {
-                                "description": "makeTeamsAPIKey",
-                                "apiKeyExpirationDays": "365"
-                            }
+                            "authenticationType": "AWS_IAM"
                         }
                     ],
                     "defaultAuthentication": {

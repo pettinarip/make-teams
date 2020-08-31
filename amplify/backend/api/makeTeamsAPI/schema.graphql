@@ -1,29 +1,31 @@
-type Layout
+type Layout @model @auth(rules: [{ allow: private }]) {
+  id: ID!
+  name: String!
+  createdAt: AWSDateTime
+  positions: [Position]!
+}
+
+type CustomLayout
   @model
   @auth(
     rules: [
-      { allow: private }
-      { allow: public, provider: apiKey, operations: [read] }
+      {
+        allow: owner
+        ownerField: "createdBy"
+        operations: [create, update, delete, read]
+      }
     ]
   ) {
   id: ID!
   name: String!
+  createdBy: String
   createdAt: AWSDateTime
-  positions: [Position] @connection(name: "LayoutPositions")
+  positions: [Position]!
 }
 
-type Position
-  @model
-  @auth(
-    rules: [
-      { allow: private }
-      { allow: public, provider: apiKey, operations: [read] }
-    ]
-  ) {
-  id: ID!
+type Position {
   x: Float!
   y: Float!
-  layout: Layout @connection(name: "LayoutPositions")
 }
 
 type Player
@@ -35,8 +37,6 @@ type Player
         ownerField: "createdBy"
         operations: [create, update, delete, read]
       }
-      { allow: private, operations: [read] }
-      { allow: public, provider: apiKey, operations: [read] }
     ]
   ) {
   id: ID!
@@ -58,33 +58,26 @@ type ShareLink
         ownerField: "createdBy"
         operations: [create, update, delete, read]
       }
-      { allow: private, operations: [read] }
-      { allow: public, provider: apiKey, operations: [read] }
+      { allow: public, provider: iam }
     ]
   ) {
   id: ID!
-  name: String
-  layout: Layout @connection
-  positions: [ShareLinkPosition] @connection(name: "SharePositions")
+  name: String!
+  positions: [ShareLinkPosition]!
   createdBy: String
 }
 
-type ShareLinkPosition
-  @model
-  @auth(
-    rules: [
-      {
-        allow: owner
-        ownerField: "createdBy"
-        operations: [create, update, delete, read]
-      }
-      { allow: private, operations: [read] }
-      { allow: public, provider: apiKey, operations: [read] }
-    ]
-  ) {
-  id: ID!
-  shareLink: ShareLink @connection(name: "SharePositions")
-  position: Position @connection
-  player: Player @connection
-  createdBy: String
+type ShareLinkPosition {
+  x: Float!
+  y: Float!
+  player: ShareLinkPlayer
+}
+
+type ShareLinkPlayer {
+  id: String
+  firstName: String
+  lastName: String
+  number: Int
+  nickName: String
+  age: Int
 }

@@ -1,16 +1,15 @@
 import { useQuery } from "react-query";
 import { graphqlOperation, API } from "aws-amplify";
+import { QueryResult } from "react-query/types";
 
-import { IReactQuery } from "../types";
 import { listPlayers } from "../queries";
 import { IPlayer } from "../../containers/MakeTeam/types";
-import useAuth from "../../components/ProtectedRoute/useAuth";
 
-export default function useGetPlayers(): IReactQuery<Array<IPlayer>> {
-  const { user = {} as any } = useAuth();
+export const QUERY_KEY = "players";
 
+export default function useGetPlayers(user: any): QueryResult<Array<IPlayer>> {
   return useQuery(
-    user && ["players", user],
+    QUERY_KEY,
     async (): Promise<Array<IPlayer>> => {
       const response = (await API.graphql(
         graphqlOperation(listPlayers, {
@@ -20,6 +19,9 @@ export default function useGetPlayers(): IReactQuery<Array<IPlayer>> {
       )) as any;
 
       return response.data.listPlayers.items;
+    },
+    {
+      enabled: !!user,
     }
   );
 }
