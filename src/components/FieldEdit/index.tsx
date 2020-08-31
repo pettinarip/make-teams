@@ -2,6 +2,7 @@ import React from "react";
 import { useDrop, XYCoord } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
 import produce from "immer";
+import clamp from "lodash.clamp";
 
 import snapToGrid from "./snapToGrid";
 
@@ -32,9 +33,13 @@ export default function FieldEdit(props: IProps) {
       const dropHeight = dropArea?.current?.clientHeight || 0;
       const x = Math.round(item.position.x + (delta.x / dropWidth) * 100);
       const y = Math.round(item.position.y + (delta.y / dropHeight) * 100);
+      const snapped = snapToGrid(x, y);
 
       // Snap the new positions to the grid
-      updatePositions(item.index, snapToGrid(x, y));
+      updatePositions(item.index, {
+        x: clamp(snapped.x, 0, 100),
+        y: clamp(snapped.y, 0, 100),
+      });
       return undefined;
     },
   });
