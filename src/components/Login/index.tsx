@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { RouteComponentProps, useNavigate, Link } from "@reach/router";
 import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
-import { Formik, Field } from "formik";
+import { Formik, Field, FormikHelpers } from "formik";
 import * as yup from "yup";
 
 import { useLoginMutation } from "../../graphql/API";
+import toErrorMap from "../../utils/toErrorMap";
 
 export interface IProps extends RouteComponentProps {}
 
@@ -25,12 +26,20 @@ export default function Login(__props: IProps) {
 
   const initialValues: IFormValues = { email: "", password: "" };
 
-  async function handleLogin(values: IFormValues) {
+  async function handleLogin(
+    values: IFormValues,
+    { setErrors }: FormikHelpers<IFormValues>
+  ) {
     setSignInError("");
 
     try {
-      await login(values);
-      navigate("/", { replace: true });
+      const response = await login(values);
+      const errors = response.data?.login.errors;
+      if (errors) {
+        setErrors(toErrorMap(errors));
+      } else {
+        navigate("/", { replace: true });
+      }
     } catch (e) {
       setSignInError(e.message);
     }
