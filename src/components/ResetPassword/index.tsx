@@ -3,7 +3,7 @@ import { RouteComponentProps, Link, useNavigate } from "@reach/router";
 import { Grid, Message, Form, Segment, Button } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
-import { Auth } from "aws-amplify";
+// import { Auth } from "aws-amplify";
 
 import ResendCodeLink from "./ResendCodeLink";
 
@@ -41,10 +41,10 @@ export default function ResetPassword(__props: IProps) {
 
     try {
       if (isCodeValidationStep) {
-        await Auth.forgotPasswordSubmit(email, confirmationCode, newPassword);
+        // await Auth.forgotPasswordSubmit(email, confirmationCode, newPassword);
         navigate("/login", { replace: true });
       } else {
-        await Auth.forgotPassword(email);
+        // await Auth.forgotPassword(email);
         setIsCodeValidationStep(true);
       }
     } catch (e) {

@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { Button, Image, Modal, Header, Message } from "semantic-ui-react";
 
-import useAddNewPlayer from "../../graphql/mutations/useAddNewPlayer";
+// import useAddNewPlayer from "../../graphql/mutations/useAddNewPlayer";
 import { IPlayer } from "../../containers/MakeTeam/types";
 import CreatePlayerForm, { IFormValues } from "./CreatePlayerForm";
 
@@ -13,7 +13,7 @@ export default function CreatePlayerButton(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
-  const [addNewPlayer] = useAddNewPlayer();
+  // const [addNewPlayer] = useAddNewPlayer();
 
   let submitForm: Function = () => {};
 
@@ -39,7 +39,7 @@ export default function CreatePlayerButton(props: IProps) {
         lastName: values.lastName,
         number: values.number,
       };
-      await addNewPlayer(newPlayer);
+      // await addNewPlayer(newPlayer);
       handleClose();
     } catch (e) {
       console.log(e);

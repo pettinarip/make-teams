@@ -4,7 +4,7 @@ import { jsx, css } from "@emotion/core";
 import { Button, Confirm } from "semantic-ui-react";
 
 import { ILayout } from "../../containers/MakeTeam/types";
-import useRemoveLayout from "../../graphql/mutations/useRemoveLayout";
+// import useRemoveLayout from "../../graphql/mutations/useRemoveLayout";
 
 export interface IProps {
   layout: ILayout;
@@ -13,7 +13,7 @@ export interface IProps {
 
 export default function RemoveLayoutButton(props: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [removeLayout] = useRemoveLayout();
+  // const [removeLayout] = useRemoveLayout();
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
@@ -23,7 +23,7 @@ export default function RemoveLayoutButton(props: IProps) {
     // As we are performing optimistic updates, we just close the modal and
     // assume the removal was executed ok
     toggleConfirmModal();
-    removeLayout(props.layout);
+    // removeLayout(props.layout);
 
     if (props.onRemoved) {
       props.onRemoved(props.layout);

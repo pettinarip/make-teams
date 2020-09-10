@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { RouteComponentProps, useNavigate } from "@reach/router";
 import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
 import { Formik, Field } from "formik";
-import { Auth } from "aws-amplify";
 import * as yup from "yup";
+import { useMutation } from "urql";
 
 import ResendCodeLink from "./ResendCodeLink";
 
@@ -14,6 +14,10 @@ interface IFormValues {
   password: string;
   confirmationCode: string;
 }
+
+const REGISTER = `
+
+`;
 
 const validationSignUpSchema = yup.object({
   email: yup.string().email().required(),
@@ -29,6 +33,7 @@ export default function SignUp(__props: IProps) {
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [signUpError, setSignUpError] = useState("");
   const navigate = useNavigate();
+  const [, register] = useMutation(REGISTER);
 
   const initialValues: IFormValues = {
     email: "",
@@ -42,10 +47,10 @@ export default function SignUp(__props: IProps) {
 
     try {
       if (isVerifyStep) {
-        await Auth.confirmSignUp(email, confirmationCode);
+        // await Auth.confirmSignUp(email, confirmationCode);
         navigate("/login", { replace: true });
       } else {
-        await Auth.signUp({ username: email, password });
+        // await Auth.signUp({ username: email, password });
         setIsVerifyStep(true);
       }
     } catch (e) {

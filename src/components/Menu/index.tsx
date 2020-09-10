@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/core";
 import { Menu as MenuSemantic } from "semantic-ui-react";
 import { navigate } from "@reach/router";
-import { Auth } from "aws-amplify";
+// import { Auth } from "aws-amplify";
 
 import useAuth from "../ProtectedRoute/useAuth";
 
@@ -12,7 +12,7 @@ export default function Menu() {
   const username = getUsername(user);
 
   async function handleSignOut() {
-    await Auth.signOut();
+    // await Auth.signOut();
     navigate("/login");
   }
 

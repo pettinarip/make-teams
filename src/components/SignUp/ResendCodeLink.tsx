@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Auth } from "aws-amplify";
 import { Loader } from "semantic-ui-react";
 import { Link } from "@reach/router";
 
@@ -14,7 +13,7 @@ export default function ResendCodeLink({ email, onError }: IProps) {
   async function handleResend() {
     setLoading(true);
     try {
-      await Auth.resendSignUp(email);
+      // await Auth.resendSignUp(email);
     } catch (e) {
       onError(e.message);
     }

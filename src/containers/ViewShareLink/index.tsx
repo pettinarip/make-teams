@@ -3,14 +3,14 @@ import { Segment, Grid } from "semantic-ui-react";
 import { RouteComponentProps } from "@reach/router";
 import styled from "@emotion/styled";
 
-import useGetShareTeam from "../../graphql/queries/useGetShareTeam";
+// import useGetShareTeam from "../../graphql/queries/useGetShareTeam";
 import Controls from "../../components/Controls";
 import FieldStatic from "../../components/FieldStatic";
 
 interface IProps extends RouteComponentProps<{ shareId: string }> {}
 
 export default function ViewShareLink(props: IProps) {
-  const { data: shareTeam, isFetching } = useGetShareTeam(props.shareId);
+  // const { data: shareTeam, isFetching } = useGetShareTeam(props.shareId);
   const [showNames, setShowNames] = useState(true);
 
   const handleShowNamesChange = useCallback(() => {
@@ -23,13 +23,13 @@ export default function ViewShareLink(props: IProps) {
         <Grid.Row>
           <Grid.Column>
             <Segment>
-              <FieldStatic
+              {/* <FieldStatic
                 readonly
                 showNames={showNames}
                 loading={isFetching}
                 positions={shareTeam ? shareTeam.positions : []}
                 onPositionDropInPosition={() => {}}
-              />
+              /> */}
             </Segment>
           </Grid.Column>
         </Grid.Row>

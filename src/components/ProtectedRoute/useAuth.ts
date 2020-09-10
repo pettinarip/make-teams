@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Auth } from "aws-amplify";
+// import { Auth } from "aws-amplify";
 
 export default function useAuth() {
   const [state, setState] = React.useState({
@@ -11,8 +11,8 @@ export default function useAuth() {
     async function isLogin() {
       setState({ isLoading: true, user: null });
       try {
-        const user = await Auth.currentAuthenticatedUser();
-        setState({ isLoading: false, user });
+        // const user = await Auth.currentAuthenticatedUser();
+        // setState({ isLoading: false, user });
       } catch (e) {
         console.log(e);
         setState({ isLoading: false, user: null });

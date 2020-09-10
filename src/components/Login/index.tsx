@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { RouteComponentProps, useNavigate, Link } from "@reach/router";
 import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
 import { Formik, Field } from "formik";
-import { Auth } from "aws-amplify";
 import * as yup from "yup";
+
+import { useLoginMutation } from "../../graphql/API";
 
 export interface IProps extends RouteComponentProps {}
 
@@ -18,17 +19,17 @@ const validationSchema = yup.object({
 });
 
 export default function Login(__props: IProps) {
+  const [, login] = useLoginMutation();
   const [signInError, setSignInError] = useState("");
   const navigate = useNavigate();
 
   const initialValues: IFormValues = { email: "", password: "" };
 
   async function handleLogin(values: IFormValues) {
-    const { email, password } = values;
     setSignInError("");
 
     try {
-      await Auth.signIn({ username: email, password });
+      await login(values);
       navigate("/", { replace: true });
     } catch (e) {
       setSignInError(e.message);

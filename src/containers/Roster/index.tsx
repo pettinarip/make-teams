@@ -11,7 +11,7 @@ import {
 
 import { IPlayer } from "../MakeTeam/types";
 import useAuth from "../../components/ProtectedRoute/useAuth";
-import useGetPlayers from "../../graphql/queries/useGetPlayers";
+// import useGetPlayers from "../../graphql/queries/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
@@ -30,11 +30,11 @@ export default function Roster({
   onResetClick,
 }: IProps) {
   const { user = {}, isLoading } = useAuth();
-  const { status, data: players = [] } = useGetPlayers(user);
+  // const { status, data: players = [] } = useGetPlayers(user);
 
   return (
     <div>
-      <Header as="h2">Roster ({players.length})</Header>
+      {/* <Header as="h2">Roster ({players.length})</Header>
       {(isLoading || status === "loading") && (
         <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
@@ -75,7 +75,7 @@ export default function Roster({
           <CreatePlayerButton>New</CreatePlayerButton>
           <Button onClick={onResetClick}>Reset</Button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

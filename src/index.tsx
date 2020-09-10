@@ -1,12 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Amplify from "aws-amplify";
 import { Router } from "@reach/router";
-import {
-  ReactQueryConfigProvider,
-  ReactQueryProviderConfig,
-} from "react-query";
 import { ToastProvider } from "react-toast-notifications";
+import { createClient, Provider } from "urql";
 
 import ViewShareLink from "./containers/ViewShareLink";
 import MakeTeam from "./containers/MakeTeam";
@@ -18,26 +14,19 @@ import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
 
 import * as serviceWorker from "./serviceWorker";
-import awsconfig from "./aws-exports";
 
-import "@aws-amplify/ui/dist/style.css";
 import "semantic-ui-css/semantic.min.css";
 
-Amplify.configure(awsconfig);
-
-const queryConfig: ReactQueryProviderConfig = {
-  queries: {
-    retry: 3,
-    refetchOnWindowFocus: false,
-    staleTime: 10 * 1000,
+// TODO: store this in env
+const client = createClient({
+  url: "http://localhost:4000/graphql",
+  fetchOptions: {
+    credentials: "include",
   },
-  mutations: {
-    throwOnError: true,
-  },
-};
+});
 
 ReactDOM.render(
-  <ReactQueryConfigProvider config={queryConfig}>
+  <Provider value={client}>
     <ToastProvider>
       <Layout>
         <Router>
@@ -49,7 +38,7 @@ ReactDOM.render(
         </Router>
       </Layout>
     </ToastProvider>
-  </ReactQueryConfigProvider>,
+  </Provider>,
   document.getElementById("root")
 );
 

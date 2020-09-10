@@ -9,7 +9,7 @@ import {
 } from "semantic-ui-react";
 
 import { ILayout } from "../MakeTeam/types";
-import useLayouts from "../../domain/Layout/useLayouts";
+// import useLayouts from "../../domain/Layout/useLayouts";
 import useAuth from "../../components/ProtectedRoute/useAuth";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
@@ -20,7 +20,9 @@ export interface IProps {
 
 export default function TeamLayout({ onChange }: IProps) {
   const { user = {}, isLoading } = useAuth();
-  const { status, layouts } = useLayouts(user);
+  // const { status, layouts } = useLayouts(user);
+  const layouts = [] as ILayout[];
+  const status = "loading";
   const [selected, setSelected] = useState<ILayout>();
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
