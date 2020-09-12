@@ -4,8 +4,8 @@ import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
 import { Formik, Field, FormikHelpers } from "formik";
 import * as yup from "yup";
 
-import { useLoginMutation } from "../../graphql/API";
 import toErrorMap from "../../utils/toErrorMap";
+import useLogin from "../../graphql/mutations/useLogin";
 
 export interface IProps extends RouteComponentProps {}
 
@@ -20,7 +20,7 @@ const validationSchema = yup.object({
 });
 
 export default function Login(__props: IProps) {
-  const [, login] = useLoginMutation();
+  const [login] = useLogin();
   const [signInError, setSignInError] = useState("");
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ export default function Login(__props: IProps) {
 
     try {
       const response = await login(values);
-      const errors = response.data?.login.errors;
+      const errors = response?.login.errors;
       if (errors) {
         setErrors(toErrorMap(errors));
       } else {

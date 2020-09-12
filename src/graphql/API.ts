@@ -1,8 +1,8 @@
+import { GraphQLClient } from 'graphql-request';
+import { print } from 'graphql';
 import gql from 'graphql-tag';
-import * as Urql from 'urql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -45,8 +45,9 @@ export type Query = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  register?: Maybe<Scalars['Boolean']>;
+  register: UserResponse;
   login: UserResponse;
+  logout: Scalars['Boolean'];
 };
 
 
@@ -79,6 +80,26 @@ export type LoginMutation = (
   ) }
 );
 
+export type SignUpMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type SignUpMutation = (
+  { __typename?: 'Mutation' }
+  & { register: (
+    { __typename?: 'UserResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
+    )> }
+  ) }
+);
+
 
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
@@ -96,7 +117,35 @@ export const LoginDocument = gql`
   }
 }
     `;
+export const SignUpDocument = gql`
+    mutation SignUp($email: String!, $password: String!) {
+  register(options: {email: $email, password: $password}) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
 
-export function useLoginMutation() {
-  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
-};
+export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
+
+
+const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+  return {
+    Login(variables: LoginMutationVariables): Promise<LoginMutation> {
+      return withWrapper(() => client.request<LoginMutation>(print(LoginDocument), variables));
+    },
+    SignUp(variables: SignUpMutationVariables): Promise<SignUpMutation> {
+      return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables));
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;

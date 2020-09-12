@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Router } from "@reach/router";
+import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
 import { ToastProvider } from "react-toast-notifications";
-import { createClient, Provider } from "urql";
 
 import ViewShareLink from "./containers/ViewShareLink";
 import MakeTeam from "./containers/MakeTeam";
@@ -17,16 +17,19 @@ import * as serviceWorker from "./serviceWorker";
 
 import "semantic-ui-css/semantic.min.css";
 
-// TODO: store this in env
-const client = createClient({
-  url: "http://localhost:4000/graphql",
-  fetchOptions: {
-    credentials: "include",
+const queryConfig: ReactQueryConfig = {
+  queries: {
+    retry: 3,
+    refetchOnWindowFocus: false,
+    staleTime: 10 * 1000,
   },
-});
+  mutations: {
+    throwOnError: true,
+  },
+};
 
 ReactDOM.render(
-  <Provider value={client}>
+  <ReactQueryConfigProvider config={queryConfig}>
     <ToastProvider>
       <Layout>
         <Router>
@@ -38,7 +41,7 @@ ReactDOM.render(
         </Router>
       </Layout>
     </ToastProvider>
-  </Provider>,
+  </ReactQueryConfigProvider>,
   document.getElementById("root")
 );
 

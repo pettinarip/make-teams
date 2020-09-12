@@ -3,8 +3,8 @@ import { RouteComponentProps, useNavigate } from "@reach/router";
 import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
-import { useMutation } from "urql";
 
+import useSignUp from "../../graphql/mutations/useSignUp";
 import ResendCodeLink from "./ResendCodeLink";
 
 export interface IProps extends RouteComponentProps {}
@@ -14,10 +14,6 @@ interface IFormValues {
   password: string;
   confirmationCode: string;
 }
-
-const REGISTER = `
-
-`;
 
 const validationSignUpSchema = yup.object({
   email: yup.string().email().required(),
@@ -33,7 +29,7 @@ export default function SignUp(__props: IProps) {
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [signUpError, setSignUpError] = useState("");
   const navigate = useNavigate();
-  const [, register] = useMutation(REGISTER);
+  const [signUp] = useSignUp();
 
   const initialValues: IFormValues = {
     email: "",
@@ -50,7 +46,7 @@ export default function SignUp(__props: IProps) {
         // await Auth.confirmSignUp(email, confirmationCode);
         navigate("/login", { replace: true });
       } else {
-        // await Auth.signUp({ username: email, password });
+        await signUp({ email, password });
         setIsVerifyStep(true);
       }
     } catch (e) {
