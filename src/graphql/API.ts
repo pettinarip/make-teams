@@ -37,6 +37,11 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
+export type ConfirmSignUpInput = {
+  email: Scalars['String'];
+  code: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
@@ -46,6 +51,7 @@ export type Query = {
 export type Mutation = {
   __typename?: 'Mutation';
   register: UserResponse;
+  confirmSignUp: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
 };
@@ -56,9 +62,34 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationConfirmSignUpArgs = {
+  options: ConfirmSignUpInput;
+};
+
+
 export type MutationLoginArgs = {
   options: UsernamePasswordInput;
 };
+
+export type ConfirmSignUpMutationVariables = Exact<{
+  email: Scalars['String'];
+  code: Scalars['String'];
+}>;
+
+
+export type ConfirmSignUpMutation = (
+  { __typename?: 'Mutation' }
+  & { confirmSignUp: (
+    { __typename?: 'UserResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
+    )> }
+  ) }
+);
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -101,6 +132,22 @@ export type SignUpMutation = (
 );
 
 
+export const ConfirmSignUpDocument = gql`
+    mutation ConfirmSignUp($email: String!, $code: String!) {
+  confirmSignUp(options: {email: $email, code: $code}) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(options: {email: $email, password: $password}) {
@@ -140,6 +187,9 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    ConfirmSignUp(variables: ConfirmSignUpMutationVariables): Promise<ConfirmSignUpMutation> {
+      return withWrapper(() => client.request<ConfirmSignUpMutation>(print(ConfirmSignUpDocument), variables));
+    },
     Login(variables: LoginMutationVariables): Promise<LoginMutation> {
       return withWrapper(() => client.request<LoginMutation>(print(LoginDocument), variables));
     },

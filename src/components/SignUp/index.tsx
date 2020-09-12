@@ -6,6 +6,7 @@ import * as yup from "yup";
 
 import useSignUp from "../../graphql/mutations/useSignUp";
 import ResendCodeLink from "./ResendCodeLink";
+import useConfirmSignUp from "../../graphql/mutations/useConfrimSignUp";
 
 export interface IProps extends RouteComponentProps {}
 
@@ -30,6 +31,7 @@ export default function SignUp(__props: IProps) {
   const [signUpError, setSignUpError] = useState("");
   const navigate = useNavigate();
   const [signUp] = useSignUp();
+  const [confirmSignUp] = useConfirmSignUp();
 
   const initialValues: IFormValues = {
     email: "",
@@ -43,8 +45,11 @@ export default function SignUp(__props: IProps) {
 
     try {
       if (isVerifyStep) {
-        // await Auth.confirmSignUp(email, confirmationCode);
-        navigate("/login", { replace: true });
+        const response = await confirmSignUp({ email, code: confirmationCode });
+        const errors = response?.confirmSignUp.errors;
+        if (!errors) {
+          navigate("/", { replace: true });
+        }
       } else {
         await signUp({ email, password });
         setIsVerifyStep(true);

@@ -1,0 +1,14 @@
+mutation ConfirmSignUp($email: String!, $code: String!) {
+  confirmSignUp(options: { email: $email, code: $code }) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      createdAt
+      updatedAt
+    }
+  }
+}
