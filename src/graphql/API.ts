@@ -54,6 +54,7 @@ export type Mutation = {
   confirmSignUp: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  forgotPassword: Scalars['Boolean'];
 };
 
 
@@ -69,6 +70,11 @@ export type MutationConfirmSignUpArgs = {
 
 export type MutationLoginArgs = {
   options: UsernamePasswordInput;
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
 };
 
 export type ConfirmSignUpMutationVariables = Exact<{
@@ -89,6 +95,16 @@ export type ConfirmSignUpMutation = (
       & Pick<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
     )> }
   ) }
+);
+
+export type ForgotPaswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgotPaswordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'forgotPassword'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -167,6 +183,11 @@ export const ConfirmSignUpDocument = gql`
   }
 }
     `;
+export const ForgotPaswordDocument = gql`
+    mutation ForgotPasword($email: String!) {
+  forgotPassword(email: $email)
+}
+    `;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(options: {email: $email, password: $password}) {
@@ -221,6 +242,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     ConfirmSignUp(variables: ConfirmSignUpMutationVariables): Promise<ConfirmSignUpMutation> {
       return withWrapper(() => client.request<ConfirmSignUpMutation>(print(ConfirmSignUpDocument), variables));
+    },
+    ForgotPasword(variables: ForgotPaswordMutationVariables): Promise<ForgotPaswordMutation> {
+      return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables));
     },
     Login(variables: LoginMutationVariables): Promise<LoginMutation> {
       return withWrapper(() => client.request<LoginMutation>(print(LoginDocument), variables));

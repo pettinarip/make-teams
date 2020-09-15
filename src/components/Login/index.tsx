@@ -83,7 +83,7 @@ export default function Login(__props: IProps) {
                 />
                 <Form.Field>
                   Forgot password?{" "}
-                  <Link to="/reset-password">Reset password</Link>
+                  <Link to="/forgot-password">Reset password</Link>
                 </Form.Field>
 
                 <Button

@@ -12,6 +12,7 @@ import Layout from "./components/Layout";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
+import ForgotPassword from "./components/ForgotPassword";
 
 import { AuthProvider } from "./domain/user/useAuth";
 import * as serviceWorker from "./serviceWorker";
@@ -37,7 +38,8 @@ ReactDOM.render(
           <Router>
             <Login path="/login" />
             <SignUp path="/sign-up" />
-            <ResetPassword path="/reset-password" />
+            <ForgotPassword path="/forgot-password" />
+            <ResetPassword path="/reset-password/:token" />
             <ViewShareLink path="/share/:shareId" />
             <ProtectedRoute path="/" component={MakeTeam} />
           </Router>
