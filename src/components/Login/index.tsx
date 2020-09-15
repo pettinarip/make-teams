@@ -5,7 +5,7 @@ import { Formik, Field, FormikHelpers } from "formik";
 import * as yup from "yup";
 
 import toErrorMap from "../../utils/toErrorMap";
-import useLogin from "../../graphql/mutations/useLogin";
+import useLogin from "../../dal/user/useLogin";
 
 export interface IProps extends RouteComponentProps {}
 

@@ -111,6 +111,14 @@ export type LoginMutation = (
   ) }
 );
 
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'logout'>
+);
+
 export type SignUpMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -129,6 +137,17 @@ export type SignUpMutation = (
       & Pick<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
     )> }
   ) }
+);
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email'>
+  )> }
 );
 
 
@@ -164,6 +183,11 @@ export const LoginDocument = gql`
   }
 }
     `;
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
 export const SignUpDocument = gql`
     mutation SignUp($email: String!, $password: String!) {
   register(options: {email: $email, password: $password}) {
@@ -180,6 +204,14 @@ export const SignUpDocument = gql`
   }
 }
     `;
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    email
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -193,8 +225,14 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     Login(variables: LoginMutationVariables): Promise<LoginMutation> {
       return withWrapper(() => client.request<LoginMutation>(print(LoginDocument), variables));
     },
+    Logout(variables?: LogoutMutationVariables): Promise<LogoutMutation> {
+      return withWrapper(() => client.request<LogoutMutation>(print(LogoutDocument), variables));
+    },
     SignUp(variables: SignUpMutationVariables): Promise<SignUpMutation> {
       return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables));
+    },
+    Me(variables?: MeQueryVariables): Promise<MeQuery> {
+      return withWrapper(() => client.request<MeQuery>(print(MeDocument), variables));
     }
   };
 }

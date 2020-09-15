@@ -10,7 +10,7 @@ import {
 
 import { ILayout } from "../MakeTeam/types";
 // import useLayouts from "../../domain/Layout/useLayouts";
-import useAuth from "../../components/ProtectedRoute/useAuth";
+import useAuth from "../../domain/user/useAuth";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
@@ -19,7 +19,7 @@ export interface IProps {
 }
 
 export default function TeamLayout({ onChange }: IProps) {
-  const { user = {}, isLoading } = useAuth();
+  const { user = {}, isFetching } = useAuth();
   // const { status, layouts } = useLayouts(user);
   const layouts = [] as ILayout[];
   const status = "loading";
@@ -75,7 +75,7 @@ export default function TeamLayout({ onChange }: IProps) {
   return (
     <>
       <Header as="h2">Layout</Header>
-      {isLoading || status === "loading" || (layouts.length && !selected) ? (
+      {isFetching || status === "loading" || (layouts.length && !selected) ? (
         <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
             <Placeholder.Line />

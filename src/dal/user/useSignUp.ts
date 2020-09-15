@@ -1,7 +1,7 @@
 import { useMutation } from "react-query";
 
-import sdk from "../sdk";
-import { SignUpMutation, FieldError } from "../API";
+import sdk from "../../graphql/sdk";
+import { SignUpMutation, FieldError } from "../../graphql/API";
 
 export interface IMutationProps {
   email: string;

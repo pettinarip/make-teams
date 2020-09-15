@@ -10,7 +10,7 @@ import {
 } from "semantic-ui-react";
 
 import { IPlayer } from "../MakeTeam/types";
-import useAuth from "../../components/ProtectedRoute/useAuth";
+import useAuth from "../../domain/user/useAuth";
 // import useGetPlayers from "../../graphql/queries/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
@@ -29,7 +29,7 @@ export default function Roster({
   onPlayerClick,
   onResetClick,
 }: IProps) {
-  const { user = {}, isLoading } = useAuth();
+  const { user = {}, isFetching } = useAuth();
   // const { status, data: players = [] } = useGetPlayers(user);
 
   return (

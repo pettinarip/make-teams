@@ -13,6 +13,7 @@ import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import ResetPassword from "./components/ResetPassword";
 
+import { AuthProvider } from "./domain/user/useAuth";
 import * as serviceWorker from "./serviceWorker";
 
 import "semantic-ui-css/semantic.min.css";
@@ -31,15 +32,17 @@ const queryConfig: ReactQueryConfig = {
 ReactDOM.render(
   <ReactQueryConfigProvider config={queryConfig}>
     <ToastProvider>
-      <Layout>
-        <Router>
-          <Login path="/login" />
-          <SignUp path="/sign-up" />
-          <ResetPassword path="/reset-password" />
-          <ViewShareLink path="/share/:shareId" />
-          <ProtectedRoute path="/" component={MakeTeam} />
-        </Router>
-      </Layout>
+      <AuthProvider>
+        <Layout>
+          <Router>
+            <Login path="/login" />
+            <SignUp path="/sign-up" />
+            <ResetPassword path="/reset-password" />
+            <ViewShareLink path="/share/:shareId" />
+            <ProtectedRoute path="/" component={MakeTeam} />
+          </Router>
+        </Layout>
+      </AuthProvider>
     </ToastProvider>
   </ReactQueryConfigProvider>,
   document.getElementById("root")

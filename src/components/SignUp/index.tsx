@@ -4,9 +4,9 @@ import { Grid, Form, Segment, Button, Message } from "semantic-ui-react";
 import { Formik, Field } from "formik";
 import * as yup from "yup";
 
-import useSignUp from "../../graphql/mutations/useSignUp";
+import useSignUp from "../../dal/user/useSignUp";
+import useConfirmSignUp from "../../dal/user/useConfrimSignUp";
 import ResendCodeLink from "./ResendCodeLink";
-import useConfirmSignUp from "../../graphql/mutations/useConfrimSignUp";
 
 export interface IProps extends RouteComponentProps {}
 
