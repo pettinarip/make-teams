@@ -55,6 +55,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
+  changePassword: UserResponse;
 };
 
 
@@ -76,6 +77,32 @@ export type MutationLoginArgs = {
 export type MutationForgotPasswordArgs = {
   email: Scalars['String'];
 };
+
+
+export type MutationChangePasswordArgs = {
+  newPassword: Scalars['String'];
+  token: Scalars['String'];
+};
+
+export type ChangePasswordMutationVariables = Exact<{
+  token: Scalars['String'];
+  newPassword: Scalars['String'];
+}>;
+
+
+export type ChangePasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { changePassword: (
+    { __typename?: 'UserResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+    )> }
+  ) }
+);
 
 export type ConfirmSignUpMutationVariables = Exact<{
   email: Scalars['String'];
@@ -167,6 +194,20 @@ export type MeQuery = (
 );
 
 
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($token: String!, $newPassword: String!) {
+  changePassword(token: $token, newPassword: $newPassword) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+    }
+  }
+}
+    `;
 export const ConfirmSignUpDocument = gql`
     mutation ConfirmSignUp($email: String!, $code: String!) {
   confirmSignUp(options: {email: $email, code: $code}) {
@@ -240,6 +281,9 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    ChangePassword(variables: ChangePasswordMutationVariables): Promise<ChangePasswordMutation> {
+      return withWrapper(() => client.request<ChangePasswordMutation>(print(ChangePasswordDocument), variables));
+    },
     ConfirmSignUp(variables: ConfirmSignUpMutationVariables): Promise<ConfirmSignUpMutation> {
       return withWrapper(() => client.request<ConfirmSignUpMutation>(print(ConfirmSignUpDocument), variables));
     },

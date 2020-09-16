@@ -29,7 +29,7 @@ export default function ForgotPassword(__props: IProps) {
     setFormError("");
 
     try {
-      await forgotPassword(email);
+      await forgotPassword({ email });
       setIsSubmitted(true);
     } catch (e) {
       setFormError(e.message);

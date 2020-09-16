@@ -1,10 +1,18 @@
 import { useMutation } from "react-query";
 
 import sdk from "../../graphql/sdk";
-import { ForgotPaswordMutation, FieldError } from "../../graphql/API";
+import {
+  ForgotPaswordMutation,
+  FieldError,
+  ForgotPaswordMutationVariables,
+} from "../../graphql/API";
 
 export default function useForgotPassword() {
-  return useMutation<ForgotPaswordMutation, FieldError[], string>((email) => {
-    return sdk.ForgotPasword({ email });
+  return useMutation<
+    ForgotPaswordMutation,
+    FieldError[],
+    ForgotPaswordMutationVariables
+  >((variables) => {
+    return sdk.ForgotPasword(variables);
   });
 }
