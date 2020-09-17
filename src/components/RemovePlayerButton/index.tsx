@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Confirm } from "semantic-ui-react";
 
-import { IPlayer } from "../../containers/MakeTeam/types";
+import { Player as IPlayer } from "../../graphql/API";
 // import useRemovePlayer from "../../graphql/mutations/useRemovePlayer";
 
 export interface IProps {

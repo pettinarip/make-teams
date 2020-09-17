@@ -1,0 +1,11 @@
+query Players {
+  players {
+    id
+    firstName
+    lastName
+    number
+    nickName
+    age
+    createdAt
+  }
+}

@@ -1,3 +1,5 @@
+import { Player as IPlayer } from "../../graphql/API";
+
 export type ILayout = {
   id: string;
   name: string;
@@ -12,16 +14,6 @@ export type IPosition = {
   y: number;
   player?: IPlayer;
 };
-
-export interface IPlayer {
-  id: string;
-  firstName: string;
-  lastName: string;
-  number: number;
-  nickName?: string;
-  age?: number;
-  createdAt?: string;
-}
 
 export interface IShareTeam {
   id: string;

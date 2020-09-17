@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
 
-import { IPosition, IPlayer } from "./types";
+import { IPosition } from "./types";
+import { Player as IPlayer } from "../../graphql/API";
 
 interface IReturn {
   assignments: Array<IPosition>;

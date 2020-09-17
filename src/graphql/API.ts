@@ -12,10 +12,49 @@ export type Scalars = {
   Float: number;
 };
 
+export type Position = {
+  __typename?: 'Position';
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type Layout = {
+  __typename?: 'Layout';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  positions: Array<Position>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
   email: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type CustomLayout = {
+  __typename?: 'CustomLayout';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  positions: Array<Position>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  userId: Scalars['Float'];
+};
+
+export type Player = {
+  __typename?: 'Player';
+  id: Scalars['ID'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickName?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+  userId: Scalars['Float'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -32,6 +71,29 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type PositionInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type LayoutInput = {
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+};
+
+export type CustomLayoutInput = {
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+};
+
+export type PlayerInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickname?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+};
+
 export type UsernamePasswordInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -44,18 +106,56 @@ export type ConfirmSignUpInput = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
+  layout?: Maybe<Layout>;
+  layouts?: Maybe<Array<Layout>>;
+  customLayout?: Maybe<CustomLayout>;
+  customLayouts?: Maybe<Array<CustomLayout>>;
+  player?: Maybe<Player>;
+  players?: Maybe<Array<Player>>;
   me?: Maybe<User>;
+};
+
+
+export type QueryLayoutArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryCustomLayoutArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryPlayerArgs = {
+  id: Scalars['Int'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createLayout: Layout;
+  createCustomLayout?: Maybe<CustomLayout>;
+  createPlayer: Player;
   register: UserResponse;
   confirmSignUp: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
+};
+
+
+export type MutationCreateLayoutArgs = {
+  input: LayoutInput;
+};
+
+
+export type MutationCreateCustomLayoutArgs = {
+  input: CustomLayoutInput;
+};
+
+
+export type MutationCreatePlayerArgs = {
+  input: PlayerInput;
 };
 
 
@@ -193,6 +293,17 @@ export type MeQuery = (
   )> }
 );
 
+export type PlayersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PlayersQuery = (
+  { __typename?: 'Query' }
+  & { players?: Maybe<Array<(
+    { __typename?: 'Player' }
+    & Pick<Player, 'id' | 'firstName' | 'lastName' | 'number' | 'nickName' | 'age' | 'createdAt'>
+  )>> }
+);
+
 
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($token: String!, $newPassword: String!) {
@@ -274,6 +385,19 @@ export const MeDocument = gql`
   }
 }
     `;
+export const PlayersDocument = gql`
+    query Players {
+  players {
+    id
+    firstName
+    lastName
+    number
+    nickName
+    age
+    createdAt
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 
@@ -301,6 +425,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Me(variables?: MeQueryVariables): Promise<MeQuery> {
       return withWrapper(() => client.request<MeQuery>(print(MeDocument), variables));
+    },
+    Players(variables?: PlayersQueryVariables): Promise<PlayersQuery> {
+      return withWrapper(() => client.request<PlayersQuery>(print(PlayersDocument), variables));
     }
   };
 }

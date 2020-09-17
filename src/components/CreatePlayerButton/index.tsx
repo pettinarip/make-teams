@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from "react";
 import { Button, Image, Modal, Header, Message } from "semantic-ui-react";
 
 // import useAddNewPlayer from "../../graphql/mutations/useAddNewPlayer";
-import { IPlayer } from "../../containers/MakeTeam/types";
+import { Player as IPlayer } from "../../graphql/API";
 import CreatePlayerForm, { IFormValues } from "./CreatePlayerForm";
 
 export interface IProps {

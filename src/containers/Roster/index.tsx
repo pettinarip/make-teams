@@ -9,9 +9,9 @@ import {
   Loader,
 } from "semantic-ui-react";
 
-import { IPlayer } from "../MakeTeam/types";
+import { Player as IPlayer } from "../../graphql/API";
 import useAuth from "../../domain/user/useAuth";
-// import useGetPlayers from "../../graphql/queries/useGetPlayers";
+import useGetPlayers from "../../dal/player/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
@@ -30,12 +30,12 @@ export default function Roster({
   onResetClick,
 }: IProps) {
   const { user = {}, isFetching } = useAuth();
-  // const { status, data: players = [] } = useGetPlayers(user);
+  const { status, data: players = [] } = useGetPlayers(user);
 
   return (
     <div>
-      {/* <Header as="h2">Roster ({players.length})</Header>
-      {(isLoading || status === "loading") && (
+      <Header as="h2">Roster ({players.length})</Header>
+      {(isFetching || status === "loading") && (
         <Placeholder fluid data-testid="loading">
           <Placeholder.Paragraph>
             <Placeholder.Line />
@@ -68,14 +68,14 @@ export default function Roster({
           ))}
       </List>
       <Divider />
-      {isLoading ? (
+      {isFetching ? (
         <Loader active inline="centered" data-testid="loading" />
       ) : (
         <div data-testid="roster-buttons">
           <CreatePlayerButton>New</CreatePlayerButton>
           <Button onClick={onResetClick}>Reset</Button>
         </div>
-      )} */}
+      )}
     </div>
   );
 }
