@@ -43,7 +43,6 @@ export type CustomLayout = {
   positions: Array<Position>;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  userId: Scalars['Float'];
 };
 
 export type Player = {
@@ -282,6 +281,43 @@ export type SignUpMutation = (
   ) }
 );
 
+export type CreatePlayerMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+}>;
+
+
+export type CreatePlayerMutation = (
+  { __typename?: 'Mutation' }
+  & { createPlayer: (
+    { __typename?: 'Player' }
+    & Pick<Player, 'id' | 'firstName' | 'lastName'>
+  ) }
+);
+
+export type ListLayoutsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListLayoutsQuery = (
+  { __typename?: 'Query' }
+  & { layouts?: Maybe<Array<(
+    { __typename?: 'Layout' }
+    & Pick<Layout, 'id' | 'name' | 'createdAt'>
+    & { positions: Array<(
+      { __typename?: 'Position' }
+      & Pick<Position, 'x' | 'y'>
+    )> }
+  )>>, customLayouts?: Maybe<Array<(
+    { __typename?: 'CustomLayout' }
+    & Pick<CustomLayout, 'id' | 'name' | 'createdAt'>
+    & { positions: Array<(
+      { __typename?: 'Position' }
+      & Pick<Position, 'x' | 'y'>
+    )> }
+  )>> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -377,6 +413,37 @@ export const SignUpDocument = gql`
   }
 }
     `;
+export const CreatePlayerDocument = gql`
+    mutation CreatePlayer($firstName: String!, $lastName: String!, $number: Float!) {
+  createPlayer(input: {firstName: $firstName, lastName: $lastName, number: $number}) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export const ListLayoutsDocument = gql`
+    query ListLayouts {
+  layouts {
+    id
+    name
+    createdAt
+    positions {
+      x
+      y
+    }
+  }
+  customLayouts {
+    id
+    name
+    createdAt
+    positions {
+      x
+      y
+    }
+  }
+}
+    `;
 export const MeDocument = gql`
     query Me {
   me {
@@ -422,6 +489,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     SignUp(variables: SignUpMutationVariables): Promise<SignUpMutation> {
       return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables));
+    },
+    CreatePlayer(variables: CreatePlayerMutationVariables): Promise<CreatePlayerMutation> {
+      return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables));
+    },
+    ListLayouts(variables?: ListLayoutsQueryVariables): Promise<ListLayoutsQuery> {
+      return withWrapper(() => client.request<ListLayoutsQuery>(print(ListLayoutsDocument), variables));
     },
     Me(variables?: MeQueryVariables): Promise<MeQuery> {
       return withWrapper(() => client.request<MeQuery>(print(MeDocument), variables));

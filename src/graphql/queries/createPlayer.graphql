@@ -1,0 +1,13 @@
+mutation CreatePlayer(
+  $firstName: String!
+  $lastName: String!
+  $number: Float!
+) {
+  createPlayer(
+    input: { firstName: $firstName, lastName: $lastName, number: $number }
+  ) {
+    id
+    firstName
+    lastName
+  }
+}

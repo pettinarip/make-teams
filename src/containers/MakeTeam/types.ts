@@ -1,19 +1,15 @@
-import { Player as IPlayer } from "../../graphql/API";
+import { Layout, Player, Position } from "../../graphql/API";
 
-export type ILayout = {
-  id: string;
-  name: string;
-  createdAt: string;
-  // Prop only used in the FE
-  isCustom?: boolean;
+export interface IPlayer extends Player {}
+
+export interface IPosition extends Pick<Position, "x" | "y"> {
+  player?: Player;
+}
+
+export interface ILayout extends Pick<Layout, "id" | "name" | "createdAt"> {
   positions: Array<IPosition>;
-};
-
-export type IPosition = {
-  x: number;
-  y: number;
-  player?: IPlayer;
-};
+  isCustom?: boolean;
+}
 
 export interface IShareTeam {
   id: string;

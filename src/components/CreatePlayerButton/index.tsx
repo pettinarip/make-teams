@@ -1,8 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import { Button, Image, Modal, Header, Message } from "semantic-ui-react";
 
-// import useAddNewPlayer from "../../graphql/mutations/useAddNewPlayer";
-import { Player as IPlayer } from "../../graphql/API";
+import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
 import CreatePlayerForm, { IFormValues } from "./CreatePlayerForm";
 
 export interface IProps {
@@ -13,7 +12,7 @@ export default function CreatePlayerButton(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
-  // const [addNewPlayer] = useAddNewPlayer();
+  const [addNewPlayer] = useAddNewPlayer();
 
   let submitForm: Function = () => {};
 
@@ -34,12 +33,12 @@ export default function CreatePlayerButton(props: IProps) {
     setHasErrors(false);
 
     try {
-      const newPlayer: Partial<IPlayer> = {
+      const newPlayer = {
         firstName: values.firstName,
         lastName: values.lastName,
-        number: values.number,
+        number: values.number || 0,
       };
-      // await addNewPlayer(newPlayer);
+      await addNewPlayer(newPlayer);
       handleClose();
     } catch (e) {
       console.log(e);

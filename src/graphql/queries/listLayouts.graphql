@@ -1,0 +1,20 @@
+query ListLayouts {
+  layouts {
+    id
+    name
+    createdAt
+    positions {
+      x
+      y
+    }
+  }
+  customLayouts {
+    id
+    name
+    createdAt
+    positions {
+      x
+      y
+    }
+  }
+}

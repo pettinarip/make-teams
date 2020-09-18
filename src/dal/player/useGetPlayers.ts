@@ -2,16 +2,16 @@ import { useQuery } from "react-query";
 import { QueryResult } from "react-query/types";
 
 import sdk from "../../graphql/sdk";
-import { Player } from "../../graphql/API";
+import { Player as IPlayer } from "../../graphql/API";
 
 export const QUERY_KEY = "players";
 
-export default function useGetPlayers(user: any): QueryResult<Array<Player>> {
+export default function useGetPlayers(user: any): QueryResult<Array<IPlayer>> {
   return useQuery(
     QUERY_KEY,
-    async (): Promise<Array<Player>> => {
+    async (): Promise<Array<IPlayer>> => {
       const response = await sdk.Players();
-      return response.players as Array<Player>;
+      return response.players as Array<IPlayer>;
     },
     {
       enabled: !!user,
