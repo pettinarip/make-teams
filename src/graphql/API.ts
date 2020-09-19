@@ -133,6 +133,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createLayout: Layout;
   createCustomLayout?: Maybe<CustomLayout>;
+  deleteCustomLayout: Scalars['Boolean'];
   createPlayer: Player;
   deletePlayer: Scalars['Boolean'];
   register: UserResponse;
@@ -151,6 +152,11 @@ export type MutationCreateLayoutArgs = {
 
 export type MutationCreateCustomLayoutArgs = {
   input: CustomLayoutInput;
+};
+
+
+export type MutationDeleteCustomLayoutArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -260,6 +266,16 @@ export type CreatePlayerMutation = (
     { __typename?: 'Player' }
     & Pick<Player, 'id' | 'firstName' | 'lastName'>
   ) }
+);
+
+export type DeleteCustomLayoutMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteCustomLayoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteCustomLayout'>
 );
 
 export type DeletePlayerMutationVariables = Exact<{
@@ -426,6 +442,11 @@ export const CreatePlayerDocument = gql`
   }
 }
     `;
+export const DeleteCustomLayoutDocument = gql`
+    mutation DeleteCustomLayout($id: String!) {
+  deleteCustomLayout(id: $id)
+}
+    `;
 export const DeletePlayerDocument = gql`
     mutation DeletePlayer($id: String!) {
   deletePlayer(id: $id)
@@ -534,6 +555,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     CreatePlayer(variables: CreatePlayerMutationVariables): Promise<CreatePlayerMutation> {
       return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables));
+    },
+    DeleteCustomLayout(variables: DeleteCustomLayoutMutationVariables): Promise<DeleteCustomLayoutMutation> {
+      return withWrapper(() => client.request<DeleteCustomLayoutMutation>(print(DeleteCustomLayoutDocument), variables));
     },
     DeletePlayer(variables: DeletePlayerMutationVariables): Promise<DeletePlayerMutation> {
       return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables));
