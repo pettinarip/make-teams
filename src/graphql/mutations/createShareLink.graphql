@@ -1,0 +1,20 @@
+mutation CreateShareLink($input: ShareLinkInput!) {
+  createShareLink(input: $input) {
+    id
+    name
+    createdAt
+    positions {
+      id
+      x
+      y
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+      }
+    }
+  }
+}

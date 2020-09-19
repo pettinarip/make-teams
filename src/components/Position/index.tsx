@@ -3,11 +3,11 @@ import { jsx, css } from "@emotion/core";
 import styled from "@emotion/styled";
 import { Label } from "semantic-ui-react";
 
-import { IPosition } from "../../containers/MakeTeam/types";
+import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
 import playerImg from "../../images/christian.jpg";
 
 export interface IProps {
-  position: IPosition;
+  position: IPosition | IShareLinkPosition;
   isActive?: boolean;
   showName?: boolean;
 }

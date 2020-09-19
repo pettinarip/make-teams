@@ -3,6 +3,7 @@ import { Button, Form, Divider } from "semantic-ui-react";
 import { useToasts } from "react-toast-notifications";
 
 import { IPosition } from "../MakeTeam/types";
+import useCreateShareTeam from "../../dal/shareLink/useCreateShareTeam";
 import ExportForm from "./ExportForm";
 
 interface IProps {
@@ -13,13 +14,13 @@ export default function ShareTeam({ positions }: IProps) {
   const [link, setLink] = useState("");
   const { addToast } = useToasts();
 
-  // const [createShareTeam, { status }] = useCreateShareTeam();
+  const [createShareTeam, { status }] = useCreateShareTeam();
 
   async function handleClick() {
     try {
       // TODO: add a name to the share team
-      // const { data } = await createShareTeam({ name: "test", positions });
-      // setLink(`${window.location.origin}/share/${data.createShareLink.id}`);
+      const shareLink = await createShareTeam({ name: "test", positions });
+      setLink(`${window.location.origin}/share/${shareLink?.id}`);
     } catch (error) {
       addToast(
         "There was an error while trying to share your team. Please, try again.",
@@ -37,7 +38,7 @@ export default function ShareTeam({ positions }: IProps) {
         <Button
           positive
           onClick={handleClick}
-          // loading={status === "loading"}
+          loading={status === "loading"}
           data-testid="share-team-btn"
         >
           Share your team!

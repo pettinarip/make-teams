@@ -2,7 +2,7 @@ import React from "react";
 
 import Field from "../Field";
 
-import { IPosition } from "../../containers/MakeTeam/types";
+import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
 import PositionDnD from "../PositionDnD";
 import PositionStatic from "../PositionStatic";
 import PositionDrop from "../PositionDrop";
@@ -11,7 +11,7 @@ interface IProps {
   loading?: boolean;
   readonly?: boolean;
   showNames?: boolean;
-  positions: Array<IPosition>;
+  positions: Array<IPosition | IShareLinkPosition>;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
     positionDroppedIndex: number

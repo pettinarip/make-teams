@@ -58,6 +58,32 @@ export type Player = {
   updatedAt: Scalars['String'];
 };
 
+export type ShareLinkPlayer = {
+  __typename?: 'ShareLinkPlayer';
+  id: Scalars['ID'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickName?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+};
+
+export type ShareLinkPosition = {
+  __typename?: 'ShareLinkPosition';
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  player?: Maybe<ShareLinkPlayer>;
+};
+
+export type ShareLink = {
+  __typename?: 'ShareLink';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  positions: Array<ShareLinkPosition>;
+  createdAt: Scalars['String'];
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
@@ -93,6 +119,25 @@ export type PlayerInput = {
   age?: Maybe<Scalars['Float']>;
 };
 
+export type SharePlayerInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickName?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+};
+
+export type SharePositionInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  player?: Maybe<SharePlayerInput>;
+};
+
+export type ShareLinkInput = {
+  name: Scalars['String'];
+  positions: Array<SharePositionInput>;
+};
+
 export type UsernamePasswordInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -111,6 +156,7 @@ export type Query = {
   customLayouts?: Maybe<Array<CustomLayout>>;
   player?: Maybe<Player>;
   players?: Maybe<Array<Player>>;
+  shareLink?: Maybe<ShareLink>;
   me?: Maybe<User>;
 };
 
@@ -129,6 +175,11 @@ export type QueryPlayerArgs = {
   id: Scalars['String'];
 };
 
+
+export type QueryShareLinkArgs = {
+  id: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createLayout: Layout;
@@ -136,6 +187,7 @@ export type Mutation = {
   deleteCustomLayout: Scalars['Boolean'];
   createPlayer: Player;
   deletePlayer: Scalars['Boolean'];
+  createShareLink: ShareLink;
   register: UserResponse;
   confirmSignUp: UserResponse;
   login: UserResponse;
@@ -167,6 +219,11 @@ export type MutationCreatePlayerArgs = {
 
 export type MutationDeletePlayerArgs = {
   id: Scalars['String'];
+};
+
+
+export type MutationCreateShareLinkArgs = {
+  input: ShareLinkInput;
 };
 
 
@@ -268,6 +325,27 @@ export type CreatePlayerMutation = (
   ) }
 );
 
+export type CreateShareLinkMutationVariables = Exact<{
+  input: ShareLinkInput;
+}>;
+
+
+export type CreateShareLinkMutation = (
+  { __typename?: 'Mutation' }
+  & { createShareLink: (
+    { __typename?: 'ShareLink' }
+    & Pick<ShareLink, 'id' | 'name' | 'createdAt'>
+    & { positions: Array<(
+      { __typename?: 'ShareLinkPosition' }
+      & Pick<ShareLinkPosition, 'id' | 'x' | 'y'>
+      & { player?: Maybe<(
+        { __typename?: 'ShareLinkPlayer' }
+        & Pick<ShareLinkPlayer, 'id' | 'firstName' | 'lastName' | 'number' | 'nickName' | 'age'>
+      )> }
+    )> }
+  ) }
+);
+
 export type DeleteCustomLayoutMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -324,6 +402,27 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
+);
+
+export type ShareLinkQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ShareLinkQuery = (
+  { __typename?: 'Query' }
+  & { shareLink?: Maybe<(
+    { __typename?: 'ShareLink' }
+    & Pick<ShareLink, 'id' | 'name' | 'createdAt'>
+    & { positions: Array<(
+      { __typename?: 'ShareLinkPosition' }
+      & Pick<ShareLinkPosition, 'id' | 'x' | 'y'>
+      & { player?: Maybe<(
+        { __typename?: 'ShareLinkPlayer' }
+        & Pick<ShareLinkPlayer, 'id' | 'firstName' | 'lastName' | 'number' | 'nickName' | 'age'>
+      )> }
+    )> }
+  )> }
 );
 
 export type SignUpMutationVariables = Exact<{
@@ -442,6 +541,28 @@ export const CreatePlayerDocument = gql`
   }
 }
     `;
+export const CreateShareLinkDocument = gql`
+    mutation CreateShareLink($input: ShareLinkInput!) {
+  createShareLink(input: $input) {
+    id
+    name
+    createdAt
+    positions {
+      id
+      x
+      y
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+      }
+    }
+  }
+}
+    `;
 export const DeleteCustomLayoutDocument = gql`
     mutation DeleteCustomLayout($id: String!) {
   deleteCustomLayout(id: $id)
@@ -476,6 +597,28 @@ export const LoginDocument = gql`
 export const LogoutDocument = gql`
     mutation Logout {
   logout
+}
+    `;
+export const ShareLinkDocument = gql`
+    query ShareLink($id: String!) {
+  shareLink(id: $id) {
+    id
+    name
+    createdAt
+    positions {
+      id
+      x
+      y
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+      }
+    }
+  }
 }
     `;
 export const SignUpDocument = gql`
@@ -556,6 +699,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     CreatePlayer(variables: CreatePlayerMutationVariables): Promise<CreatePlayerMutation> {
       return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables));
     },
+    CreateShareLink(variables: CreateShareLinkMutationVariables): Promise<CreateShareLinkMutation> {
+      return withWrapper(() => client.request<CreateShareLinkMutation>(print(CreateShareLinkDocument), variables));
+    },
     DeleteCustomLayout(variables: DeleteCustomLayoutMutationVariables): Promise<DeleteCustomLayoutMutation> {
       return withWrapper(() => client.request<DeleteCustomLayoutMutation>(print(DeleteCustomLayoutDocument), variables));
     },
@@ -570,6 +716,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Logout(variables?: LogoutMutationVariables): Promise<LogoutMutation> {
       return withWrapper(() => client.request<LogoutMutation>(print(LogoutDocument), variables));
+    },
+    ShareLink(variables: ShareLinkQueryVariables): Promise<ShareLinkQuery> {
+      return withWrapper(() => client.request<ShareLinkQuery>(print(ShareLinkDocument), variables));
     },
     SignUp(variables: SignUpMutationVariables): Promise<SignUpMutation> {
       return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables));

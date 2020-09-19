@@ -1,13 +1,13 @@
 import React from "react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
-import { IPosition } from "../../containers/MakeTeam/types";
+import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
 import ItemTypes from "./ItemTypes";
 import PositionDrop from "../PositionDrop";
 
 export interface IProps {
   index: number;
-  position: IPosition;
+  position: IPosition | IShareLinkPosition;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
     positionDroppedIndex: number
@@ -16,7 +16,7 @@ export interface IProps {
 
 export interface IDragPosition {
   index: number;
-  position: IPosition;
+  position: IPosition | IShareLinkPosition;
   type: string;
 }
 

@@ -1,4 +1,10 @@
-import { Layout, Player, Position } from "../../graphql/API";
+import {
+  Layout,
+  Player,
+  Position,
+  ShareLink,
+  ShareLinkPosition,
+} from "../../graphql/API";
 
 export interface IPlayer extends Player {}
 
@@ -11,8 +17,6 @@ export interface ILayout extends Pick<Layout, "id" | "name" | "createdAt"> {
   isCustom?: boolean;
 }
 
-export interface IShareTeam {
-  id: string;
-  name: string;
-  positions: Array<IPosition>;
-}
+export interface IShareTeam extends ShareLink {}
+
+export interface IShareLinkPosition extends ShareLinkPosition {}
