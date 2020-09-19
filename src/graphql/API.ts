@@ -223,6 +223,24 @@ export type ConfirmSignUpMutation = (
   ) }
 );
 
+export type CreateLayoutMutationVariables = Exact<{
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+}>;
+
+
+export type CreateLayoutMutation = (
+  { __typename?: 'Mutation' }
+  & { createCustomLayout?: Maybe<(
+    { __typename?: 'CustomLayout' }
+    & Pick<CustomLayout, 'id' | 'name'>
+    & { positions: Array<(
+      { __typename?: 'Position' }
+      & Pick<Position, 'x' | 'y'>
+    )> }
+  )> }
+);
+
 export type ForgotPaswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -371,6 +389,18 @@ export const ConfirmSignUpDocument = gql`
   }
 }
     `;
+export const CreateLayoutDocument = gql`
+    mutation CreateLayout($name: String!, $positions: [PositionInput!]!) {
+  createCustomLayout(input: {name: $name, positions: $positions}) {
+    id
+    name
+    positions {
+      x
+      y
+    }
+  }
+}
+    `;
 export const ForgotPaswordDocument = gql`
     mutation ForgotPasword($email: String!) {
   forgotPassword(email: $email)
@@ -477,6 +507,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     ConfirmSignUp(variables: ConfirmSignUpMutationVariables): Promise<ConfirmSignUpMutation> {
       return withWrapper(() => client.request<ConfirmSignUpMutation>(print(ConfirmSignUpDocument), variables));
+    },
+    CreateLayout(variables: CreateLayoutMutationVariables): Promise<CreateLayoutMutation> {
+      return withWrapper(() => client.request<CreateLayoutMutation>(print(CreateLayoutDocument), variables));
     },
     ForgotPasword(variables: ForgotPaswordMutationVariables): Promise<ForgotPaswordMutation> {
       return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables));
