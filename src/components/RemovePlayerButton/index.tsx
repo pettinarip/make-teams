@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Confirm } from "semantic-ui-react";
 
-import { Player as IPlayer } from "../../graphql/API";
-// import useRemovePlayer from "../../graphql/mutations/useRemovePlayer";
+import { IPlayer } from "../../containers/MakeTeam/types";
+import useRemovePlayer from "../../dal/player/useRemovePlayer";
 
 export interface IProps {
   player: IPlayer;
@@ -10,14 +10,14 @@ export interface IProps {
 
 export default function RemovePlayerButton(props: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  // const [removePlayer] = useRemovePlayer();
+  const [removePlayer] = useRemovePlayer();
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
   async function handleOnRemove() {
-    // await removePlayer(props.player);
+    await removePlayer(props.player);
   }
 
   return (

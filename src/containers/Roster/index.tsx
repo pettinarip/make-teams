@@ -9,7 +9,7 @@ import {
   Loader,
 } from "semantic-ui-react";
 
-import { Player as IPlayer } from "../../graphql/API";
+import { IPlayer } from "../MakeTeam/types";
 import useAuth from "../../domain/user/useAuth";
 import useGetPlayers from "../../dal/player/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";

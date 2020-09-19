@@ -3,8 +3,8 @@ import { Label as LabelSem } from "semantic-ui-react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 import styled from "@emotion/styled";
 
+import { IPlayer } from "../../containers/MakeTeam/types";
 import playerImg from "../../images/christian.jpg";
-import { Player as IPlayer } from "../../graphql/API";
 
 export const ITEM_TYPE = "player";
 

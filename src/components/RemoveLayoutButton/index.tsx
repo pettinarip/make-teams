@@ -4,7 +4,6 @@ import { jsx, css } from "@emotion/core";
 import { Button, Confirm } from "semantic-ui-react";
 
 import { ILayout } from "../../containers/MakeTeam/types";
-// import useRemoveLayout from "../../graphql/mutations/useRemoveLayout";
 
 export interface IProps {
   layout: ILayout;

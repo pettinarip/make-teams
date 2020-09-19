@@ -7,8 +7,7 @@ import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
 import ShareTeam from "../ShareTeam";
 
-import { Player as IPlayer } from "../../graphql/API";
-import { ILayout, IPosition } from "./types";
+import { ILayout, IPlayer, IPosition } from "./types";
 import useAssignments from "./useAssignments";
 
 export interface IProps {}

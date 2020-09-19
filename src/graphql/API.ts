@@ -116,17 +116,17 @@ export type Query = {
 
 
 export type QueryLayoutArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 
 export type QueryCustomLayoutArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 
 export type QueryPlayerArgs = {
-  id: Scalars['Int'];
+  id: Scalars['String'];
 };
 
 export type Mutation = {
@@ -134,6 +134,7 @@ export type Mutation = {
   createLayout: Layout;
   createCustomLayout?: Maybe<CustomLayout>;
   createPlayer: Player;
+  deletePlayer: Scalars['Boolean'];
   register: UserResponse;
   confirmSignUp: UserResponse;
   login: UserResponse;
@@ -155,6 +156,11 @@ export type MutationCreateCustomLayoutArgs = {
 
 export type MutationCreatePlayerArgs = {
   input: PlayerInput;
+};
+
+
+export type MutationDeletePlayerArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -241,6 +247,31 @@ export type CreateLayoutMutation = (
   )> }
 );
 
+export type CreatePlayerMutationVariables = Exact<{
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+}>;
+
+
+export type CreatePlayerMutation = (
+  { __typename?: 'Mutation' }
+  & { createPlayer: (
+    { __typename?: 'Player' }
+    & Pick<Player, 'id' | 'firstName' | 'lastName'>
+  ) }
+);
+
+export type DeletePlayerMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeletePlayerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deletePlayer'>
+);
+
 export type ForgotPaswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -296,21 +327,6 @@ export type SignUpMutation = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'email' | 'createdAt' | 'updatedAt'>
     )> }
-  ) }
-);
-
-export type CreatePlayerMutationVariables = Exact<{
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  number: Scalars['Float'];
-}>;
-
-
-export type CreatePlayerMutation = (
-  { __typename?: 'Mutation' }
-  & { createPlayer: (
-    { __typename?: 'Player' }
-    & Pick<Player, 'id' | 'firstName' | 'lastName'>
   ) }
 );
 
@@ -401,6 +417,20 @@ export const CreateLayoutDocument = gql`
   }
 }
     `;
+export const CreatePlayerDocument = gql`
+    mutation CreatePlayer($firstName: String!, $lastName: String!, $number: Float!) {
+  createPlayer(input: {firstName: $firstName, lastName: $lastName, number: $number}) {
+    id
+    firstName
+    lastName
+  }
+}
+    `;
+export const DeletePlayerDocument = gql`
+    mutation DeletePlayer($id: String!) {
+  deletePlayer(id: $id)
+}
+    `;
 export const ForgotPaswordDocument = gql`
     mutation ForgotPasword($email: String!) {
   forgotPassword(email: $email)
@@ -440,15 +470,6 @@ export const SignUpDocument = gql`
       createdAt
       updatedAt
     }
-  }
-}
-    `;
-export const CreatePlayerDocument = gql`
-    mutation CreatePlayer($firstName: String!, $lastName: String!, $number: Float!) {
-  createPlayer(input: {firstName: $firstName, lastName: $lastName, number: $number}) {
-    id
-    firstName
-    lastName
   }
 }
     `;
@@ -511,6 +532,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     CreateLayout(variables: CreateLayoutMutationVariables): Promise<CreateLayoutMutation> {
       return withWrapper(() => client.request<CreateLayoutMutation>(print(CreateLayoutDocument), variables));
     },
+    CreatePlayer(variables: CreatePlayerMutationVariables): Promise<CreatePlayerMutation> {
+      return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables));
+    },
+    DeletePlayer(variables: DeletePlayerMutationVariables): Promise<DeletePlayerMutation> {
+      return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables));
+    },
     ForgotPasword(variables: ForgotPaswordMutationVariables): Promise<ForgotPaswordMutation> {
       return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables));
     },
@@ -522,9 +549,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     SignUp(variables: SignUpMutationVariables): Promise<SignUpMutation> {
       return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables));
-    },
-    CreatePlayer(variables: CreatePlayerMutationVariables): Promise<CreatePlayerMutation> {
-      return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables));
     },
     ListLayouts(variables?: ListLayoutsQueryVariables): Promise<ListLayoutsQuery> {
       return withWrapper(() => client.request<ListLayoutsQuery>(print(ListLayoutsDocument), variables));
