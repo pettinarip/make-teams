@@ -394,7 +394,7 @@ describe("MakeTeam", () => {
     `);
   });
 
-  test("when show names toggle is on, players names dispalys", async () => {
+  test("when 'show names' toggle is on, players names dispalys", async () => {
     render(<MakeTeam />);
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));

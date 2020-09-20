@@ -1,30 +1,27 @@
 import React from "react";
 import * as rtl from "@testing-library/react";
-// import {
-//   ReactQueryConfigProvider,
-//   ReactQueryProviderConfig,
-// } from "react-query";
+import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
 import { ToastProvider } from "react-toast-notifications";
 
 // TODO: shouldn't we just keep the same config used in the app? probably with
 // less staleTime
-// const queryConfig: ReactQueryProviderConfig = {
-//   queries: {
-//     retry: 0,
-//     refetchOnWindowFocus: false,
-//     useErrorBoundary: true,
-//   },
-//   mutations: {
-//     throwOnError: true,
-//   },
-// };
+const queryConfig: ReactQueryConfig = {
+  queries: {
+    retry: 0,
+    refetchOnWindowFocus: false,
+    useErrorBoundary: true,
+  },
+  mutations: {
+    throwOnError: true,
+  },
+};
 
 function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   function Wrapper({ children }: any) {
     return (
-      // <ReactQueryConfigProvider config={queryConfig}>
-      <ToastProvider>{children}</ToastProvider>
-      // </ReactQueryConfigProvider>
+      <ReactQueryConfigProvider config={queryConfig}>
+        <ToastProvider>{children}</ToastProvider>
+      </ReactQueryConfigProvider>
     );
   }
   return {
