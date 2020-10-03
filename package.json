@@ -23,6 +23,7 @@
     "@types/react-dom": "^16.9.8",
     "copy-to-clipboard": "^3.3.1",
     "dom-to-image": "^2.6.0",
+    "dotenv-safe": "^8.2.0",
     "formik": "^2.1.4",
     "graphql": "^15.3.0",
     "graphql-request": "^3.1.0",

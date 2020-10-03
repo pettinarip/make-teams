@@ -1,3 +1,4 @@
+import "dotenv-safe";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Router } from "@reach/router";
