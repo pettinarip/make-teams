@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { Grid, Segment, Rail } from "semantic-ui-react";
+import { useState, useCallback, useEffect } from "react";
+import { Box, Grid } from "@chakra-ui/core";
 
 import FieldStatic from "../../components/FieldStatic";
-import Controls from "../../components/Controls";
-import TeamLayout from "../TeamLayout";
-import Roster from "../Roster";
-import ShareTeam from "../ShareTeam";
+// import Controls from "../../components/Controls";
+// import TeamLayout from "../TeamLayout";
+// import Roster from "../Roster";
+// import ShareTeam from "../ShareTeam";
 
 import { ILayout, IPlayer, IPosition } from "./types";
 import useAssignments from "./useAssignments";
@@ -62,48 +62,33 @@ export default function MakeTeam(__props: IProps) {
   }, []);
 
   return (
-    <Grid centered columns={3}>
-      <Grid.Row>
-        <Grid.Column>
-          <Segment>
-            <FieldStatic
-              showNames={showNames}
-              positions={assignments}
-              onPositionDropInPosition={handlePositionDropInPosition}
-            />
+    <Box>
+      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
+        {/* <TeamLayout onChange={handleLayoutChange} /> */}
+        <div>1</div>
 
-            <Rail position="left">
-              <Segment>
-                <TeamLayout onChange={handleLayoutChange} />
-              </Segment>
-            </Rail>
+        <FieldStatic
+          showNames={showNames}
+          positions={assignments}
+          onPositionDropInPosition={handlePositionDropInPosition}
+        />
+        <div>2</div>
 
-            <Rail position="right">
-              <Segment>
-                <Roster
-                  usedPlayersIds={usedPlayersIds}
-                  onPlayerDropInPosition={handlePlayerDropInPosition}
-                  onPlayerClick={handlePlayerClick}
-                  onResetClick={handleOnClear}
-                />
-              </Segment>
-            </Rail>
-          </Segment>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column textAlign="center">
-          <Controls
-            showNames={showNames}
-            onShowNamesChange={handleShowNamesChange}
-          />
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Column textAlign="center">
-          <ShareTeam positions={assignments} />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
+        {/* <Roster
+          usedPlayersIds={usedPlayersIds}
+          onPlayerDropInPosition={handlePlayerDropInPosition}
+          onPlayerClick={handlePlayerClick}
+          onResetClick={handleOnClear}
+        /> */}
+      </Grid>
+
+      <Box>
+        {/* <Controls
+          showNames={showNames}
+          onShowNamesChange={handleShowNamesChange}
+        /> */}
+      </Box>
+      <Box>{/* <ShareTeam positions={assignments} /> */}</Box>
+    </Box>
   );
 }

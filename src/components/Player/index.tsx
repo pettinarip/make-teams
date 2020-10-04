@@ -1,10 +1,9 @@
 import React from "react";
-import { Label as LabelSem } from "semantic-ui-react";
+import { Avatar, Tag, TagLabel } from "@chakra-ui/core";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 import styled from "@emotion/styled";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import playerImg from "../../images/christian.jpg";
 
 export const ITEM_TYPE = "player";
 
@@ -32,20 +31,24 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
     onClick(player);
   }
 
+  const playerName = `${player.lastName}, ${player.firstName}`;
+
   return (
     <div ref={drag}>
-      <Label as="a" onClick={handleOnClick} image data-testid="player">
-        <img src={playerImg} alt="" />
-        <Name>{`${player.lastName}, ${player.firstName}`}</Name>
-        <LabelSem.Detail>{player.number}</LabelSem.Detail>
-      </Label>
+      <Tag onClick={handleOnClick} data-testid="player">
+        <Avatar
+          src="/christian.jpg"
+          size="xs"
+          name={playerName}
+          ml={-1}
+          mr={2}
+        />
+        <Name>{playerName}</Name>
+        <TagLabel>{player.number}</TagLabel>
+      </Tag>
     </div>
   );
 }
-
-const Label = styled(LabelSem)`
-  display: flex !important;
-`;
 
 const Name = styled.span`
   flex: 1;

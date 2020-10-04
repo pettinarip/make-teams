@@ -21,27 +21,25 @@ interface IProps {
 export default function FieldStatic(props: IProps) {
   return (
     <Field loading={props.loading}>
-      <>
-        {props.positions.map((position, index) => {
-          const commonProps = {
-            key: index,
-            position,
-            showName: props.showNames,
-          };
+      {props.positions.map((position, index) => {
+        const commonProps = {
+          key: index,
+          position,
+          showName: props.showNames,
+        };
 
-          return props.readonly ? (
-            <PositionStatic {...commonProps} />
-          ) : position.player ? (
-            <PositionDnD
-              index={index}
-              onPositionDropInPosition={props.onPositionDropInPosition}
-              {...commonProps}
-            />
-          ) : (
-            <PositionDrop index={index} {...commonProps} />
-          );
-        })}
-      </>
+        return props.readonly ? (
+          <PositionStatic {...commonProps} />
+        ) : position.player ? (
+          <PositionDnD
+            index={index}
+            onPositionDropInPosition={props.onPositionDropInPosition}
+            {...commonProps}
+          />
+        ) : (
+          <PositionDrop index={index} {...commonProps} />
+        );
+      })}
     </Field>
   );
 }

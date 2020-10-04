@@ -1,12 +1,11 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
-import { Menu as MenuSemantic } from "semantic-ui-react";
-import { navigate } from "@reach/router";
+import { useRouter } from "next/router";
+import { Box, Flex } from "@chakra-ui/core";
 
 import useAuth from "../../domain/user/useAuth";
 import useLogout from "../../dal/user/useLogout";
 
 export default function Menu() {
+  const router = useRouter();
   const { user } = useAuth();
   const [logout] = useLogout();
 
@@ -14,28 +13,17 @@ export default function Menu() {
 
   async function handleSignOut() {
     await logout();
-    navigate("/login");
+    router.push("/login");
   }
 
   return (
-    <MenuSemantic
-      pointing
-      text
-      secondary
-      css={css`
-        margin-bottom: 50px !important;
-      `}
-    >
-      <MenuSemantic.Item name="home" active />
-      <MenuSemantic.Menu position="right">
-        <MenuSemantic.Item active={false}>{username}</MenuSemantic.Item>
-        <MenuSemantic.Item
-          name="sign out"
-          active={false}
-          onClick={handleSignOut}
-        />
-      </MenuSemantic.Menu>
-    </MenuSemantic>
+    <Flex align="center" justifyContent="space-between">
+      <Box>Home</Box>
+      <Box>
+        <Box>{username}</Box>
+        <Box onClick={handleSignOut}>Sign out</Box>
+      </Box>
+    </Flex>
   );
 }
 

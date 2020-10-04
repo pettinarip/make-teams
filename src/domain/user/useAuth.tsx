@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useContext } from "react";
+import { createContext, useMemo, useContext } from "react";
 
 import useGetCurrentUser from "../../dal/user/useGetCurrentUser";
 import { IUser } from "../../dal/user/types";

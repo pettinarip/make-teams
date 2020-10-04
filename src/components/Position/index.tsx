@@ -1,10 +1,9 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
+import { Badge } from "@chakra-ui/core";
 import styled from "@emotion/styled";
-import { Label } from "semantic-ui-react";
 
 import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
-import playerImg from "../../images/christian.jpg";
 
 export interface IProps {
   position: IPosition | IShareLinkPosition;
@@ -23,18 +22,14 @@ export default function Position({ position, isActive, showName }: IProps) {
             css={css`
               width: 100%;
             `}
-            src={playerImg}
+            src="/christian.jpg"
             alt=""
           />
         ) : (
           ""
         )}
       </Img>
-      {player && (
-        <Label color="teal" floating>
-          {player.number}
-        </Label>
-      )}
+      {player && <Badge>{player.number}</Badge>}
       {player && showName && (
         <Name>{`${player.lastName}, ${player.firstName}`}</Name>
       )}
