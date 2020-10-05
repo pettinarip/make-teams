@@ -1,13 +1,14 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
 import {
-  List,
-  Header,
-  Placeholder,
-  Divider,
+  Box,
   Button,
-  Loader,
-} from "semantic-ui-react";
+  Center,
+  Divider,
+  Heading,
+  List,
+  ListItem,
+  Skeleton,
+  Spinner,
+} from "@chakra-ui/core";
 
 import { IPlayer } from "../MakeTeam/types";
 import useAuth from "../../domain/user/useAuth";
@@ -33,49 +34,40 @@ export default function Roster({
   const { status, data: players = [] } = useGetPlayers(user);
 
   return (
-    <div>
-      <Header as="h2">Roster ({players.length})</Header>
-      {(isFetching || status === "loading") && (
-        <Placeholder fluid data-testid="loading">
-          <Placeholder.Paragraph>
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-          </Placeholder.Paragraph>
-        </Placeholder>
-      )}
-      <List
-        css={css`
-          max-height: 300px;
-          overflow: auto;
-        `}
+    <Box>
+      <Heading as="h4" size="md" mb={6}>
+        Roster ({players.length})
+      </Heading>
+
+      <Skeleton
+        isLoaded={!isFetching && status !== "loading"}
+        data-testid="loading"
       >
-        {players
-          .filter((p) => !usedPlayersIds.includes(p.id))
-          .map((player) => (
-            <List.Item key={player.id}>
-              <List.Content floated="right">
-                <RemovePlayerButton player={player} />
-              </List.Content>
-              <Player
-                player={player}
-                onDropInPosition={onPlayerDropInPosition}
-                onClick={onPlayerClick}
-              />
-            </List.Item>
-          ))}
-      </List>
-      <Divider />
+        <List maxH={300} overflow="auto">
+          {players
+            .filter((p) => !usedPlayersIds.includes(p.id))
+            .map((player) => (
+              <ListItem key={player.id}>
+                {/* <RemovePlayerButton player={player} /> */}
+                <Player
+                  player={player}
+                  onDropInPosition={onPlayerDropInPosition}
+                  onClick={onPlayerClick}
+                />
+              </ListItem>
+            ))}
+        </List>
+      </Skeleton>
       {isFetching ? (
-        <Loader active inline="centered" data-testid="loading" />
+        <Center data-testid="loading">
+          <Spinner />
+        </Center>
       ) : (
-        <div data-testid="roster-buttons">
-          <CreatePlayerButton>New</CreatePlayerButton>
+        <Box data-testid="roster-buttons" mt={6}>
+          <CreatePlayerButton mr={3}>New</CreatePlayerButton>
           <Button onClick={onResetClick}>Reset</Button>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

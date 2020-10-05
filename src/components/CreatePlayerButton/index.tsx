@@ -1,28 +1,36 @@
-import React, { ReactNode, useState } from "react";
-import { Button, Image, Modal, Header, Message } from "semantic-ui-react";
+import { ReactNode, useState } from "react";
+import {
+  Avatar,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  ChakraProps,
+} from "@chakra-ui/core";
 
 import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
 import CreatePlayerForm, { IFormValues } from "./CreatePlayerForm";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   children: ReactNode;
 }
 
-export default function CreatePlayerButton(props: IProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function CreatePlayerButton({ children, ...restProps }: IProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
   const [addNewPlayer] = useAddNewPlayer();
 
   let submitForm: Function = () => {};
-
-  function handleOpen() {
-    setIsOpen(true);
-  }
-
-  function handleClose() {
-    setIsOpen(false);
-  }
 
   function bindSubmitForm(submitFormFn: Function) {
     submitForm = submitFormFn;
@@ -39,7 +47,7 @@ export default function CreatePlayerButton(props: IProps) {
         number: values.number || 0,
       };
       await addNewPlayer(newPlayer);
-      handleClose();
+      onClose();
     } catch (e) {
       console.log(e);
       setHasErrors(true);
@@ -49,47 +57,54 @@ export default function CreatePlayerButton(props: IProps) {
   }
 
   return (
-    <Modal
-      trigger={
-        <Button primary onClick={handleOpen}>
-          {props.children}
-        </Button>
-      }
-      open={isOpen}
-      onClose={handleClose}
-    >
-      <Modal.Content image>
-        <Image
-          wrapped
-          size="medium"
-          src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
-        />
-        <Modal.Description>
-          <Header>Add a new player to the team</Header>
-          <p>
-            We've found the following gravatar image associated with your e-mail
-            address.
-          </p>
-          {hasErrors && (
-            <Message negative>
-              <Message.Header>
-                There was an error with your submission
-              </Message.Header>
-              <p>Complete all the fields and try again.</p>
-            </Message>
-          )}
-          <CreatePlayerForm
-            onSubmit={handleSubmit}
-            bindSubmitForm={bindSubmitForm}
-          />
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button primary onClick={(e) => submitForm()} loading={isSubmitting}>
-          Create
-        </Button>
-      </Modal.Actions>
-    </Modal>
+    <>
+      <Button colorScheme="blue" onClick={onOpen} {...restProps}>
+        {children}
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Add a new player to the team</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Avatar
+                src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
+                size="md"
+              />
+              <p>
+                We've found the following gravatar image associated with your
+                e-mail address.
+              </p>
+              {hasErrors && (
+                <Alert status="error">
+                  <AlertIcon />
+                  <AlertTitle mr={2}>
+                    There was an error with your submission
+                  </AlertTitle>
+                  <AlertDescription>
+                    Complete all the fields and try again.
+                  </AlertDescription>
+                </Alert>
+              )}
+              <CreatePlayerForm
+                onSubmit={handleSubmit}
+                bindSubmitForm={bindSubmitForm}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                onClick={(e) => submitForm()}
+                isLoading={isSubmitting}
+                mr={3}
+              >
+                Create
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      </Modal>
+    </>
   );
 }

@@ -1,6 +1,20 @@
-import React from "react";
-import { Form } from "semantic-ui-react";
-import { Formik, FormikProps, FormikHelpers } from "formik";
+import {
+  Grid,
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  Select,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  RadioGroup,
+  Radio,
+  Stack,
+} from "@chakra-ui/core";
+import { Formik, FormikProps, FormikHelpers, Field, FieldProps } from "formik";
 
 import validate from "./validate";
 
@@ -18,9 +32,9 @@ export interface IProps {
 }
 
 const GENDER_OPTIONS = [
-  { key: "m", text: "Male", value: "male" },
-  { key: "f", text: "Female", value: "female" },
-  { key: "o", text: "Other", value: "other" },
+  { text: "Male", value: "male" },
+  { text: "Female", value: "female" },
+  { text: "Other", value: "other" },
 ];
 
 export default function CreatePlayerForm(props: IProps) {
@@ -40,94 +54,118 @@ export default function CreatePlayerForm(props: IProps) {
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({
-        values,
-        errors,
-        handleChange,
-        submitForm,
-        setFieldValue,
-      }: FormikProps<IFormValues>) => {
+      {({ submitForm }: FormikProps<IFormValues>) => {
         props.bindSubmitForm(submitForm);
         return (
-          <Form>
-            <Form.Group widths="equal">
-              <Form.Input
-                fluid
-                autoFocus
-                name="firstName"
-                label="First name"
-                placeholder="First name"
-                value={values.firstName}
-                onChange={handleChange}
-                required
-                error={!!errors.firstName}
-              />
-              <Form.Input
-                fluid
-                name="lastName"
-                label="Last name"
-                placeholder="Last name"
-                value={values.lastName}
-                onChange={handleChange}
-                required
-                error={!!errors.lastName}
-              />
-            </Form.Group>
-            <Form.Select
-              fluid
-              name="gender"
-              label="Gender"
-              placeholder="Gender"
-              options={GENDER_OPTIONS}
-              value={values.gender}
-              onChange={(e, { name, value }) => setFieldValue(name, value)}
-            />
-            <Form.Input
-              name="number"
-              type="number"
-              label="Number"
-              value={values.number}
-              onChange={handleChange}
-              max={99}
-              required
-              error={!!errors.number}
-            />
-            <Form.Group inline>
-              <label>Position</label>
-              <Form.Radio
-                id="position-gl"
-                name="position"
-                label="Goalkeeper"
-                value="gl"
-                checked={values.position === "gl"}
-                onChange={handleChange}
-              />
-              <Form.Radio
-                id="position-def"
-                name="position"
-                label="Defender"
-                value="def"
-                checked={values.position === "def"}
-                onChange={handleChange}
-              />
-              <Form.Radio
-                id="position-mid"
-                name="position"
-                label="Mid"
-                value="mid"
-                checked={values.position === "mid"}
-                onChange={handleChange}
-              />
-              <Form.Radio
-                id="position-fwd"
-                name="position"
-                label="Forward"
-                value="fwd"
-                checked={values.position === "fwd"}
-                onChange={handleChange}
-              />
-            </Form.Group>
-          </Form>
+          <form>
+            <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={6}>
+              <Field name="firstName">
+                {({ field, form }: FieldProps) => (
+                  <FormControl
+                    isRequired
+                    isInvalid={
+                      !!form.errors.firstName && !!form.touched.firstName
+                    }
+                  >
+                    <FormLabel htmlFor="firstName">First name</FormLabel>
+                    <Input
+                      {...field}
+                      autoFocus
+                      id="firstName"
+                      placeholder="First name"
+                    />
+                    <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+              <Field name="lastName">
+                {({ field, form }: FieldProps) => (
+                  <FormControl
+                    isRequired
+                    isInvalid={
+                      !!form.errors.lastName && !!form.touched.lastName
+                    }
+                  >
+                    <FormLabel htmlFor="lastName">Last name</FormLabel>
+                    <Input {...field} id="lastName" placeholder="Last name" />
+                    <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+            </Grid>
+            <Field name="gender">
+              {({ field, form }: FieldProps) => (
+                <FormControl
+                  isRequired
+                  isInvalid={!!form.errors.gender && !!form.touched.gender}
+                  mt={6}
+                >
+                  <FormLabel htmlFor="gender">Gender</FormLabel>
+                  <Select {...field} id="gender" placeholder="Gender">
+                    {GENDER_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.text}
+                      </option>
+                    ))}
+                  </Select>
+                  <FormErrorMessage>{form.errors.gender}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="number">
+              {({ field, form }: FieldProps) => (
+                <FormControl
+                  isRequired
+                  isInvalid={!!form.errors.number && !!form.touched.number}
+                  mt={6}
+                >
+                  <FormLabel htmlFor="number">Number</FormLabel>
+                  <NumberInput
+                    {...field}
+                    id="number"
+                    onChange={(value) => {
+                      form.setFieldValue("number", parseInt(value));
+                    }}
+                    min={0}
+                    max={99}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                  <FormErrorMessage>{form.errors.number}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+            <Field name="position">
+              {({ field, form }: FieldProps) => (
+                <FormControl
+                  isRequired
+                  isInvalid={!!form.errors.position && !!form.touched.position}
+                  mt={6}
+                >
+                  <FormLabel htmlFor="position">Position</FormLabel>
+                  <RadioGroup
+                    {...field}
+                    id="position"
+                    onChange={(value) => {
+                      form.setFieldValue("position", value);
+                    }}
+                  >
+                    <Stack>
+                      <Radio value="gl">Goalkeeper</Radio>
+                      <Radio value="def">Defender</Radio>
+                      <Radio value="mid">Mid</Radio>
+                      <Radio value="fwd">Forward</Radio>
+                    </Stack>
+                  </RadioGroup>
+                  <FormErrorMessage>{form.errors.position}</FormErrorMessage>
+                </FormControl>
+              )}
+            </Field>
+          </form>
         );
       }}
     </Formik>

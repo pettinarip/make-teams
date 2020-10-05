@@ -4,7 +4,7 @@ import { Box, Center, Grid } from "@chakra-ui/core";
 import FieldStatic from "../../components/FieldStatic";
 // import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
-// import Roster from "../Roster";
+import Roster from "../Roster";
 // import ShareTeam from "../ShareTeam";
 
 import { ILayout, IPlayer, IPosition } from "./types";
@@ -74,12 +74,12 @@ export default function MakeTeam(__props: IProps) {
           />
         </Center>
 
-        {/* <Roster
+        <Roster
           usedPlayersIds={usedPlayersIds}
           onPlayerDropInPosition={handlePlayerDropInPosition}
           onPlayerClick={handlePlayerClick}
           onResetClick={handleOnClear}
-        /> */}
+        />
       </Grid>
 
       <Box>

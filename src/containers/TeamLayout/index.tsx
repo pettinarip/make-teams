@@ -70,7 +70,7 @@ export default function TeamLayout({ onChange }: IProps) {
 
   return (
     <Box>
-      <Heading as="h4" size="md">
+      <Heading as="h4" size="md" mb={6}>
         Layouts
       </Heading>
 
@@ -112,10 +112,9 @@ export default function TeamLayout({ onChange }: IProps) {
           </Box>
         </RadioGroup>
       </Skeleton>
-      <Divider my={4} />
-      <div data-testid="layout-buttons">
+      <Box data-testid="layout-buttons" my={6}>
         <CreateLayoutButton>New</CreateLayoutButton>
-      </div>
+      </Box>
     </Box>
   );
 }
