@@ -92,7 +92,7 @@ export default function TeamLayout({ onChange }: IProps) {
             ))}
           </Box>
 
-          {customLayouts.length > 0 && <Divider />}
+          {customLayouts.length > 0 && <Divider my={4} />}
 
           <Box data-testid="custom-layout">
             {customLayouts.map((layout) => (
@@ -112,7 +112,7 @@ export default function TeamLayout({ onChange }: IProps) {
           </Box>
         </RadioGroup>
       </Skeleton>
-      <Divider />
+      <Divider my={4} />
       <div data-testid="layout-buttons">
         <CreateLayoutButton>New</CreateLayoutButton>
       </div>

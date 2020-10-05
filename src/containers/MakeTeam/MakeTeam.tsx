@@ -73,7 +73,6 @@ export default function MakeTeam(__props: IProps) {
             onPositionDropInPosition={handlePositionDropInPosition}
           />
         </Center>
-        <div>2</div>
 
         {/* <Roster
           usedPlayersIds={usedPlayersIds}

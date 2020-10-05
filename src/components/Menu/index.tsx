@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { Box, ChakraProps, Flex } from "@chakra-ui/core";
+import NextLink from "next/link";
+import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
 
 import useAuth from "../../domain/user/useAuth";
 import useLogout from "../../dal/user/useLogout";
@@ -20,19 +21,25 @@ export default function Menu(props: ChakraProps) {
     <Flex
       align="center"
       justifyContent="space-between"
-      borderBottom="1px solid"
+      borderBottomWidth={1}
       {...props}
     >
-      <Box>Home</Box>
       <Box>
-        <Box>{username}</Box>
-        <Box onClick={handleSignOut}>Sign out</Box>
+        <NextLink href="/">
+          <Link>Home</Link>
+        </NextLink>
       </Box>
+      <Flex>
+        <Box mr={6}>{username}</Box>
+        <Box>
+          <Link onClick={handleSignOut}>Logout</Link>
+        </Box>
+      </Flex>
     </Flex>
   );
 }
 
 function getUsername(user: any): string {
   if (!user) return "";
-  return user.attributes ? user.attributes.email : user.username;
+  return user.email || user.username;
 }
