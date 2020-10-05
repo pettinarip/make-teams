@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import { Box, Grid } from "@chakra-ui/core";
+import { Box, Center, Grid } from "@chakra-ui/core";
 
 import FieldStatic from "../../components/FieldStatic";
 // import Controls from "../../components/Controls";
-// import TeamLayout from "../TeamLayout";
+import TeamLayout from "../TeamLayout";
 // import Roster from "../Roster";
 // import ShareTeam from "../ShareTeam";
 
@@ -64,14 +64,15 @@ export default function MakeTeam(__props: IProps) {
   return (
     <Box>
       <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-        {/* <TeamLayout onChange={handleLayoutChange} /> */}
-        <div>1</div>
+        <TeamLayout onChange={handleLayoutChange} />
 
-        <FieldStatic
-          showNames={showNames}
-          positions={assignments}
-          onPositionDropInPosition={handlePositionDropInPosition}
-        />
+        <Center>
+          <FieldStatic
+            showNames={showNames}
+            positions={assignments}
+            onPositionDropInPosition={handlePositionDropInPosition}
+          />
+        </Center>
         <div>2</div>
 
         {/* <Roster

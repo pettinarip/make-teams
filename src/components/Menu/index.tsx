@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import { Box, Flex } from "@chakra-ui/core";
+import { Box, ChakraProps, Flex } from "@chakra-ui/core";
 
 import useAuth from "../../domain/user/useAuth";
 import useLogout from "../../dal/user/useLogout";
 
-export default function Menu() {
+export default function Menu(props: ChakraProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [logout] = useLogout();
@@ -17,7 +17,12 @@ export default function Menu() {
   }
 
   return (
-    <Flex align="center" justifyContent="space-between">
+    <Flex
+      align="center"
+      justifyContent="space-between"
+      borderBottom="1px solid"
+      {...props}
+    >
       <Box>Home</Box>
       <Box>
         <Box>{username}</Box>

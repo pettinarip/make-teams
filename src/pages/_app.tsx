@@ -5,6 +5,7 @@ import { AppProps } from "next/app";
 
 import { AuthProvider } from "../domain/user/useAuth";
 
+import Layout from "../components/Layout";
 import theme from "../theme";
 
 const queryConfig: ReactQueryConfig = {
@@ -24,7 +25,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <ToastProvider>
         <AuthProvider>
           <ChakraProvider resetCSS theme={theme}>
-            <Component {...pageProps} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </ChakraProvider>
         </AuthProvider>
       </ToastProvider>

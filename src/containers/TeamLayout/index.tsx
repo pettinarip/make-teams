@@ -1,12 +1,12 @@
-import React, { FormEvent, useState, useEffect, useMemo } from "react";
+import { FormEvent, useState, useEffect, useMemo } from "react";
 import {
-  Form,
-  Radio,
-  CheckboxProps,
-  Header,
-  Placeholder,
+  Box,
   Divider,
-} from "semantic-ui-react";
+  Heading,
+  Radio,
+  RadioGroup,
+  Skeleton,
+} from "@chakra-ui/core";
 
 import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/layout/useLayouts";
@@ -53,8 +53,8 @@ export default function TeamLayout({ onChange }: IProps) {
     return layouts.filter((layout) => layout.isCustom);
   }, [layouts]);
 
-  function handleChange(e: FormEvent, { value }: CheckboxProps) {
-    const layout = layouts.find((l) => l.id === value);
+  function handleChange(nextValue: string) {
+    const layout = layouts.find((l) => l.id === nextValue);
     if (layout) {
       setSelected(layout);
     }
@@ -69,63 +69,53 @@ export default function TeamLayout({ onChange }: IProps) {
   }
 
   return (
-    <>
-      <Header as="h2">Layout</Header>
-      {status === "loading" || (layouts.length && !selected) ? (
-        <Placeholder fluid data-testid="loading">
-          <Placeholder.Paragraph>
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-          </Placeholder.Paragraph>
-        </Placeholder>
-      ) : (
-        <Form data-testid="layouts">
-          {defaultLayouts.map((layout) => (
-            <Form.Field key={layout.id} data-testid="layout">
+    <Box>
+      <Heading as="h4" size="md">
+        Layouts
+      </Heading>
+
+      <Skeleton
+        isLoaded={status !== "loading" || (!!layouts.length && !!selected)}
+        data-testid="loading"
+      >
+        <RadioGroup onChange={handleChange} value={selected?.id}>
+          <Box data-testid="layouts">
+            {defaultLayouts.map((layout) => (
               <Radio
+                key={layout.id}
                 id={`layout-${layout.id}`}
-                name="layout"
-                label={{
-                  children: layout.name,
-                  htmlFor: `layout-${layout.id}`,
-                }}
                 value={layout.id}
-                checked={selected && selected.id === layout.id}
-                onChange={handleChange}
-              />
-            </Form.Field>
-          ))}
+                data-testid="layout"
+              >
+                {layout.name}
+              </Radio>
+            ))}
+          </Box>
 
           {customLayouts.length > 0 && <Divider />}
 
-          {customLayouts.map((layout) => (
-            <Form.Field key={layout.id} data-testid="custom-layout">
+          <Box data-testid="custom-layout">
+            {customLayouts.map((layout) => (
               <Radio
+                key={layout.id}
                 id={`layout-${layout.id}`}
                 name="layout"
-                label={{
-                  children: layout.name,
-                  htmlFor: `layout-${layout.id}`,
-                }}
                 value={layout.id}
-                checked={selected && selected.id === layout.id}
-                onChange={handleChange}
-              />
-              <RemoveLayoutButton
-                layout={layout}
-                onRemoved={handleLayoutRemoved}
-              />
-            </Form.Field>
-          ))}
-        </Form>
-      )}
+              >
+                {layout.name}
+              </Radio>
+              // <RemoveLayoutButton
+              //   layout={layout}
+              //   onRemoved={handleLayoutRemoved}
+              // />
+            ))}
+          </Box>
+        </RadioGroup>
+      </Skeleton>
       <Divider />
       <div data-testid="layout-buttons">
         <CreateLayoutButton>New</CreateLayoutButton>
       </div>
-    </>
+    </Box>
   );
 }

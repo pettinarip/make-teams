@@ -10,8 +10,8 @@ export interface IProps {}
 
 function MakeTeamManager(__props: IProps) {
   return (
-    <Box>
-      <Menu />
+    <Box w={1100} mx="auto">
+      <Menu mb={15} />
       <DndProvider backend={HTML5Backend}>
         <MakeTeam />
       </DndProvider>
