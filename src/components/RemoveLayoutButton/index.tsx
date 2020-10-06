@@ -1,10 +1,18 @@
-/** @jsx jsx */
-import React, { useState } from "react";
-import { jsx, css } from "@emotion/core";
-import { Button, Confirm } from "semantic-ui-react";
+import { useRef, useState } from "react";
+import {
+  IconButton,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+} from "@chakra-ui/core";
 
 import { ILayout } from "../../containers/MakeTeam/types";
 import useRemoveLayout from "../../dal/layout/useRemoveLayout";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 export interface IProps {
   layout: ILayout;
@@ -14,12 +22,13 @@ export interface IProps {
 export default function RemoveLayoutButton(props: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removeLayout] = useRemoveLayout();
+  const cancelRef = useRef(null);
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
-  function handleOnRemove() {
+  function handleRemove() {
     // As we are performing optimistic updates, we just close the modal and
     // assume the removal was executed ok
     toggleConfirmModal();
@@ -31,24 +40,37 @@ export default function RemoveLayoutButton(props: IProps) {
   }
 
   return (
-    <React.Fragment>
-      <Button
-        basic
-        size="mini"
-        icon="trash"
+    <>
+      <IconButton
+        icon={<DeleteIcon />}
+        aria-label="Remove layout"
         onClick={toggleConfirmModal}
-        css={css(`float: right`)}
         data-testid="remove-layout-btn"
       />
-      <Confirm
-        open={isConfirmOpen}
-        onCancel={toggleConfirmModal}
-        onConfirm={handleOnRemove}
-        header={`Remove layout ${props.layout.name}`}
-        content={`Are you sure?`}
-        cancelButton="No"
-        confirmButton="Do it!"
-      />
-    </React.Fragment>
+      <AlertDialog
+        isOpen={isConfirmOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={toggleConfirmModal}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remove layout {props.layout.name}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure?</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={toggleConfirmModal}>
+                No
+              </Button>
+              <Button colorScheme="red" onClick={handleRemove} ml={3}>
+                Do it!
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 }

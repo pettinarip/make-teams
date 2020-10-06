@@ -96,18 +96,24 @@ export default function TeamLayout({ onChange }: IProps) {
 
           <Box data-testid="custom-layout">
             {customLayouts.map((layout) => (
-              <Radio
+              <Box
                 key={layout.id}
-                id={`layout-${layout.id}`}
-                name="layout"
-                value={layout.id}
+                d="flex"
+                flexDirection="row"
+                justifyContent="space-between"
               >
-                {layout.name}
-              </Radio>
-              // <RemoveLayoutButton
-              //   layout={layout}
-              //   onRemoved={handleLayoutRemoved}
-              // />
+                <Radio
+                  id={`layout-${layout.id}`}
+                  name="layout"
+                  value={layout.id}
+                >
+                  {layout.name}
+                </Radio>
+                <RemoveLayoutButton
+                  layout={layout}
+                  onRemoved={handleLayoutRemoved}
+                />
+              </Box>
             ))}
           </Box>
         </RadioGroup>

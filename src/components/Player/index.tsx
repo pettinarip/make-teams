@@ -1,7 +1,6 @@
 import React from "react";
-import { Avatar, Tag, TagLabel } from "@chakra-ui/core";
+import { Avatar, Flex, Box, Text, Badge } from "@chakra-ui/core";
 import { useDrag, DragSourceMonitor } from "react-dnd";
-import styled from "@emotion/styled";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
 
@@ -34,25 +33,15 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
   const playerName = `${player.lastName}, ${player.firstName}`;
 
   return (
-    <div ref={drag}>
-      <Tag onClick={handleOnClick} data-testid="player">
-        <Avatar
-          src="/christian.jpg"
-          size="xs"
-          name={playerName}
-          ml={-1}
-          mr={2}
-        />
-        <Name>{playerName}</Name>
-        <TagLabel>{player.number}</TagLabel>
-      </Tag>
-    </div>
+    <Flex ref={drag} onClick={handleOnClick} data-testid="player">
+      <Avatar name={playerName} />
+      <Box ml="3">
+        <Text fontWeight="bold">
+          {playerName}
+          <Badge ml="1">{player.number}</Badge>
+        </Text>
+        <Text fontSize="sm">Defender</Text>
+      </Box>
+    </Flex>
   );
 }
-
-const Name = styled.span`
-  flex: 1;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-`;

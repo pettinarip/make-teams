@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Heading,
   List,
   ListItem,
@@ -46,14 +45,20 @@ export default function Roster({
         <List maxH={300} overflow="auto">
           {players
             .filter((p) => !usedPlayersIds.includes(p.id))
-            .map((player) => (
-              <ListItem key={player.id}>
-                {/* <RemovePlayerButton player={player} /> */}
+            .map((player, index) => (
+              <ListItem
+                key={player.id}
+                mt={index !== 0 ? 4 : 0}
+                d="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+              >
                 <Player
                   player={player}
                   onDropInPosition={onPlayerDropInPosition}
                   onClick={onPlayerClick}
                 />
+                <RemovePlayerButton player={player} />
               </ListItem>
             ))}
         </List>
