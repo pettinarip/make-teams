@@ -1,18 +1,28 @@
-import { Center, FormControl, FormLabel, Switch } from "@chakra-ui/core";
+import {
+  Center,
+  ChakraProps,
+  FormControl,
+  FormLabel,
+  Switch,
+} from "@chakra-ui/core";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   showNames: boolean;
   onShowNamesChange: () => void;
 }
 
-export default function Controls(props: IProps) {
+export default function Controls({
+  showNames,
+  onShowNamesChange,
+  ...restProps
+}: IProps) {
   return (
-    <FormControl as={Center}>
+    <FormControl as={Center} {...restProps}>
       <FormLabel htmlFor="email-alerts">Show names</FormLabel>
       <Switch
         id="show-names"
-        isChecked={props.showNames}
-        onChange={props.onShowNamesChange}
+        isChecked={showNames}
+        onChange={onShowNamesChange}
       />
     </FormControl>
   );
