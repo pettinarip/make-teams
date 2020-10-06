@@ -27,6 +27,7 @@ export default function Position({ position, isActive, showName }: IProps) {
 const Name = styled.span`
   position: absolute;
   left: -20px;
+  bottom: -20px;
   width: 80px;
   font-size: 0.8em;
   overflow: hidden;

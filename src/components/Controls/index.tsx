@@ -1,5 +1,4 @@
-import React from "react";
-import { Form, Checkbox } from "semantic-ui-react";
+import { Center, FormControl, FormLabel, Switch } from "@chakra-ui/core";
 
 export interface IProps {
   showNames: boolean;
@@ -8,16 +7,13 @@ export interface IProps {
 
 export default function Controls(props: IProps) {
   return (
-    <Form>
-      <Form.Field>
-        <Checkbox
-          toggle
-          id="show-names"
-          label="Show names"
-          checked={props.showNames}
-          onChange={props.onShowNamesChange}
-        />
-      </Form.Field>
-    </Form>
+    <FormControl as={Center}>
+      <FormLabel htmlFor="email-alerts">Show names</FormLabel>
+      <Switch
+        id="show-names"
+        isChecked={props.showNames}
+        onChange={props.onShowNamesChange}
+      />
+    </FormControl>
   );
 }

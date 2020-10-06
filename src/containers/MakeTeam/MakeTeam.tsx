@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Box, Center, Grid } from "@chakra-ui/core";
 
 import FieldStatic from "../../components/FieldStatic";
-// import Controls from "../../components/Controls";
+import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
 // import ShareTeam from "../ShareTeam";
@@ -82,11 +82,11 @@ export default function MakeTeam(__props: IProps) {
         />
       </Grid>
 
-      <Box>
-        {/* <Controls
+      <Box mt={30}>
+        <Controls
           showNames={showNames}
           onShowNamesChange={handleShowNamesChange}
-        /> */}
+        />
       </Box>
       <Box>{/* <ShareTeam positions={assignments} /> */}</Box>
     </Box>
