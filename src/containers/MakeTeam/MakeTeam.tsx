@@ -5,7 +5,7 @@ import FieldStatic from "../../components/FieldStatic";
 import Controls from "../../components/Controls";
 import TeamLayout from "../TeamLayout";
 import Roster from "../Roster";
-// import ShareTeam from "../ShareTeam";
+import ShareTeam from "../ShareTeam";
 
 import { ILayout, IPlayer, IPosition } from "./types";
 import useAssignments from "./useAssignments";
@@ -88,7 +88,9 @@ export default function MakeTeam(__props: IProps) {
           onShowNamesChange={handleShowNamesChange}
         />
       </Box>
-      <Box>{/* <ShareTeam positions={assignments} /> */}</Box>
+      <Box mt={6}>
+        <ShareTeam positions={assignments} />
+      </Box>
     </Box>
   );
 }

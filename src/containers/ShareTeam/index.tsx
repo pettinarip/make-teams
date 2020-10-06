@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Button, Form, Divider } from "semantic-ui-react";
+import { useState } from "react";
 import { useToasts } from "react-toast-notifications";
+import { Button, Center } from "@chakra-ui/core";
 
 import { IPosition } from "../MakeTeam/types";
 import useCreateShareTeam from "../../dal/shareLink/useCreateShareTeam";
@@ -33,26 +33,16 @@ export default function ShareTeam({ positions }: IProps) {
   }
 
   return (
-    <div>
-      <Form.Field>
-        <Button
-          positive
-          onClick={handleClick}
-          loading={status === "loading"}
-          data-testid="share-team-btn"
-        >
-          Share your team!
-        </Button>
-      </Form.Field>
-      {link && (
-        <>
-          <Divider />
-          <Form.Field>
-            <ExportForm shareLink={link} data-testid="share-team-form" />
-          </Form.Field>
-          <Divider />
-        </>
-      )}
-    </div>
+    <Center flexDirection="column">
+      <Button
+        onClick={handleClick}
+        colorScheme="green"
+        isLoading={status === "loading"}
+        data-testid="share-team-btn"
+      >
+        Share your team!
+      </Button>
+      {link && <ExportForm shareLink={link} my={6} />}
+    </Center>
   );
 }
