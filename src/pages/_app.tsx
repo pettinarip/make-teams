@@ -3,8 +3,7 @@ import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
 import { ToastProvider } from "react-toast-notifications";
 import { AppProps } from "next/app";
 
-import { AuthProvider } from "../domain/user/useAuth";
-
+import { AuthProvider } from "../contexts/auth";
 import Layout from "../components/Layout";
 import theme from "../theme";
 
@@ -23,13 +22,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ReactQueryConfigProvider config={queryConfig}>
       <ToastProvider>
-        <AuthProvider>
-          <ChakraProvider resetCSS theme={theme}>
+        <ChakraProvider resetCSS theme={theme}>
+          <AuthProvider>
             <Layout>
               <Component {...pageProps} />
             </Layout>
-          </ChakraProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ChakraProvider>
       </ToastProvider>
     </ReactQueryConfigProvider>
   );

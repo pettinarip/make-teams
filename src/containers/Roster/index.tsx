@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/core";
 
 import { IPlayer } from "../MakeTeam/types";
-import useAuth from "../../domain/user/useAuth";
+import { useAuth } from "../../contexts/auth";
 import useGetPlayers from "../../dal/player/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
@@ -29,7 +29,7 @@ export default function Roster({
   onPlayerClick,
   onResetClick,
 }: IProps) {
-  const { user = {}, isFetching } = useAuth();
+  const { user = {}, isLoading } = useAuth();
   const { status, data: players = [] } = useGetPlayers(user);
 
   return (
@@ -39,7 +39,7 @@ export default function Roster({
       </Heading>
 
       <Skeleton
-        isLoaded={!isFetching && status !== "loading"}
+        isLoaded={!isLoading && status !== "loading"}
         data-testid="loading"
       >
         <List maxH={300} overflow="auto">
@@ -63,7 +63,7 @@ export default function Roster({
             ))}
         </List>
       </Skeleton>
-      {isFetching ? (
+      {isLoading ? (
         <Center data-testid="loading">
           <Spinner />
         </Center>

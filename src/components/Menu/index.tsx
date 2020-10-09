@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import NextLink from "next/link";
 import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
 
-import useAuth from "../../domain/user/useAuth";
 import useLogout from "../../dal/user/useLogout";
+import { useAuth } from "../../contexts/auth";
 
 export default function Menu(props: ChakraProps) {
   const router = useRouter();
