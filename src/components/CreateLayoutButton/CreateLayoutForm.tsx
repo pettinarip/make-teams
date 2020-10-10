@@ -8,6 +8,11 @@ import {
   Input,
   FormErrorMessage,
   Center,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/core";
 
 import { IPosition } from "../../containers/MakeTeam/types";
@@ -37,8 +42,8 @@ export default function CreateLayoutForm(props: IProps) {
     positions: initialFormation(size),
   };
 
-  function handleSizeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSize(+e.target.value);
+  function handleSizeChange(__valueAsString: string, valueAsNumber: number) {
+    setSize(valueAsNumber);
   }
 
   return (
@@ -74,24 +79,22 @@ export default function CreateLayoutForm(props: IProps) {
                 )}
               </Field>
 
-              <Field name="size">
-                {({ field, form }: FieldProps) => (
-                  <FormControl
-                    isRequired
-                    isInvalid={!!form.errors.size && !!form.touched.size}
-                  >
-                    <FormLabel htmlFor="new-layout-size">Size</FormLabel>
-                    <Input
-                      {...field}
-                      autoFocus
-                      id="new-layout-size"
-                      placeholder="11"
-                      type="number"
-                    />
-                    <FormErrorMessage>{form.errors.size}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
+              <FormControl isRequired>
+                <FormLabel htmlFor="new-layout-size">Size</FormLabel>
+                <NumberInput
+                  id="new-layout-size"
+                  value={size}
+                  onChange={handleSizeChange}
+                  min={1}
+                  max={11}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
             </Grid>
             <Center mt={6}>
               <Field name="positions">

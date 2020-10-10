@@ -14,7 +14,6 @@ import {
   AlertDescription,
   useDisclosure,
 } from "@chakra-ui/core";
-import styled from "@emotion/styled";
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
 import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
