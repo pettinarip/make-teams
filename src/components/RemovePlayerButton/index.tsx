@@ -50,8 +50,8 @@ export default function RemovePlayerButton(props: IProps) {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              `Are you sure you want to end up the contract with $
-              {props.player.lastName}?`
+              Are you sure you want to end up the contract with{" "}
+              {props.player.lastName}?
             </AlertDialogBody>
 
             <AlertDialogFooter>

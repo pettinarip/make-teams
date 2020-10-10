@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Divider,
@@ -75,7 +75,7 @@ export default function TeamLayout({ onChange }: IProps) {
       </Heading>
 
       <Skeleton
-        isLoaded={status !== "loading" || (!!layouts.length && !!selected)}
+        isLoaded={status !== "loading" && !!selected}
         data-testid="loading"
       >
         <RadioGroup onChange={handleChange} value={selected?.id}>
@@ -102,11 +102,7 @@ export default function TeamLayout({ onChange }: IProps) {
                 flexDirection="row"
                 justifyContent="space-between"
               >
-                <Radio
-                  id={`layout-${layout.id}`}
-                  name="layout"
-                  value={layout.id}
-                >
+                <Radio id={`layout-${layout.id}`} value={layout.id}>
                   {layout.name}
                 </Radio>
                 <RemoveLayoutButton
