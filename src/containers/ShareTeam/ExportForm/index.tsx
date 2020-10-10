@@ -38,13 +38,13 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
   return (
     <Center flexDirection="column" {...restProps}>
       <Flex direction="row">
-        <Link href={facebookLink(shareLink)}>
+        <Link href={facebookLink(shareLink)} mx={1}>
           <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
         </Link>
-        <Link href={twitterLink(shareLink)}>
+        <Link href={twitterLink(shareLink)} mx={1}>
           <IconButton icon={<FaTwitter />} aria-label="Share in Twitter" />
         </Link>
-        <Link href={whatsappLink(shareLink)}>
+        <Link href={whatsappLink(shareLink)} mx={1}>
           <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
         </Link>
       </Flex>
