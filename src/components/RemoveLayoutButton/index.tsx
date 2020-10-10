@@ -9,17 +9,17 @@ import {
   AlertDialogOverlay,
   Button,
 } from "@chakra-ui/core";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 import { ILayout } from "../../containers/MakeTeam/types";
 import useRemoveLayout from "../../dal/layout/useRemoveLayout";
-import { DeleteIcon } from "@chakra-ui/icons";
 
 export interface IProps {
   layout: ILayout;
   onRemoved?: (layout: ILayout) => void;
 }
 
-export default function RemoveLayoutButton(props: IProps) {
+export default function RemoveLayoutButton({ layout, onRemoved }: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removeLayout] = useRemoveLayout();
   const cancelRef = useRef(null);
@@ -32,18 +32,19 @@ export default function RemoveLayoutButton(props: IProps) {
     // As we are performing optimistic updates, we just close the modal and
     // assume the removal was executed ok
     toggleConfirmModal();
-    removeLayout(props.layout);
+    removeLayout(layout);
 
-    if (props.onRemoved) {
-      props.onRemoved(props.layout);
+    if (onRemoved) {
+      onRemoved(layout);
     }
   }
 
   return (
     <>
       <IconButton
-        icon={<DeleteIcon />}
+        variant="ghost"
         aria-label="Remove layout"
+        icon={<DeleteIcon />}
         onClick={toggleConfirmModal}
         data-testid="remove-layout-btn"
       />
@@ -55,7 +56,7 @@ export default function RemoveLayoutButton(props: IProps) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Remove layout {props.layout.name}
+              Remove layout {layout.name}
             </AlertDialogHeader>
 
             <AlertDialogBody>Are you sure?</AlertDialogBody>

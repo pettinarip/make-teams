@@ -6,6 +6,7 @@ import {
   Radio,
   RadioGroup,
   Skeleton,
+  Stack,
 } from "@chakra-ui/core";
 
 import { ILayout } from "../MakeTeam/types";
@@ -79,20 +80,21 @@ export default function TeamLayout({ onChange }: IProps) {
         data-testid="loading"
       >
         <RadioGroup onChange={handleChange} value={selected?.id}>
-          <Box data-testid="layouts">
+          <Stack data-testid="layouts">
             {defaultLayouts.map((layout) => (
               <Radio
                 key={layout.id}
                 id={`layout-${layout.id}`}
                 value={layout.id}
                 data-testid="layout"
+                my={4}
               >
                 {layout.name}
               </Radio>
             ))}
-          </Box>
+          </Stack>
 
-          {customLayouts.length > 0 && <Divider my={4} />}
+          {customLayouts.length > 0 && <Divider />}
 
           <Box data-testid="custom-layout">
             {customLayouts.map((layout) => (
@@ -101,6 +103,7 @@ export default function TeamLayout({ onChange }: IProps) {
                 d="flex"
                 flexDirection="row"
                 justifyContent="space-between"
+                my={4}
               >
                 <Radio id={`layout-${layout.id}`} value={layout.id}>
                   {layout.name}

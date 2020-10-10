@@ -34,6 +34,7 @@ export default function RemovePlayerButton(props: IProps) {
   return (
     <>
       <IconButton
+        variant="ghost"
         icon={<DeleteIcon />}
         aria-label="Remove player"
         onClick={toggleConfirmModal}
