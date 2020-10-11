@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import NextLink from "next/link";
 import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
 
 import useLogout from "../../dal/user/useLogout";
@@ -22,15 +21,18 @@ export default function Menu(props: ChakraProps) {
       align="center"
       justifyContent="space-between"
       borderBottomWidth={1}
+      fontSize="sm"
       {...props}
     >
       <Box>
-        <NextLink href="/">
+        {/* <NextLink href="/">
           <Link>Home</Link>
-        </NextLink>
+        </NextLink> */}
       </Box>
       <Flex>
-        <Box mr={6}>{username}</Box>
+        <Box mr={6} color="blue.500">
+          {username}
+        </Box>
         <Box>
           <Link onClick={handleSignOut}>Logout</Link>
         </Box>

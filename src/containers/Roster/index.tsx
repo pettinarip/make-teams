@@ -34,7 +34,7 @@ export default function Roster({
 
   return (
     <Box>
-      <Heading as="h4" size="md" mb={6}>
+      <Heading as="h4" fontSize="md" mb={6}>
         Roster ({players.length})
       </Heading>
 
@@ -42,11 +42,12 @@ export default function Roster({
         isLoaded={!isLoading && status !== "loading"}
         data-testid="loading"
       >
-        <List maxH={300} overflow="auto">
+        <List h={350} overflow="auto">
           {players
             .filter((p) => !usedPlayersIds.includes(p.id))
             .map((player, index) => (
               <ListItem
+                role="group"
                 key={player.id}
                 mt={index !== 0 ? 4 : 0}
                 d="flex"
@@ -58,7 +59,11 @@ export default function Roster({
                   onDropInPosition={onPlayerDropInPosition}
                   onClick={onPlayerClick}
                 />
-                <RemovePlayerButton player={player} />
+                <RemovePlayerButton
+                  player={player}
+                  opacity={0}
+                  _groupHover={{ opacity: 1 }}
+                />
               </ListItem>
             ))}
         </List>

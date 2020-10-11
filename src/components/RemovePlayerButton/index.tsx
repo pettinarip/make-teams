@@ -7,6 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
+  ChakraProps,
   IconButton,
 } from "@chakra-ui/core";
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -14,11 +15,11 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { IPlayer } from "../../containers/MakeTeam/types";
 import useRemovePlayer from "../../dal/player/useRemovePlayer";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   player: IPlayer;
 }
 
-export default function RemovePlayerButton(props: IProps) {
+export default function RemovePlayerButton({ player, ...restProps }: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removePlayer] = useRemovePlayer();
   const cancelRef = useRef(null);
@@ -28,12 +29,13 @@ export default function RemovePlayerButton(props: IProps) {
   }
 
   async function handleRemove() {
-    await removePlayer(props.player);
+    await removePlayer(player);
   }
 
   return (
     <>
       <IconButton
+        {...restProps}
         variant="ghost"
         icon={<DeleteIcon />}
         aria-label="Remove player"
@@ -52,7 +54,7 @@ export default function RemovePlayerButton(props: IProps) {
 
             <AlertDialogBody>
               Are you sure you want to end up the contract with{" "}
-              {props.player.lastName}?
+              {player.lastName}?
             </AlertDialogBody>
 
             <AlertDialogFooter>

@@ -71,7 +71,7 @@ export default function TeamLayout({ onChange }: IProps) {
 
   return (
     <Box>
-      <Heading as="h4" size="md" mb={6}>
+      <Heading as="h4" fontSize="md" mb={6}>
         Layouts
       </Heading>
 
@@ -79,7 +79,12 @@ export default function TeamLayout({ onChange }: IProps) {
         isLoaded={status !== "loading" && !!selected}
         data-testid="loading"
       >
-        <RadioGroup onChange={handleChange} value={selected?.id}>
+        <RadioGroup
+          onChange={handleChange}
+          value={selected?.id}
+          h={350}
+          overflow="auto"
+        >
           <Stack data-testid="layouts">
             {defaultLayouts.map((layout) => (
               <Radio
@@ -87,7 +92,7 @@ export default function TeamLayout({ onChange }: IProps) {
                 id={`layout-${layout.id}`}
                 value={layout.id}
                 data-testid="layout"
-                my={4}
+                mb={2}
               >
                 {layout.name}
               </Radio>
@@ -99,11 +104,12 @@ export default function TeamLayout({ onChange }: IProps) {
           <Box data-testid="custom-layout">
             {customLayouts.map((layout) => (
               <Box
+                role="group"
                 key={layout.id}
                 d="flex"
                 flexDirection="row"
                 justifyContent="space-between"
-                my={4}
+                my={2}
               >
                 <Radio id={`layout-${layout.id}`} value={layout.id}>
                   {layout.name}
@@ -111,6 +117,8 @@ export default function TeamLayout({ onChange }: IProps) {
                 <RemoveLayoutButton
                   layout={layout}
                   onRemoved={handleLayoutRemoved}
+                  opacity={0}
+                  _groupHover={{ opacity: 1 }}
                 />
               </Box>
             ))}

@@ -18,7 +18,7 @@ export default function Controls({
 }: IProps) {
   return (
     <FormControl as={Center} {...restProps}>
-      <FormLabel htmlFor="email-alerts">Show names</FormLabel>
+      <FormLabel htmlFor="show-names">Show names</FormLabel>
       <Switch
         id="show-names"
         isChecked={showNames}
