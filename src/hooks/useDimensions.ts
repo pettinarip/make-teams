@@ -1,4 +1,4 @@
-import { useRef, useState, useLayoutEffect, MutableRefObject } from "react";
+import { useRef, useState, MutableRefObject, useEffect } from "react";
 
 interface IDimensions {
   width: number;
@@ -15,7 +15,7 @@ export default function useDimensions(): [
     height: 0,
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (element.current) {
       setDimensions({
         width: element.current.clientWidth,

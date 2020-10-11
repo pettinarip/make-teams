@@ -4,16 +4,15 @@ import composeRefs from "@seznam/compose-react-refs";
 import produce from "immer";
 import clamp from "lodash.clamp";
 
-import snapToGrid from "./snapToGrid";
-
 import { IPosition } from "../../containers/MakeTeam/types";
 import PositionDrag, {
   ITEM_TYPE as POSITION_DRAG_ITEM_TYPE,
   IDragPosition,
 } from "../PositionDrag";
-import FieldDragLayer from "../FieldDragLayer";
 import Field from "../Field";
+import FieldDragLayer from "../FieldDragLayer";
 import useDimensions from "../../hooks/useDimensions";
+import snapToGrid from "./snapToGrid";
 
 interface IProps {
   positions: Array<IPosition>;
@@ -58,10 +57,10 @@ export default function FieldEdit(props: IProps) {
 
   return (
     <Field ref={composeRefs(drop, dropArea) as (arg: HTMLDivElement) => void}>
-      <FieldDragLayer width={dimensions.width} height={dimensions.height} />
       {props.positions.map((position, index) => (
         <PositionDrag key={index} index={index} position={position} />
       ))}
+      <FieldDragLayer width={dimensions.width} height={dimensions.height} />
     </Field>
   );
 }
