@@ -1,0 +1,10 @@
+mutation CreateLayout($name: String!, $positions: [PositionInput!]!) {
+  createCustomLayout(input: { name: $name, positions: $positions }) {
+    id
+    name
+    positions {
+      x
+      y
+    }
+  }
+}

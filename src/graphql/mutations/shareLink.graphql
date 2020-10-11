@@ -1,0 +1,20 @@
+query ShareLink($id: String!) {
+  shareLink(id: $id) {
+    id
+    name
+    createdAt
+    positions {
+      id
+      x
+      y
+      player {
+        id
+        firstName
+        lastName
+        number
+        nickName
+        age
+      }
+    }
+  }
+}

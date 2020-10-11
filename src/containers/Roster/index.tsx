@@ -1,17 +1,18 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
 import {
-  List,
-  Header,
-  Placeholder,
-  Divider,
+  Box,
   Button,
-  Loader,
-} from "semantic-ui-react";
+  Center,
+  Heading,
+  List,
+  ListItem,
+  Skeleton,
+  Spinner,
+  Stack,
+} from "@chakra-ui/core";
 
 import { IPlayer } from "../MakeTeam/types";
-import useAuth from "../../components/ProtectedRoute/useAuth";
-import useGetPlayers from "../../graphql/queries/useGetPlayers";
+import { useAuth } from "../../contexts/auth";
+import useGetPlayers from "../../dal/player/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
@@ -29,53 +30,58 @@ export default function Roster({
   onPlayerClick,
   onResetClick,
 }: IProps) {
-  const { user = {}, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const { status, data: players = [] } = useGetPlayers(user);
 
   return (
-    <div>
-      <Header as="h2">Roster ({players.length})</Header>
-      {(isLoading || status === "loading") && (
-        <Placeholder fluid data-testid="loading">
-          <Placeholder.Paragraph>
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-          </Placeholder.Paragraph>
-        </Placeholder>
-      )}
-      <List
-        css={css`
-          max-height: 300px;
-          overflow: auto;
-        `}
-      >
-        {players
-          .filter((p) => !usedPlayersIds.includes(p.id))
-          .map((player) => (
-            <List.Item key={player.id}>
-              <List.Content floated="right">
-                <RemovePlayerButton player={player} />
-              </List.Content>
-              <Player
-                player={player}
-                onDropInPosition={onPlayerDropInPosition}
-                onClick={onPlayerClick}
-              />
-            </List.Item>
-          ))}
-      </List>
-      <Divider />
-      {isLoading ? (
-        <Loader active inline="centered" data-testid="loading" />
+    <Box>
+      <Heading as="h4" fontSize="md" mb={6}>
+        Roster ({players.length})
+      </Heading>
+
+      {isLoading || status === "loading" ? (
+        <Stack data-testid="loading">
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+        </Stack>
       ) : (
-        <div data-testid="roster-buttons">
-          <CreatePlayerButton>New</CreatePlayerButton>
-          <Button onClick={onResetClick}>Reset</Button>
-        </div>
+        <List h={350} overflow="auto">
+          {players
+            .filter((p) => !usedPlayersIds.includes(p.id))
+            .map((player, index) => (
+              <ListItem
+                role="group"
+                key={player.id}
+                mt={index !== 0 ? 4 : 0}
+                d="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <Player
+                  player={player}
+                  onDropInPosition={onPlayerDropInPosition}
+                  onClick={onPlayerClick}
+                />
+                <RemovePlayerButton
+                  player={player}
+                  opacity={0}
+                  _groupHover={{ opacity: 1 }}
+                />
+              </ListItem>
+            ))}
+        </List>
       )}
-    </div>
+      {isLoading ? (
+        <Center data-testid="loading">
+          <Spinner />
+        </Center>
+      ) : (
+        <Box data-testid="roster-buttons" mt={6}>
+          <CreatePlayerButton mr={3}>New</CreatePlayerButton>
+          <Button onClick={onResetClick}>Reset</Button>
+        </Box>
+      )}
+    </Box>
   );
 }

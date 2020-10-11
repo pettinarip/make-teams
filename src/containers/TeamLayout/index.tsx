@@ -1,16 +1,16 @@
-import React, { FormEvent, useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
-  Form,
-  Radio,
-  CheckboxProps,
-  Header,
-  Placeholder,
+  Box,
   Divider,
-} from "semantic-ui-react";
+  Heading,
+  Radio,
+  RadioGroup,
+  Skeleton,
+  Stack,
+} from "@chakra-ui/core";
 
 import { ILayout } from "../MakeTeam/types";
-import useLayouts from "../../domain/Layout/useLayouts";
-import useAuth from "../../components/ProtectedRoute/useAuth";
+import useLayouts from "../../domain/layout/useLayouts";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
@@ -19,8 +19,7 @@ export interface IProps {
 }
 
 export default function TeamLayout({ onChange }: IProps) {
-  const { user = {}, isLoading } = useAuth();
-  const { status, layouts } = useLayouts(user);
+  const { status, layouts } = useLayouts();
   const [selected, setSelected] = useState<ILayout>();
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
@@ -55,8 +54,8 @@ export default function TeamLayout({ onChange }: IProps) {
     return layouts.filter((layout) => layout.isCustom);
   }, [layouts]);
 
-  function handleChange(e: FormEvent, { value }: CheckboxProps) {
-    const layout = layouts.find((l) => l.id === value);
+  function handleChange(nextValue: string) {
+    const layout = layouts.find((l) => l.id === nextValue);
     if (layout) {
       setSelected(layout);
     }
@@ -71,63 +70,62 @@ export default function TeamLayout({ onChange }: IProps) {
   }
 
   return (
-    <>
-      <Header as="h2">Layout</Header>
-      {isLoading || status === "loading" || (layouts.length && !selected) ? (
-        <Placeholder fluid data-testid="loading">
-          <Placeholder.Paragraph>
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-            <Placeholder.Line />
-          </Placeholder.Paragraph>
-        </Placeholder>
+    <Box>
+      <Heading as="h4" fontSize="md" mb={6}>
+        Layouts
+      </Heading>
+
+      {status === "loading" || (layouts.length && !selected) ? (
+        <Stack data-testid="loading">
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+        </Stack>
       ) : (
-        <Form data-testid="layouts">
-          {defaultLayouts.map((layout) => (
-            <Form.Field key={layout.id} data-testid="layout">
-              <Radio
-                id={`layout-${layout.id}`}
-                name="layout"
-                label={{
-                  children: layout.name,
-                  htmlFor: `layout-${layout.id}`,
-                }}
-                value={layout.id}
-                checked={selected && selected.id === layout.id}
-                onChange={handleChange}
-              />
-            </Form.Field>
-          ))}
+        <RadioGroup
+          onChange={handleChange}
+          value={selected?.id}
+          h={350}
+          overflow="auto"
+        >
+          <Stack data-testid="layouts">
+            {defaultLayouts.map((layout) => (
+              <Box key={layout.id} data-testid="layout">
+                <Radio id={`layout-${layout.id}`} value={layout.id} mb={2}>
+                  {layout.name}
+                </Radio>
+              </Box>
+            ))}
+          </Stack>
 
           {customLayouts.length > 0 && <Divider />}
 
           {customLayouts.map((layout) => (
-            <Form.Field key={layout.id} data-testid="custom-layout">
-              <Radio
-                id={`layout-${layout.id}`}
-                name="layout"
-                label={{
-                  children: layout.name,
-                  htmlFor: `layout-${layout.id}`,
-                }}
-                value={layout.id}
-                checked={selected && selected.id === layout.id}
-                onChange={handleChange}
-              />
+            <Box
+              key={layout.id}
+              role="group"
+              d="flex"
+              data-testid="custom-layout"
+              flexDirection="row"
+              justifyContent="space-between"
+              my={2}
+            >
+              <Radio id={`layout-${layout.id}`} value={layout.id}>
+                {layout.name}
+              </Radio>
               <RemoveLayoutButton
                 layout={layout}
                 onRemoved={handleLayoutRemoved}
+                opacity={0}
+                _groupHover={{ opacity: 1 }}
               />
-            </Form.Field>
+            </Box>
           ))}
-        </Form>
+        </RadioGroup>
       )}
-      <Divider />
-      <div data-testid="layout-buttons">
+      <Box data-testid="layout-buttons" my={6}>
         <CreateLayoutButton>New</CreateLayoutButton>
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 }

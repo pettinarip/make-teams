@@ -1,23 +1,29 @@
-import React from "react";
-import { Form, Checkbox } from "semantic-ui-react";
+import {
+  Center,
+  ChakraProps,
+  FormControl,
+  FormLabel,
+  Switch,
+} from "@chakra-ui/core";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   showNames: boolean;
   onShowNamesChange: () => void;
 }
 
-export default function Controls(props: IProps) {
+export default function Controls({
+  showNames,
+  onShowNamesChange,
+  ...restProps
+}: IProps) {
   return (
-    <Form>
-      <Form.Field>
-        <Checkbox
-          toggle
-          id="show-names"
-          label="Show names"
-          checked={props.showNames}
-          onChange={props.onShowNamesChange}
-        />
-      </Form.Field>
-    </Form>
+    <FormControl as={Center} {...restProps}>
+      <FormLabel htmlFor="show-names">Show names</FormLabel>
+      <Switch
+        id="show-names"
+        isChecked={showNames}
+        onChange={onShowNamesChange}
+      />
+    </FormControl>
   );
 }

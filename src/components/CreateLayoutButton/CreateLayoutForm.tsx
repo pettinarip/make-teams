@@ -1,6 +1,19 @@
 import React, { useState } from "react";
-import { Grid, Form } from "semantic-ui-react";
 import { Formik, FormikProps, FormikHelpers, Field, FieldProps } from "formik";
+import {
+  Box,
+  Grid,
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  Center,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from "@chakra-ui/core";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import initialFormation from "./initialFormation";
@@ -29,8 +42,8 @@ export default function CreateLayoutForm(props: IProps) {
     positions: initialFormation(size),
   };
 
-  function handleSizeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSize(+e.target.value);
+  function handleSizeChange(__valueAsString: string, valueAsNumber: number) {
+    setSize(valueAsNumber);
   }
 
   return (
@@ -43,67 +56,59 @@ export default function CreateLayoutForm(props: IProps) {
       // This allow to reinitizlize the form whenever the `size` is changed
       enableReinitialize
     >
-      {({
-        values,
-        errors,
-        handleChange,
-        submitForm,
-        setFieldValue,
-      }: FormikProps<IFormValues>) => {
+      {({ submitForm, setFieldValue }: FormikProps<IFormValues>) => {
         props.bindSubmitForm(submitForm);
         return (
-          <Form>
-            <Grid>
-              <Grid.Row columns={2}>
-                <Grid.Column>
-                  <Form.Input
-                    id="new-layout-name"
-                    fluid
-                    autoFocus
-                    name="name"
-                    label={{
-                      children: "Name",
-                      htmlFor: "new-layout-name",
-                    }}
-                    placeholder="4-4-2"
-                    value={values.name}
-                    onChange={handleChange}
-                    required
-                    error={errors.name}
-                  />
-                </Grid.Column>
-                <Grid.Column>
-                  <Form.Input
-                    id="new-layout-size"
-                    min={1}
-                    max={MAX_NUMBER_POSITIONS}
-                    name="size"
-                    label={{
-                      children: "Size",
-                      htmlFor: "new-layout-size",
-                    }}
-                    onChange={handleSizeChange}
-                    type="number"
-                    value={size}
-                  />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column>
-                  <Field name="positions">
-                    {({ field }: FieldProps) => (
-                      <FieldEdit
-                        positions={field.value}
-                        onChange={(positions) => {
-                          setFieldValue("positions", positions);
-                        }}
-                      />
-                    )}
-                  </Field>
-                </Grid.Column>
-              </Grid.Row>
+          <Box as="form">
+            <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+              <Field name="name">
+                {({ field, form }: FieldProps) => (
+                  <FormControl
+                    isRequired
+                    isInvalid={!!form.errors.name && !!form.touched.name}
+                  >
+                    <FormLabel htmlFor="new-layout-name">Name</FormLabel>
+                    <Input
+                      {...field}
+                      autoFocus
+                      id="new-layout-name"
+                      placeholder="4-4-2"
+                    />
+                    <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              <FormControl isRequired>
+                <FormLabel htmlFor="new-layout-size">Size</FormLabel>
+                <NumberInput
+                  id="new-layout-size"
+                  value={size}
+                  onChange={handleSizeChange}
+                  min={1}
+                  max={11}
+                >
+                  <NumberInputField />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
             </Grid>
-          </Form>
+            <Center mt={6}>
+              <Field name="positions">
+                {({ field }: FieldProps) => (
+                  <FieldEdit
+                    positions={field.value}
+                    onChange={(positions) => {
+                      setFieldValue("positions", positions);
+                    }}
+                  />
+                )}
+              </Field>
+            </Center>
+          </Box>
         );
       }}
     </Formik>

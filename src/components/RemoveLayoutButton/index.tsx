@@ -1,54 +1,83 @@
-/** @jsx jsx */
-import React, { useState } from "react";
-import { jsx, css } from "@emotion/core";
-import { Button, Confirm } from "semantic-ui-react";
+import { useRef, useState } from "react";
+import {
+  IconButton,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  ChakraProps,
+} from "@chakra-ui/core";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 import { ILayout } from "../../containers/MakeTeam/types";
-import useRemoveLayout from "../../graphql/mutations/useRemoveLayout";
+import useRemoveLayout from "../../dal/layout/useRemoveLayout";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   layout: ILayout;
   onRemoved?: (layout: ILayout) => void;
 }
 
-export default function RemoveLayoutButton(props: IProps) {
+export default function RemoveLayoutButton({
+  layout,
+  onRemoved,
+  ...restProps
+}: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removeLayout] = useRemoveLayout();
+  const cancelRef = useRef(null);
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
-  function handleOnRemove() {
+  function handleRemove() {
     // As we are performing optimistic updates, we just close the modal and
     // assume the removal was executed ok
     toggleConfirmModal();
-    removeLayout(props.layout);
+    removeLayout(layout);
 
-    if (props.onRemoved) {
-      props.onRemoved(props.layout);
+    if (onRemoved) {
+      onRemoved(layout);
     }
   }
 
   return (
-    <React.Fragment>
-      <Button
-        basic
-        size="mini"
-        icon="trash"
+    <>
+      <IconButton
+        {...restProps}
+        variant="ghost"
+        aria-label="Remove layout"
+        icon={<DeleteIcon />}
         onClick={toggleConfirmModal}
-        css={css(`float: right`)}
         data-testid="remove-layout-btn"
       />
-      <Confirm
-        open={isConfirmOpen}
-        onCancel={toggleConfirmModal}
-        onConfirm={handleOnRemove}
-        header={`Remove layout ${props.layout.name}`}
-        content={`Are you sure?`}
-        cancelButton="No"
-        confirmButton="Do it!"
-      />
-    </React.Fragment>
+      <AlertDialog
+        isOpen={isConfirmOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={toggleConfirmModal}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remove layout {layout.name}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Are you sure?</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={toggleConfirmModal}>
+                No
+              </Button>
+              <Button colorScheme="red" onClick={handleRemove} ml={3}>
+                Do it!
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 }

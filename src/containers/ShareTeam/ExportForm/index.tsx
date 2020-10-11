@@ -1,7 +1,16 @@
-import React, { useCallback, useState, MouseEvent, useEffect } from "react";
-import { Form, Button, Popup, Input, Icon } from "semantic-ui-react";
-import copy from "copy-to-clipboard";
-import debounce from "lodash.debounce";
+import { useState, useEffect } from "react";
+import { FaFacebook, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import {
+  Box,
+  Button,
+  Center,
+  ChakraProps,
+  Flex,
+  IconButton,
+  Input,
+  Link,
+  useClipboard,
+} from "@chakra-ui/core";
 
 import {
   exportFieldToImage,
@@ -10,73 +19,50 @@ import {
   facebookLink,
 } from "./export";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   shareLink: string;
 }
 
 export default function ExportForm({ shareLink, ...restProps }: IProps) {
   const [link, setLink] = useState("");
-  const [isCopied, setIsCopied] = useState(false);
+  const { hasCopied, onCopy } = useClipboard(link);
 
   useEffect(() => {
     setLink(shareLink);
   }, [shareLink]);
-
-  const clearCopiedTooltip = useCallback(
-    debounce(() => {
-      setIsCopied(false);
-    }, 2500),
-    []
-  );
-
-  function handleCopyClick(e: MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-
-    copy(link);
-
-    setIsCopied(true);
-    clearCopiedTooltip();
-  }
 
   function handleImageClick() {
     exportFieldToImage();
   }
 
   return (
-    <Form>
-      <Form.Field>
-        <Button icon as="a" href={facebookLink(shareLink)} target="__blank">
-          <Icon name="facebook" />
-        </Button>
-        <Button icon as="a" href={twitterLink(shareLink)} target="__blank">
-          <Icon name="twitter" />
-        </Button>
-        <Button icon as="a" href={whatsappLink(shareLink)} target="__blank">
-          <Icon name="whatsapp" />
-        </Button>
-      </Form.Field>
-      <Form.Field {...restProps}>
-        <Popup
-          open={isCopied}
-          position="right center"
-          content="Copied!"
-          trigger={
-            <Input
-              action={{
-                icon: "copy",
-                title: "Copy",
-                onClick: handleCopyClick,
-              }}
-              value={link}
-              readOnly
-              data-testid="share-team-input"
-            />
-          }
+    <Center flexDirection="column" {...restProps}>
+      <Flex direction="row">
+        <Link href={facebookLink(shareLink)} mx={1}>
+          <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
+        </Link>
+        <Link href={twitterLink(shareLink)} mx={1}>
+          <IconButton icon={<FaTwitter />} aria-label="Share in Twitter" />
+        </Link>
+        <Link href={whatsappLink(shareLink)} mx={1}>
+          <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
+        </Link>
+      </Flex>
+      <Center data-testid="share-team-form">
+        <Input
+          data-testid="share-team-input"
+          value={link}
+          readOnly
+          my={4}
+          w={400}
         />
-      </Form.Field>
-      <Form.Field>
+        <Button onClick={onCopy} ml={2} autoFocus>
+          {hasCopied ? "Copied" : "Copy"}
+        </Button>
+      </Center>
+      <Box>
         <Button onClick={handleImageClick}>.PNG</Button>
-      </Form.Field>
-    </Form>
+      </Box>
+    </Center>
   );
 }

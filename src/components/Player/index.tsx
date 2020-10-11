@@ -1,10 +1,8 @@
 import React from "react";
-import { Label as LabelSem } from "semantic-ui-react";
+import { Avatar, Flex, Box, Text, Badge } from "@chakra-ui/core";
 import { useDrag, DragSourceMonitor } from "react-dnd";
-import styled from "@emotion/styled";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import playerImg from "../../images/christian.jpg";
 
 export const ITEM_TYPE = "player";
 
@@ -18,7 +16,7 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
   const [, drag] = useDrag({
     item: { player, type: ITEM_TYPE },
     end: (
-      item: { player: IPlayer } | undefined,
+      __item: { player: IPlayer } | undefined,
       monitor: DragSourceMonitor
     ) => {
       const dropResult = monitor.getDropResult();
@@ -32,24 +30,18 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
     onClick(player);
   }
 
+  const playerName = `${player.lastName}, ${player.firstName}`;
+
   return (
-    <div ref={drag}>
-      <Label as="a" onClick={handleOnClick} image data-testid="player">
-        <img src={playerImg} alt="" />
-        <Name>{`${player.lastName}, ${player.firstName}`}</Name>
-        <LabelSem.Detail>{player.number}</LabelSem.Detail>
-      </Label>
-    </div>
+    <Flex ref={drag} onClick={handleOnClick} data-testid="player">
+      <Avatar name={playerName} />
+      <Box ml="3">
+        <Text fontWeight="bold">
+          {playerName}
+          <Badge ml="1">{player.number}</Badge>
+        </Text>
+        <Text fontSize="sm">Defender</Text>
+      </Box>
+    </Flex>
   );
 }
-
-const Label = styled(LabelSem)`
-  display: flex !important;
-`;
-
-const Name = styled.span`
-  flex: 1;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-`;

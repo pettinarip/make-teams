@@ -49,12 +49,7 @@ export function readCustomLayouts(): Array<ILayout> {
 
 export function readResponse() {
   return {
-    listLayouts: {
-      items: listLayouts,
-      nextToken: null,
-    },
-    listCustomLayouts: {
-      items: listCustomLayouts,
-    },
+    layouts: listLayouts,
+    customLayouts: listCustomLayouts,
   };
 }

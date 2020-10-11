@@ -1,24 +1,16 @@
-/** @jsx jsx */
-import { Grid } from "semantic-ui-react";
-import { jsx, css } from "@emotion/core";
+import { Box } from "@chakra-ui/core";
+import { Link, Text } from "@chakra-ui/core";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 export default function Footer() {
   return (
-    <Grid
-      css={css`
-        margin-top: 100px !important;
-      `}
-    >
-      <Grid.Column textAlign="center">
-        <small>by</small>{" "}
-        <a
-          href="https://github.com/pettinarip"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          @pettinarip
-        </a>
-      </Grid.Column>
-    </Grid>
+    <Box mt={100} textAlign="center">
+      <Text>
+        by{" "}
+        <Link href="https://github.com/pettinarip" color="blue.500" isExternal>
+          @pettinarip <ExternalLinkIcon mx="2px" />
+        </Link>
+      </Text>
+    </Box>
   );
 }

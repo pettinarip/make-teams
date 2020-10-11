@@ -37,6 +37,7 @@ export default function FieldDragLayer({ width, height }: IProps) {
     <Layer>
       {item && (
         <PositionStatic
+          isActive
           position={{
             ...item.position,
             x: clamp(snapped.x, 0, 100),
@@ -50,7 +51,6 @@ export default function FieldDragLayer({ width, height }: IProps) {
 
 const Layer = styled.div`
   pointer-events: none;
-  z-index: 100;
   left: 0;
   top: 0;
   width: 100%;

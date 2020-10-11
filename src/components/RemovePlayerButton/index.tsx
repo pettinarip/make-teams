@@ -1,37 +1,73 @@
-import React, { useState } from "react";
-import { Button, Confirm } from "semantic-ui-react";
+import { useRef, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  ChakraProps,
+  IconButton,
+} from "@chakra-ui/core";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import useRemovePlayer from "../../graphql/mutations/useRemovePlayer";
+import useRemovePlayer from "../../dal/player/useRemovePlayer";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   player: IPlayer;
 }
 
-export default function RemovePlayerButton(props: IProps) {
+export default function RemovePlayerButton({ player, ...restProps }: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removePlayer] = useRemovePlayer();
+  const cancelRef = useRef(null);
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
-  async function handleOnRemove() {
-    await removePlayer(props.player);
+  async function handleRemove() {
+    await removePlayer(player);
   }
 
   return (
     <>
-      <Button size="mini" icon="trash" onClick={toggleConfirmModal} />
-      <Confirm
-        open={isConfirmOpen}
-        onCancel={toggleConfirmModal}
-        onConfirm={handleOnRemove}
-        header="Remove player from the roster"
-        content={`Are you sure you want to end up the contract with ${props.player.lastName}?`}
-        cancelButton="Never mind"
-        confirmButton="Do it!"
+      <IconButton
+        {...restProps}
+        variant="ghost"
+        icon={<DeleteIcon />}
+        aria-label="Remove player"
+        onClick={toggleConfirmModal}
       />
+      <AlertDialog
+        isOpen={isConfirmOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={toggleConfirmModal}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Remove player from the roster
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to end up the contract with{" "}
+              {player.lastName}?
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={toggleConfirmModal}>
+                Never mind
+              </Button>
+              <Button colorScheme="red" onClick={handleRemove} ml={3}>
+                Do it!
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }

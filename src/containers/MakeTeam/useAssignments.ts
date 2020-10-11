@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
 
-import { IPosition, IPlayer } from "./types";
+import { IPlayer, IPosition } from "./types";
 
 interface IReturn {
   assignments: Array<IPosition>;

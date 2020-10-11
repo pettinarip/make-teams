@@ -1,44 +1,47 @@
-/** @jsx jsx */
-import { jsx, css } from "@emotion/core";
-import { Menu as MenuSemantic } from "semantic-ui-react";
-import { navigate } from "@reach/router";
-import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
+import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
 
-import useAuth from "../ProtectedRoute/useAuth";
+import useLogout from "../../dal/user/useLogout";
+import { useAuth } from "../../contexts/auth";
 
-export default function Menu() {
+export default function Menu(props: ChakraProps) {
+  const router = useRouter();
   const { user } = useAuth();
+  const [logout] = useLogout();
 
   const username = getUsername(user);
 
   async function handleSignOut() {
-    await Auth.signOut();
-    navigate("/login");
+    await logout();
+    router.push("/login");
   }
 
   return (
-    <MenuSemantic
-      pointing
-      text
-      secondary
-      css={css`
-        margin-bottom: 50px !important;
-      `}
+    <Flex
+      align="center"
+      justifyContent="space-between"
+      borderBottomWidth={1}
+      fontSize="sm"
+      {...props}
     >
-      <MenuSemantic.Item name="home" active />
-      <MenuSemantic.Menu position="right">
-        <MenuSemantic.Item active={false}>{username}</MenuSemantic.Item>
-        <MenuSemantic.Item
-          name="sign out"
-          active={false}
-          onClick={handleSignOut}
-        />
-      </MenuSemantic.Menu>
-    </MenuSemantic>
+      <Box>
+        {/* <NextLink href="/">
+          <Link>Home</Link>
+        </NextLink> */}
+      </Box>
+      <Flex>
+        <Box mr={6} color="blue.500">
+          {username}
+        </Box>
+        <Box>
+          <Link onClick={handleSignOut}>Logout</Link>
+        </Box>
+      </Flex>
+    </Flex>
   );
 }
 
 function getUsername(user: any): string {
   if (!user) return "";
-  return user.attributes ? user.attributes.email : user.username;
+  return user.email || user.username;
 }

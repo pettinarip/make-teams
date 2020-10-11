@@ -1,8 +1,21 @@
-import React, { ReactNode, useState } from "react";
-import { Button, Modal, Header, Message } from "semantic-ui-react";
-import styled from "@emotion/styled";
+import { ReactNode, useState } from "react";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  useDisclosure,
+} from "@chakra-ui/core";
 
-import useAddNewLayout from "../../graphql/mutations/useAddNewLayout";
+import useAddNewLayout from "../../dal/layout/useAddNewLayout";
 import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
 
 export interface IProps {
@@ -10,20 +23,12 @@ export interface IProps {
 }
 
 export default function CreateLayoutButton(props: IProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
   const [addNewLayout] = useAddNewLayout();
 
   let submitForm: Function = () => {};
-
-  function handleOpen() {
-    setIsOpen(true);
-  }
-
-  function handleClose() {
-    setIsOpen(false);
-  }
 
   function bindSubmitForm(submitFormFn: Function) {
     submitForm = submitFormFn;
@@ -35,7 +40,7 @@ export default function CreateLayoutButton(props: IProps) {
 
     try {
       await addNewLayout(values);
-      handleClose();
+      onClose();
     } catch (e) {
       console.log(e);
       setHasErrors(true);
@@ -45,55 +50,53 @@ export default function CreateLayoutButton(props: IProps) {
   }
 
   return (
-    <ModalStyled
-      trigger={
-        <Button primary onClick={handleOpen} data-testid="new-layout-button">
-          {props.children}
-        </Button>
-      }
-      open={isOpen}
-      onClose={handleClose}
-    >
-      <Modal.Content>
-        <Modal.Description>
-          <Header>Add a new layout</Header>
-          {hasErrors && (
-            <Message negative>
-              <Message.Header>
-                There was an error with your submission
-              </Message.Header>
-              <p>Complete all the fields and try again.</p>
-            </Message>
-          )}
-          <FieldWrapper>
-            <CreateLayoutForm
-              onSubmit={handleSubmit}
-              bindSubmitForm={bindSubmitForm}
-            />
-          </FieldWrapper>
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button onClick={handleClose} data-testid="new-layout-cancel-button">
-          Cancel
-        </Button>
-        <Button
-          primary
-          onClick={(e) => submitForm()}
-          loading={isSubmitting}
-          data-testid="new-layout-submit-button"
-        >
-          Create
-        </Button>
-      </Modal.Actions>
-    </ModalStyled>
+    <>
+      <Button
+        colorScheme="blue"
+        onClick={onOpen}
+        data-testid="new-layout-button"
+      >
+        {props.children}
+      </Button>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Add a new layout</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              {hasErrors && (
+                <Alert status="error">
+                  <AlertIcon />
+                  <AlertTitle mr={2}>
+                    There was an error with your submission
+                  </AlertTitle>
+                  <AlertDescription>
+                    Complete all the fields and try again.
+                  </AlertDescription>
+                </Alert>
+              )}
+              <CreateLayoutForm
+                onSubmit={handleSubmit}
+                bindSubmitForm={bindSubmitForm}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                onClick={() => submitForm()}
+                isLoading={isSubmitting}
+                data-testid="new-layout-submit-button"
+                mr={3}
+              >
+                Create
+              </Button>
+              <Button onClick={onClose} data-testid="new-layout-cancel-button">
+                Cancel
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      </Modal>
+    </>
   );
 }
-
-const ModalStyled = styled(Modal)`
-  width: auto !important;
-`;
-
-const FieldWrapper = styled.div`
-  width: 327px;
-`;

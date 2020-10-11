@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Button, Form, Divider } from "semantic-ui-react";
-import { useToasts } from "react-toast-notifications";
+import { useState } from "react";
+import { Button, Center, useToast } from "@chakra-ui/core";
 
-import useCreateShareTeam from "../../graphql/mutations/useCreateShareTeam";
 import { IPosition } from "../MakeTeam/types";
+import useCreateShareTeam from "../../dal/shareLink/useCreateShareTeam";
 import ExportForm from "./ExportForm";
 
 interface IProps {
@@ -12,47 +11,36 @@ interface IProps {
 
 export default function ShareTeam({ positions }: IProps) {
   const [link, setLink] = useState("");
-  const { addToast } = useToasts();
+  const toast = useToast();
 
   const [createShareTeam, { status }] = useCreateShareTeam();
 
   async function handleClick() {
     try {
       // TODO: add a name to the share team
-      const { data } = await createShareTeam({ name: "test", positions });
-      setLink(`${window.location.origin}/share/${data.createShareLink.id}`);
+      const shareLink = await createShareTeam({ name: "test", positions });
+      setLink(`${window.location.origin}/share/${shareLink?.id}`);
     } catch (error) {
-      addToast(
-        "There was an error while trying to share your team. Please, try again.",
-        {
-          appearance: "error",
-          autoDismiss: true,
-        }
-      );
+      toast({
+        title: "An error ocurred.",
+        description: "While trying to share your team. Please, try again.",
+        status: "error",
+        isClosable: true,
+      });
     }
   }
 
   return (
-    <div>
-      <Form.Field>
-        <Button
-          positive
-          onClick={handleClick}
-          loading={status === "loading"}
-          data-testid="share-team-btn"
-        >
-          Share your team!
-        </Button>
-      </Form.Field>
-      {link && (
-        <>
-          <Divider />
-          <Form.Field>
-            <ExportForm shareLink={link} data-testid="share-team-form" />
-          </Form.Field>
-          <Divider />
-        </>
-      )}
-    </div>
+    <Center flexDirection="column">
+      <Button
+        onClick={handleClick}
+        colorScheme="green"
+        isLoading={status === "loading"}
+        data-testid="share-team-btn"
+      >
+        Share your team!
+      </Button>
+      {link && <ExportForm shareLink={link} my={6} />}
+    </Center>
   );
 }

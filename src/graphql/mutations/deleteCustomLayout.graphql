@@ -1,0 +1,3 @@
+mutation DeleteCustomLayout($id: String!) {
+  deleteCustomLayout(id: $id)
+}
