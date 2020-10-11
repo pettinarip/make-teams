@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useToasts } from "react-toast-notifications";
-import { Button, Center } from "@chakra-ui/core";
+import { Button, Center, useToast } from "@chakra-ui/core";
 
 import { IPosition } from "../MakeTeam/types";
 import useCreateShareTeam from "../../dal/shareLink/useCreateShareTeam";
@@ -12,7 +11,7 @@ interface IProps {
 
 export default function ShareTeam({ positions }: IProps) {
   const [link, setLink] = useState("");
-  const { addToast } = useToasts();
+  const toast = useToast();
 
   const [createShareTeam, { status }] = useCreateShareTeam();
 
@@ -22,13 +21,12 @@ export default function ShareTeam({ positions }: IProps) {
       const shareLink = await createShareTeam({ name: "test", positions });
       setLink(`${window.location.origin}/share/${shareLink?.id}`);
     } catch (error) {
-      addToast(
-        "There was an error while trying to share your team. Please, try again.",
-        {
-          appearance: "error",
-          autoDismiss: true,
-        }
-      );
+      toast({
+        title: "An error ocurred.",
+        description: "While trying to share your team. Please, try again.",
+        status: "error",
+        isClosable: true,
+      });
     }
   }
 

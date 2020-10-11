@@ -1,6 +1,5 @@
 import { ChakraProvider } from "@chakra-ui/core";
 import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
-import { ToastProvider } from "react-toast-notifications";
 import { AppProps } from "next/app";
 
 import { AuthProvider } from "../contexts/auth";
@@ -21,15 +20,13 @@ const queryConfig: ReactQueryConfig = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ReactQueryConfigProvider config={queryConfig}>
-      <ToastProvider>
-        <ChakraProvider resetCSS theme={theme}>
-          <AuthProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </AuthProvider>
-        </ChakraProvider>
-      </ToastProvider>
+      <ChakraProvider resetCSS theme={theme}>
+        <AuthProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AuthProvider>
+      </ChakraProvider>
     </ReactQueryConfigProvider>
   );
 }
