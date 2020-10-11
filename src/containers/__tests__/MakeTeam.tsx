@@ -105,7 +105,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(newPositions).toMatchInlineSnapshot(`
       Array [
-        "5",
+        "PP5",
         "",
         "",
         "",
@@ -141,9 +141,9 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(positions).toMatchInlineSnapshot(`
       Array [
-        "1",
-        "2",
-        "3",
+        "TT1",
+        "TT2",
+        "TT3",
         "",
         "",
         "",
@@ -196,17 +196,17 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(positions).toMatchInlineSnapshot(`
       Array [
-        "6",
-        "10",
-        "14",
-        "5",
-        "1",
-        "2",
-        "3",
-        "4",
-        "7",
-        "8",
-        "9",
+        "PC6",
+        "TF10",
+        "PR14",
+        "PP5",
+        "TT1",
+        "TT2",
+        "TT3",
+        "TT4",
+        "TT7",
+        "TT8",
+        "TT9",
       ]
     `);
 
@@ -220,17 +220,17 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(newPositions).toMatchInlineSnapshot(`
       Array [
-        "6",
-        "10",
-        "14",
-        "5",
-        "1",
-        "2",
-        "3",
-        "4",
-        "7",
-        "8",
-        "9",
+        "PC6",
+        "TF10",
+        "PR14",
+        "PP5",
+        "TT1",
+        "TT2",
+        "TT3",
+        "TT4",
+        "TT7",
+        "TT8",
+        "TT9",
       ]
     `);
   });
@@ -250,7 +250,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(newPositions).toMatchInlineSnapshot(`
       Array [
-        "5",
+        "PP5",
         "",
         "",
         "",
@@ -279,7 +279,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(positions).toMatchInlineSnapshot(`
       Array [
-        "10",
+        "TF10",
         "",
         "",
         "",
@@ -304,7 +304,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(newPositions).toMatchInlineSnapshot(`
       Array [
-        "5",
+        "PP5",
         "",
         "",
         "",
@@ -324,18 +324,18 @@ describe("MakeTeam", () => {
       .map((player) => player.textContent);
     expect(roster).toMatchInlineSnapshot(`
       Array [
-        "Puyol, Charles6",
-        "Totti, Francesco10",
-        "Palacios, Rodrigo14",
-        "Test, Test1",
-        "Test2, Test2",
-        "Test3, Test3",
-        "Test4, Test4",
-        "Test5, Test7",
-        "Test6, Test8",
-        "Test7, Test9",
-        "Test8, Test11",
-        "Test9, Test12",
+        "PCPuyol, Charles6Defender",
+        "TFTotti, Francesco10Defender",
+        "PRPalacios, Rodrigo14Defender",
+        "TTTest, Test1Defender",
+        "TTTest2, Test2Defender",
+        "TTTest3, Test3Defender",
+        "TTTest4, Test4Defender",
+        "TTTest5, Test7Defender",
+        "TTTest6, Test8Defender",
+        "TTTest7, Test9Defender",
+        "TTTest8, Test11Defender",
+        "TTTest9, Test12Defender",
       ]
     `);
   });
@@ -356,7 +356,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(oldPositions).toMatchInlineSnapshot(`
       Array [
-        "5",
+        "PP5",
         "",
         "",
         "",
@@ -379,7 +379,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(newPositions).toMatchInlineSnapshot(`
       Array [
-        "5",
+        "PP5",
         "",
         "",
         "",
@@ -408,7 +408,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(positions).toMatchInlineSnapshot(`
       Array [
-        "10",
+        "TF10",
         "",
         "",
         "",
@@ -431,7 +431,7 @@ describe("MakeTeam", () => {
       .map((position) => position.textContent);
     expect(newPositions).toMatchInlineSnapshot(`
       Array [
-        "10Totti, Francesco",
+        "TF10Totti, Francesco",
         "",
         "",
         "",

@@ -31,7 +31,7 @@ export default function useRemovePlayer() {
         return previousValue;
       },
       // On failure, roll back to the previous value
-      onError: (err, variables, previousValue) => {
+      onError: (__err, __variables, previousValue) => {
         // TODO: we should show an error global message to the user
         queryCache.setQueryData(QUERY_KEY, previousValue);
       },

@@ -83,7 +83,7 @@ export default function CreateLayoutButton(props: IProps) {
             <ModalFooter>
               <Button
                 colorScheme="blue"
-                onClick={(e) => submitForm()}
+                onClick={() => submitForm()}
                 isLoading={isSubmitting}
                 data-testid="new-layout-submit-button"
                 mr={3}

@@ -94,7 +94,7 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
             <ModalFooter>
               <Button
                 colorScheme="blue"
-                onClick={(e) => submitForm()}
+                onClick={() => submitForm()}
                 isLoading={isSubmitting}
                 mr={3}
               >

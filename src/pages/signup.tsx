@@ -98,7 +98,7 @@ export default function SignUp(__props: IProps) {
         validateOnBlur={false}
         onSubmit={handleSignUp}
       >
-        {({ handleSubmit, isSubmitting, errors }) => (
+        {({ handleSubmit, isSubmitting }) => (
           <Box as="form" onSubmit={handleSubmit}>
             {!!signUpError && (
               <Alert status="error">

@@ -5,15 +5,21 @@ import * as shareTeamDB from "./data/shareTeam";
 import * as layoutsDB from "./data/layouts";
 
 export default [
-  graphql.query("ListLayouts", (req, res, ctx) => {
+  graphql.query("Me", (__req, res, ctx) => {
+    return res(ctx.data({
+      me: {id: "1",  email: "test@test.com"}
+    }));
+  }),
+  
+  graphql.query("ListLayouts", (__req, res, ctx) => {
     return res(ctx.data(layoutsDB.readResponse()));
   }),
 
-  graphql.query("Players", (req, res, ctx) => {
+  graphql.query("Players", (__req, res, ctx) => {
     return res(ctx.data({ players: playersFixture }));
   }),
 
-  graphql.mutation("CreateShareLink", (req, res, ctx) => {
+  graphql.mutation("CreateShareLink", (__req, res, ctx) => {
     const link = shareTeamDB.read();
     return res(ctx.data({ createShareLink: link }));
   }),

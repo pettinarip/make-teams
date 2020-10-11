@@ -7,6 +7,7 @@ import {
   ListItem,
   Skeleton,
   Spinner,
+  Stack,
 } from "@chakra-ui/core";
 
 import { IPlayer } from "../MakeTeam/types";
@@ -29,7 +30,7 @@ export default function Roster({
   onPlayerClick,
   onResetClick,
 }: IProps) {
-  const { user = {}, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const { status, data: players = [] } = useGetPlayers(user);
 
   return (
@@ -38,10 +39,13 @@ export default function Roster({
         Roster ({players.length})
       </Heading>
 
-      <Skeleton
-        isLoaded={!isLoading && status !== "loading"}
-        data-testid="loading"
-      >
+      {isLoading || status === "loading" ? (
+        <Stack data-testid="loading">
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+        </Stack>
+      ) : (
         <List h={350} overflow="auto">
           {players
             .filter((p) => !usedPlayersIds.includes(p.id))
@@ -67,7 +71,7 @@ export default function Roster({
               </ListItem>
             ))}
         </List>
-      </Skeleton>
+      )}
       {isLoading ? (
         <Center data-testid="loading">
           <Spinner />

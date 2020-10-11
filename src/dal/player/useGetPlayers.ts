@@ -3,10 +3,11 @@ import { QueryResult } from "react-query/types";
 
 import sdk from "../../graphql/sdk";
 import { Player as IPlayer } from "../../graphql/API";
+import { IUser } from "../user/types";
 
 export const QUERY_KEY = "players";
 
-export default function useGetPlayers(user: any): QueryResult<Array<IPlayer>> {
+export default function useGetPlayers(user: IUser | undefined): QueryResult<Array<IPlayer>> {
   return useQuery(
     QUERY_KEY,
     async (): Promise<Array<IPlayer>> => {

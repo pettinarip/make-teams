@@ -1,6 +1,11 @@
 import React from "react";
 
-import { render, screen, waitFor, fireEvent } from "../../test/appTestUtils";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitForElementToBeRemoved,
+} from "../../test/appTestUtils";
 
 import ShareTeam from "../ShareTeam";
 import * as shareTeamDB from "../../test/data/shareTeam";
@@ -31,18 +36,18 @@ describe("ShareTeam", () => {
     fireEvent.click(shareTeamBtn);
 
     // Check that the form and the link are displayed
-    const shareInput = await screen.findByTestId("share-team-input");
-    expect(shareInput.getElementsByTagName("input")[0].value).toEqual(
-      `http://localhost/share/${shareLink.id}`
-    );
+    const shareInput = (await screen.findByTestId(
+      "share-team-input"
+    )) as HTMLInputElement;
+    expect(shareInput.value).toEqual(`http://localhost/share/${shareLink.id}`);
 
     // Click again on the share team button
     const newShareLink = shareTeamDB.create();
     fireEvent.click(shareTeamBtn);
 
-    // Check that the link has changed its id
-    await waitFor(() => expect(shareTeamBtn).not.toHaveClass("loading"));
-    expect(shareInput.getElementsByTagName("input")[0].value).toEqual(
+    // // Check that the link has changed its id
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+    expect(shareInput.value).toEqual(
       `http://localhost/share/${newShareLink.id}`
     );
   });

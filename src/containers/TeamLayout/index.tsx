@@ -75,10 +75,13 @@ export default function TeamLayout({ onChange }: IProps) {
         Layouts
       </Heading>
 
-      <Skeleton
-        isLoaded={status !== "loading" && !!selected}
-        data-testid="loading"
-      >
+      {status === "loading" || (layouts.length && !selected) ? (
+        <Stack data-testid="loading">
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+          <Skeleton height={20} />
+        </Stack>
+      ) : (
         <RadioGroup
           onChange={handleChange}
           value={selected?.id}
@@ -87,44 +90,39 @@ export default function TeamLayout({ onChange }: IProps) {
         >
           <Stack data-testid="layouts">
             {defaultLayouts.map((layout) => (
-              <Radio
-                key={layout.id}
-                id={`layout-${layout.id}`}
-                value={layout.id}
-                data-testid="layout"
-                mb={2}
-              >
-                {layout.name}
-              </Radio>
+              <Box key={layout.id} data-testid="layout">
+                <Radio id={`layout-${layout.id}`} value={layout.id} mb={2}>
+                  {layout.name}
+                </Radio>
+              </Box>
             ))}
           </Stack>
 
           {customLayouts.length > 0 && <Divider />}
 
-          <Box data-testid="custom-layout">
-            {customLayouts.map((layout) => (
-              <Box
-                role="group"
-                key={layout.id}
-                d="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-                my={2}
-              >
-                <Radio id={`layout-${layout.id}`} value={layout.id}>
-                  {layout.name}
-                </Radio>
-                <RemoveLayoutButton
-                  layout={layout}
-                  onRemoved={handleLayoutRemoved}
-                  opacity={0}
-                  _groupHover={{ opacity: 1 }}
-                />
-              </Box>
-            ))}
-          </Box>
+          {customLayouts.map((layout) => (
+            <Box
+              key={layout.id}
+              role="group"
+              d="flex"
+              data-testid="custom-layout"
+              flexDirection="row"
+              justifyContent="space-between"
+              my={2}
+            >
+              <Radio id={`layout-${layout.id}`} value={layout.id}>
+                {layout.name}
+              </Radio>
+              <RemoveLayoutButton
+                layout={layout}
+                onRemoved={handleLayoutRemoved}
+                opacity={0}
+                _groupHover={{ opacity: 1 }}
+              />
+            </Box>
+          ))}
         </RadioGroup>
-      </Skeleton>
+      )}
       <Box data-testid="layout-buttons" my={6}>
         <CreateLayoutButton>New</CreateLayoutButton>
       </Box>

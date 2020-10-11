@@ -16,7 +16,7 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
   const [, drag] = useDrag({
     item: { player, type: ITEM_TYPE },
     end: (
-      item: { player: IPlayer } | undefined,
+      __item: { player: IPlayer } | undefined,
       monitor: DragSourceMonitor
     ) => {
       const dropResult = monitor.getDropResult();

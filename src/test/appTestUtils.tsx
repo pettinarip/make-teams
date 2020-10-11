@@ -2,6 +2,8 @@ import React from "react";
 import * as rtl from "@testing-library/react";
 import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
 
+import { AuthProvider } from "../contexts/auth";
+
 // TODO: shouldn't we just keep the same config used in the app? probably with
 // less staleTime
 const queryConfig: ReactQueryConfig = {
@@ -19,7 +21,7 @@ function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   function Wrapper({ children }: any) {
     return (
       <ReactQueryConfigProvider config={queryConfig}>
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </ReactQueryConfigProvider>
     );
   }
