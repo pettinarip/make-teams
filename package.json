@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "gen": "graphql-codegen --config codegen.yml",
-    "test": "jest --setupTestFrameworkScriptFile=./src/setupTests.ts --watch"
+    "test": "jest --setupTestFrameworkScriptFile=./src/setupTests.ts",
+    "test:watch": "yarn test --watch"
   },
   "dependencies": {
     "@chakra-ui/core": "^1.0.0-rc.5",
