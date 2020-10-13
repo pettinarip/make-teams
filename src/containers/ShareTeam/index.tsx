@@ -37,6 +37,7 @@ export default function ShareTeam({ positions }: IProps) {
         colorScheme="green"
         isLoading={status === "loading"}
         data-testid="share-team-btn"
+        disabled={!positions.length}
       >
         Share your team!
       </Button>
