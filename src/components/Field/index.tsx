@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref } from "react";
-import { Box, Center, Spinner } from "@chakra-ui/core";
+import { Box, Center, Spinner, useColorMode } from "@chakra-ui/core";
 import styled from "@emotion/styled";
 
 export const ID_ATTR = "field";
@@ -10,10 +10,13 @@ export interface IProps {
 }
 
 function Field(props: IProps, ref: Ref<HTMLDivElement>) {
+  const { colorMode } = useColorMode();
+  const isDark = colorMode === "dark";
+
   return (
     <Box
       pos="relative"
-      bg="green.400"
+      bg={isDark ? "green.600" : "green.400"}
       w={327}
       id={ID_ATTR}
       data-testid={ID_ATTR}
