@@ -48,17 +48,6 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
 
   return (
     <Center flexDirection="column" {...restProps}>
-      <Flex direction="row">
-        <Link href={facebookLink(shareLink)} mx={1}>
-          <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
-        </Link>
-        <Link href={twitterLink(shareLink)} mx={1}>
-          <IconButton icon={<FaTwitter />} aria-label="Share in Twitter" />
-        </Link>
-        <Link href={whatsappLink(shareLink)} mx={1}>
-          <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
-        </Link>
-      </Flex>
       <Center data-testid="share-team-form">
         <Input
           data-testid="share-team-input"
@@ -71,9 +60,20 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
           {hasCopied ? "Copied" : "Copy"}
         </Button>
       </Center>
-      <Box>
-        <Button onClick={handleImageClick}>.PNG</Button>
-      </Box>
+      <Flex direction="row">
+        <Link href={facebookLink(shareLink)} mx={1}>
+          <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
+        </Link>
+        <Link href={twitterLink(shareLink)} mx={1}>
+          <IconButton icon={<FaTwitter />} aria-label="Share in Twitter" />
+        </Link>
+        <Link href={whatsappLink(shareLink)} mx={1}>
+          <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
+        </Link>
+        <Button onClick={handleImageClick} mx={1}>
+          .PNG
+        </Button>
+      </Flex>
     </Center>
   );
 }
