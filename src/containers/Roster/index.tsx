@@ -41,9 +41,9 @@ export default function Roster({
 
       {isLoading || status === "loading" ? (
         <Stack data-testid="loading">
-          <Skeleton height={20} />
-          <Skeleton height={20} />
-          <Skeleton height={20} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
         </Stack>
       ) : (
         <List h={350} overflow="auto">

@@ -15,6 +15,7 @@ import {
   AlertTitle,
   AlertDescription,
   ChakraProps,
+  useToast,
 } from "@chakra-ui/core";
 
 import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
@@ -29,6 +30,7 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
   const [addNewPlayer] = useAddNewPlayer();
+  const toast = useToast();
 
   let submitForm: Function = () => {};
 
@@ -47,6 +49,14 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
         number: values.number || 0,
       };
       await addNewPlayer(newPlayer);
+
+      toast({
+        title: "Player saved.",
+        description: `The new player ${values.lastName} was saved successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+
       onClose();
     } catch (e) {
       console.log(e);

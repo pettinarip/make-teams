@@ -13,6 +13,7 @@ import {
   AlertTitle,
   AlertDescription,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/core";
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
@@ -23,6 +24,7 @@ export interface IProps {
 }
 
 export default function CreateLayoutButton(props: IProps) {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
@@ -40,6 +42,14 @@ export default function CreateLayoutButton(props: IProps) {
 
     try {
       await addNewLayout(values);
+
+      toast({
+        title: "Layout saved.",
+        description: `The new layout ${values.name} was saved successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+
       onClose();
     } catch (e) {
       console.log(e);

@@ -10,6 +10,7 @@ import {
   Input,
   Link,
   useClipboard,
+  useToast,
 } from "@chakra-ui/core";
 
 import {
@@ -26,13 +27,23 @@ export interface IProps extends ChakraProps {
 export default function ExportForm({ shareLink, ...restProps }: IProps) {
   const [link, setLink] = useState("");
   const { hasCopied, onCopy } = useClipboard(link);
+  const toast = useToast();
 
   useEffect(() => {
     setLink(shareLink);
   }, [shareLink]);
 
   function handleImageClick() {
-    exportFieldToImage();
+    try {
+      exportFieldToImage();
+    } catch (e) {
+      toast({
+        title: "An error ocurred.",
+        description: "While creating the image.",
+        status: "error",
+        isClosable: true,
+      });
+    }
   }
 
   return (

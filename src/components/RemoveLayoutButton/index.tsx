@@ -9,6 +9,7 @@ import {
   AlertDialogOverlay,
   Button,
   ChakraProps,
+  useToast,
 } from "@chakra-ui/core";
 import { DeleteIcon } from "@chakra-ui/icons";
 
@@ -25,6 +26,7 @@ export default function RemoveLayoutButton({
   onRemoved,
   ...restProps
 }: IProps) {
+  const toast = useToast();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removeLayout] = useRemoveLayout();
   const cancelRef = useRef(null);
@@ -33,11 +35,26 @@ export default function RemoveLayoutButton({
     setIsConfirmOpen(!isConfirmOpen);
   }
 
-  function handleRemove() {
+  async function handleRemove() {
     // As we are performing optimistic updates, we just close the modal and
     // assume the removal was executed ok
-    toggleConfirmModal();
-    removeLayout(layout);
+    try {
+      await removeLayout(layout);
+      toggleConfirmModal();
+      toast({
+        title: "Layout removed.",
+        description: `The layout ${layout.name} was removed successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: "An error occured.",
+        description: `While trying to remove the layout ${layout.name}.`,
+        status: "error",
+        isClosable: true,
+      });
+    }
 
     if (onRemoved) {
       onRemoved(layout);

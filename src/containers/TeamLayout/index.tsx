@@ -77,9 +77,9 @@ export default function TeamLayout({ onChange }: IProps) {
 
       {status === "loading" || (layouts.length && !selected) ? (
         <Stack data-testid="loading">
-          <Skeleton height={20} />
-          <Skeleton height={20} />
-          <Skeleton height={20} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
         </Stack>
       ) : (
         <RadioGroup

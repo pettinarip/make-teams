@@ -4,7 +4,6 @@ import { IFormValues } from "./CreatePlayerForm";
 
 export default function validate(values: IFormValues) {
   const errors: FormikErrors<IFormValues> = {};
-  console.log(values);
 
   if (!values.firstName) {
     errors.firstName = "Required";
