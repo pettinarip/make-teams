@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import NextLink from "next/link";
 import * as yup from "yup";
 import { Formik, Field, FormikHelpers, FieldProps } from "formik";
 import {
@@ -15,7 +15,7 @@ import {
   FormLabel,
   Heading,
   Input,
-  Link as LinkUI,
+  Link,
 } from "@chakra-ui/core";
 
 import toErrorMap from "../utils/toErrorMap";
@@ -60,7 +60,7 @@ export default function Login(__props: IProps) {
   }
 
   return (
-    <Box marginX="auto" width="100%" maxWidth="24rem">
+    <Box marginX="auto" width="100%" maxWidth="30rem">
       <Heading as="h2" my={6} size="md" textAlign="center">
         Sign in to your account
       </Heading>
@@ -107,9 +107,9 @@ export default function Login(__props: IProps) {
             <FormControl my={4}>
               <FormHelperText>
                 Forgot password?{" "}
-                <Link href="/forgot-password">
-                  <LinkUI color="blue.500">Reset password</LinkUI>
-                </Link>
+                <NextLink href="/forgot-password">
+                  <Link color="blue.500">Reset password</Link>
+                </NextLink>
               </FormHelperText>
             </FormControl>
 
@@ -127,9 +127,9 @@ export default function Login(__props: IProps) {
       <FormControl textAlign="center" my={4}>
         <FormHelperText>
           New to us?{" "}
-          <Link href="/signup">
-            <LinkUI color="blue.500">Sign Up</LinkUI>
-          </Link>
+          <NextLink href="/signup">
+            <Link color="blue.500">Sign Up</Link>
+          </NextLink>
         </FormHelperText>
       </FormControl>
     </Box>

@@ -86,7 +86,7 @@ export default function SignUp(__props: IProps) {
   // }
 
   return (
-    <Box marginX="auto" width="100%" maxWidth="24rem">
+    <Box marginX="auto" width="100%" maxWidth="30rem">
       <Heading as="h2" my={6} size="md" textAlign="center">
         Create a new account
       </Heading>
@@ -184,7 +184,7 @@ export default function SignUp(__props: IProps) {
 
                 <FormControl my={4}>
                   <FormHelperText>
-                    Forgot password? Lost your code?{" "}
+                    Lost your code?{" "}
                     {/* <ResendCodeLink
                         email={values.email}
                         onError={handleResendCodeLinkError}
