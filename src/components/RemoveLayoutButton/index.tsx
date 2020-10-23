@@ -36,11 +36,8 @@ export default function RemoveLayoutButton({
   }
 
   async function handleRemove() {
-    // As we are performing optimistic updates, we just close the modal and
-    // assume the removal was executed ok
     try {
       await removeLayout(layout);
-      toggleConfirmModal();
       toast({
         title: "Layout removed.",
         description: `The layout ${layout.name} was removed successfully.`,

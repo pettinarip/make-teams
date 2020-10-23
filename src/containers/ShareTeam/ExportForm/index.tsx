@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaWhatsapp } from "react-icons/fa";
 import {
-  Box,
   Button,
   Center,
   ChakraProps,

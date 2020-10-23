@@ -19,7 +19,7 @@ async function renderShareTeam({ shareLink }: IRenderProps = {}) {
     shareLink = shareTeamDB.create();
   }
 
-  const utils = render(<ShareTeam positions={[]} />);
+  const utils = render(<ShareTeam positions={[{ x: 1, y: 1 }]} />);
 
   return {
     ...utils,
