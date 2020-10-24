@@ -45,7 +45,9 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
           {playerName}
           <Badge ml="1">{player.number}</Badge>
         </Text>
-        <Text fontSize="sm">Defender</Text>
+        <Text fontSize="sm" d={{ base: "none", lg: "block" }}>
+          Defender
+        </Text>
       </Box>
     </Flex>
   );

@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import {
   Box,
+  ChakraProps,
   Divider,
+  Flex,
   Heading,
   Radio,
   RadioGroup,
@@ -14,11 +16,11 @@ import useLayouts from "../../domain/layout/useLayouts";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   onChange: (layout: ILayout) => void;
 }
 
-export default function TeamLayout({ onChange }: IProps) {
+export default function TeamLayout({ onChange, ...restProps }: IProps) {
   const { status, layouts } = useLayouts();
   const [selected, setSelected] = useState<ILayout>();
 
@@ -70,7 +72,7 @@ export default function TeamLayout({ onChange }: IProps) {
   }
 
   return (
-    <Box>
+    <Flex {...restProps} h="100%" direction="column" justify="space-between">
       <Heading as="h4" fontSize="md" mb={6}>
         Layouts
       </Heading>
@@ -85,7 +87,6 @@ export default function TeamLayout({ onChange }: IProps) {
         <RadioGroup
           onChange={handleChange}
           value={selected?.id}
-          h={350}
           overflow="auto"
         >
           <Stack data-testid="layouts">
@@ -123,9 +124,9 @@ export default function TeamLayout({ onChange }: IProps) {
           ))}
         </RadioGroup>
       )}
-      <Box data-testid="layout-buttons" my={6}>
+      <Box data-testid="layout-buttons" mt={6}>
         <CreateLayoutButton>New</CreateLayoutButton>
       </Box>
-    </Box>
+    </Flex>
   );
 }

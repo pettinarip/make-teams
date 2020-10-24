@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { Box, Center, Grid } from "@chakra-ui/core";
+import { Box, Center, ChakraProps, Flex, useColorMode } from "@chakra-ui/core";
 
 import FieldStatic from "../../components/FieldStatic";
 import Controls from "../../components/Controls";
@@ -10,12 +10,15 @@ import ShareTeam from "../ShareTeam";
 import { ILayout, IPlayer, IPosition } from "./types";
 import useAssignments from "./useAssignments";
 
-export interface IProps {}
+export interface IProps extends ChakraProps {}
 
-export default function MakeTeam(__props: IProps) {
+export default function MakeTeam(props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
   const [usedPlayersIds, setUsedPlayersIds] = useState<Array<string>>([]);
   const [showNames, setShowNames] = useState(false);
+  const { colorMode } = useColorMode();
+
+  const isDark = colorMode === "dark";
 
   const { assignments, assign, toggle, reset } = useAssignments(positions);
 
@@ -62,25 +65,37 @@ export default function MakeTeam(__props: IProps) {
   }, []);
 
   return (
-    <Box>
-      <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-        <TeamLayout onChange={handleLayoutChange} />
-
-        <Center>
-          <FieldStatic
-            showNames={showNames}
-            positions={assignments}
-            onPositionDropInPosition={handlePositionDropInPosition}
+    <Box {...props}>
+      <Box bgColor={isDark ? "gray.700" : "gray.100"} p={6} borderRadius={6}>
+        <Flex
+          justify="space-between"
+          direction={{ base: "column", sm: "row" }}
+          flexWrap={{ base: "wrap", lg: "nowrap" }}
+          h={{ base: "inherit", lg: 500 }}
+        >
+          <TeamLayout
+            flex={{ base: "none", lg: 1 }}
+            w={{ base: "100%", lg: "inherit" }}
+            onChange={handleLayoutChange}
           />
-        </Center>
 
-        <Roster
-          usedPlayersIds={usedPlayersIds}
-          onPlayerDropInPosition={handlePlayerDropInPosition}
-          onPlayerClick={handlePlayerClick}
-          onResetClick={handleOnClear}
-        />
-      </Grid>
+          <Center flex={1} mx={{ base: 0, sm: 4 }}>
+            <FieldStatic
+              showNames={showNames}
+              positions={assignments}
+              onPositionDropInPosition={handlePositionDropInPosition}
+            />
+          </Center>
+
+          <Roster
+            flex={1}
+            usedPlayersIds={usedPlayersIds}
+            onPlayerDropInPosition={handlePlayerDropInPosition}
+            onPlayerClick={handlePlayerClick}
+            onResetClick={handleOnClear}
+          />
+        </Flex>
+      </Box>
 
       <Box mt={30}>
         <Controls

@@ -21,7 +21,6 @@ export default function Menu(props: ChakraProps) {
     <Flex
       align="center"
       justifyContent="space-between"
-      borderBottomWidth={1}
       fontSize="sm"
       {...props}
     >

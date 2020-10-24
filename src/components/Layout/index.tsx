@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
+import { Box } from "@chakra-ui/core";
 
 import Header from "../Header";
 import Footer from "../Footer";
@@ -9,10 +10,10 @@ export interface IProps {
 
 export default function Layout({ children }: IProps) {
   return (
-    <div>
+    <Box p={6}>
       <Header />
       {children}
       <Footer />
-    </div>
+    </Box>
   );
 }

@@ -18,6 +18,8 @@ function Field(props: IProps, ref: Ref<HTMLDivElement>) {
       pos="relative"
       bg={isDark ? "green.600" : "green.400"}
       w={327}
+      borderRadius="lg"
+      boxShadow="0 2px 12px #0c112b66"
       id={ID_ATTR}
       data-testid={ID_ATTR}
       ref={ref}
