@@ -8,15 +8,15 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  ChakraProps,
   useToast,
+  IconButtonProps,
 } from "@chakra-ui/core";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 import { ILayout } from "../../containers/MakeTeam/types";
 import useRemoveLayout from "../../dal/layout/useRemoveLayout";
 
-export interface IProps extends ChakraProps {
+export interface IProps extends Omit<IconButtonProps, "aria-label"> {
   layout: ILayout;
   onRemoved?: (layout: ILayout) => void;
 }
@@ -61,10 +61,10 @@ export default function RemoveLayoutButton({
   return (
     <>
       <IconButton
-        {...restProps}
         variant="ghost"
-        aria-label="Remove layout"
         icon={<DeleteIcon />}
+        {...restProps}
+        aria-label="Remove layout"
         onClick={toggleConfirmModal}
         data-testid="remove-layout-btn"
       />

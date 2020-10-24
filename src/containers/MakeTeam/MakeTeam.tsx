@@ -76,16 +76,17 @@ export default function MakeTeam(props: IProps) {
           <TeamLayout
             flex={{ base: "none", lg: 1 }}
             w={{ base: "100%", lg: "inherit" }}
+            mb={{ base: 6, lg: 0 }}
             onChange={handleLayoutChange}
           />
 
-          <Center flex={1} mx={{ base: 0, sm: 4 }}>
+          <Box flex={1} mx={{ base: 0, lg: 4 }} mr={{ base: 4 }}>
             <FieldStatic
               showNames={showNames}
               positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
             />
-          </Center>
+          </Box>
 
           <Roster
             flex={1}
