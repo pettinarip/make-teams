@@ -80,13 +80,18 @@ export default function MakeTeam(props: IProps) {
             onChange={handleLayoutChange}
           />
 
-          <Box flex={1} mx={{ base: 0, lg: 4 }} mr={{ base: 0, sm: 4 }}>
+          <Flex
+            flex={1}
+            justify={{ base: "flex-start", lg: "center" }}
+            mx={{ base: 0, lg: 4 }}
+            mr={{ base: 0, sm: 4 }}
+          >
             <FieldStatic
               showNames={showNames}
               positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
             />
-          </Box>
+          </Flex>
 
           <Roster
             flex={1}
