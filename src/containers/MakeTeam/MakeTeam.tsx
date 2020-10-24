@@ -80,7 +80,7 @@ export default function MakeTeam(props: IProps) {
             onChange={handleLayoutChange}
           />
 
-          <Box flex={1} mx={{ base: 0, lg: 4 }} mr={{ base: 4 }}>
+          <Box flex={1} mx={{ base: 0, lg: 4 }} mr={{ base: 0, sm: 4 }}>
             <FieldStatic
               showNames={showNames}
               positions={assignments}
@@ -90,6 +90,7 @@ export default function MakeTeam(props: IProps) {
 
           <Roster
             flex={1}
+            mt={{ base: 6, sm: 0 }}
             usedPlayersIds={usedPlayersIds}
             onPlayerDropInPosition={handlePlayerDropInPosition}
             onPlayerClick={handlePlayerClick}

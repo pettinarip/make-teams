@@ -17,7 +17,7 @@ function Field(props: IProps, ref: Ref<HTMLDivElement>) {
     <Box
       pos="relative"
       bg={isDark ? "green.600" : "green.400"}
-      w={327}
+      w={{ base: "100%", sm: 327 }}
       borderRadius="lg"
       boxShadow="0 2px 12px #0c112b66"
       id={ID_ATTR}
