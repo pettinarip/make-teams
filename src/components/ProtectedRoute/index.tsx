@@ -22,7 +22,7 @@ export default function ProtectedRoute({ children }: IProps) {
 
   if (isLoading || !user) {
     return (
-      <Stack m="0 auto" w={1100}>
+      <Stack maxW={{ xl: 1200 }} m="0 auto">
         <Skeleton height={6} />
         <Skeleton height={6} />
         <Skeleton height={6} />

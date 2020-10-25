@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import {
   Box,
-  ChakraProps,
   Flex,
+  FlexProps,
   Heading,
   Skeleton,
   Stack,
@@ -17,7 +17,7 @@ import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 import RadioGroup from "./RadioGroup";
 import Select from "./Select";
 
-export interface IProps extends ChakraProps {
+export interface IProps extends FlexProps {
   onChange: (layout: ILayout) => void;
 }
 
