@@ -5,6 +5,7 @@
 import "@testing-library/jest-dom/extend-expect";
 import { queryCache } from "react-query";
 import next from 'next'
+import MatchMediaMock from "jest-matchmedia-mock";
 
 // Instantiate Next.js in order to load env.test file. Jest automatically runs
 // with NODE_ENV=test
@@ -16,7 +17,10 @@ import { server } from "./test/server";
 process.env.DEBUG_PRINT_LIMIT = "15000";
 
 // Establish API mocking before all tests.
-beforeAll(() => server.listen());
+beforeAll(() => {
+  server.listen()
+  new MatchMediaMock()
+});
 // Reset any request handlers that we may add during the tests,
 // so they don't affect other tests.
 afterEach(() => {
