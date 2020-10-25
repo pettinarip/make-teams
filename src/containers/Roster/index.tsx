@@ -2,8 +2,8 @@ import {
   Box,
   Button,
   Center,
-  ChakraProps,
   Flex,
+  FlexProps,
   Heading,
   List,
   ListItem,
@@ -19,7 +19,7 @@ import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
 
-export interface IProps extends ChakraProps {
+export interface IProps extends FlexProps {
   usedPlayersIds: Array<string>;
   onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
