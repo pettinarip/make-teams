@@ -189,6 +189,7 @@ export type Mutation = {
   deletePlayer: Scalars['Boolean'];
   createShareLink: ShareLink;
   register: UserResponse;
+  resendConfirmationCode: Scalars['Boolean'];
   confirmSignUp: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -229,6 +230,11 @@ export type MutationCreateShareLinkArgs = {
 
 export type MutationRegisterArgs = {
   options: UsernamePasswordInput;
+};
+
+
+export type MutationResendConfirmationCodeArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -402,6 +408,16 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
+);
+
+export type ResendConfirmationCodeMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ResendConfirmationCodeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'resendConfirmationCode'>
 );
 
 export type ShareLinkQueryVariables = Exact<{
@@ -599,6 +615,11 @@ export const LogoutDocument = gql`
   logout
 }
     `;
+export const ResendConfirmationCodeDocument = gql`
+    mutation ResendConfirmationCode($email: String!) {
+  resendConfirmationCode(email: $email)
+}
+    `;
 export const ShareLinkDocument = gql`
     query ShareLink($id: String!) {
   shareLink(id: $id) {
@@ -716,6 +737,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Logout(variables?: LogoutMutationVariables): Promise<LogoutMutation> {
       return withWrapper(() => client.request<LogoutMutation>(print(LogoutDocument), variables));
+    },
+    ResendConfirmationCode(variables: ResendConfirmationCodeMutationVariables): Promise<ResendConfirmationCodeMutation> {
+      return withWrapper(() => client.request<ResendConfirmationCodeMutation>(print(ResendConfirmationCodeDocument), variables));
     },
     ShareLink(variables: ShareLinkQueryVariables): Promise<ShareLinkQuery> {
       return withWrapper(() => client.request<ShareLinkQuery>(print(ShareLinkDocument), variables));

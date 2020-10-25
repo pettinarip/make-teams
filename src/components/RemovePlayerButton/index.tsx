@@ -9,6 +9,7 @@ import {
   Button,
   ChakraProps,
   IconButton,
+  useToast,
 } from "@chakra-ui/core";
 import { DeleteIcon } from "@chakra-ui/icons";
 
@@ -23,13 +24,29 @@ export default function RemovePlayerButton({ player, ...restProps }: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [removePlayer] = useRemovePlayer();
   const cancelRef = useRef(null);
+  const toast = useToast();
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
   async function handleRemove() {
-    await removePlayer(player);
+    try {
+      await removePlayer(player);
+      toast({
+        title: "Player removed.",
+        description: `The new player ${player.lastName} was removed successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: "An error occured.",
+        description: `While trying to remove the player.`,
+        status: "error",
+        isClosable: true,
+      });
+    }
   }
 
   return (

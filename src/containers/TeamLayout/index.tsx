@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import {
   Box,
-  Divider,
+  ChakraProps,
+  Flex,
   Heading,
-  Radio,
-  RadioGroup,
   Skeleton,
   Stack,
+  useBreakpointValue,
 } from "@chakra-ui/core";
 
 import { ILayout } from "../MakeTeam/types";
@@ -14,13 +14,17 @@ import useLayouts from "../../domain/layout/useLayouts";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
-export interface IProps {
+import RadioGroup from "./RadioGroup";
+import Select from "./Select";
+
+export interface IProps extends ChakraProps {
   onChange: (layout: ILayout) => void;
 }
 
-export default function TeamLayout({ onChange }: IProps) {
+export default function TeamLayout({ onChange, ...restProps }: IProps) {
   const { status, layouts } = useLayouts();
   const [selected, setSelected] = useState<ILayout>();
+  const isLargeBreakpoint = useBreakpointValue({ base: true, lg: false });
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
   // doing this dirty auto-select workaround
@@ -70,62 +74,44 @@ export default function TeamLayout({ onChange }: IProps) {
   }
 
   return (
-    <Box>
+    <Flex {...restProps} h="100%" direction="column" justify="space-between">
       <Heading as="h4" fontSize="md" mb={6}>
         Layouts
       </Heading>
 
       {status === "loading" || (layouts.length && !selected) ? (
         <Stack data-testid="loading">
-          <Skeleton height={20} />
-          <Skeleton height={20} />
-          <Skeleton height={20} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
         </Stack>
+      ) : isLargeBreakpoint ? (
+        <Select
+          selected={selected!}
+          defaultLayouts={defaultLayouts}
+          customLayouts={customLayouts}
+          onChange={handleChange}
+        />
       ) : (
         <RadioGroup
+          selected={selected!}
+          defaultLayouts={defaultLayouts}
+          customLayouts={customLayouts}
           onChange={handleChange}
-          value={selected?.id}
-          h={350}
-          overflow="auto"
-        >
-          <Stack data-testid="layouts">
-            {defaultLayouts.map((layout) => (
-              <Box key={layout.id} data-testid="layout">
-                <Radio id={`layout-${layout.id}`} value={layout.id} mb={2}>
-                  {layout.name}
-                </Radio>
-              </Box>
-            ))}
-          </Stack>
-
-          {customLayouts.length > 0 && <Divider />}
-
-          {customLayouts.map((layout) => (
-            <Box
-              key={layout.id}
-              role="group"
-              d="flex"
-              data-testid="custom-layout"
-              flexDirection="row"
-              justifyContent="space-between"
-              my={2}
-            >
-              <Radio id={`layout-${layout.id}`} value={layout.id}>
-                {layout.name}
-              </Radio>
-              <RemoveLayoutButton
-                layout={layout}
-                onRemoved={handleLayoutRemoved}
-                opacity={0}
-                _groupHover={{ opacity: 1 }}
-              />
-            </Box>
-          ))}
-        </RadioGroup>
+          onRemoved={handleLayoutRemoved}
+        />
       )}
-      <Box data-testid="layout-buttons" my={6}>
+      <Box data-testid="layout-buttons" mt={6}>
         <CreateLayoutButton>New</CreateLayoutButton>
+        {selected && isLargeBreakpoint && (
+          <RemoveLayoutButton
+            ml={3}
+            variant="solid"
+            layout={selected}
+            onRemoved={handleLayoutRemoved}
+          />
+        )}
       </Box>
-    </Box>
+    </Flex>
   );
 }

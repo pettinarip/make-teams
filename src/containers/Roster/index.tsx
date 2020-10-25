@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Center,
+  ChakraProps,
+  Flex,
   Heading,
   List,
   ListItem,
@@ -17,7 +19,7 @@ import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
 
-export interface IProps {
+export interface IProps extends ChakraProps {
   usedPlayersIds: Array<string>;
   onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
@@ -29,24 +31,25 @@ export default function Roster({
   onPlayerDropInPosition,
   onPlayerClick,
   onResetClick,
+  ...restProps
 }: IProps) {
   const { user, isLoading } = useAuth();
   const { status, data: players = [] } = useGetPlayers(user);
 
   return (
-    <Box>
+    <Flex {...restProps} h="100%" direction="column" justify="space-between">
       <Heading as="h4" fontSize="md" mb={6}>
         Roster ({players.length})
       </Heading>
 
       {isLoading || status === "loading" ? (
         <Stack data-testid="loading">
-          <Skeleton height={20} />
-          <Skeleton height={20} />
-          <Skeleton height={20} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
+          <Skeleton height={6} />
         </Stack>
       ) : (
-        <List h={350} overflow="auto">
+        <List overflow="auto">
           {players
             .filter((p) => !usedPlayersIds.includes(p.id))
             .map((player, index) => (
@@ -82,6 +85,6 @@ export default function Roster({
           <Button onClick={onResetClick}>Reset</Button>
         </Box>
       )}
-    </Box>
+    </Flex>
   );
 }

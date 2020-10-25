@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaWhatsapp } from "react-icons/fa";
 import {
-  Box,
   Button,
   Center,
   ChakraProps,
@@ -10,6 +9,7 @@ import {
   Input,
   Link,
   useClipboard,
+  useToast,
 } from "@chakra-ui/core";
 
 import {
@@ -26,28 +26,27 @@ export interface IProps extends ChakraProps {
 export default function ExportForm({ shareLink, ...restProps }: IProps) {
   const [link, setLink] = useState("");
   const { hasCopied, onCopy } = useClipboard(link);
+  const toast = useToast();
 
   useEffect(() => {
     setLink(shareLink);
   }, [shareLink]);
 
   function handleImageClick() {
-    exportFieldToImage();
+    try {
+      exportFieldToImage();
+    } catch (e) {
+      toast({
+        title: "An error ocurred.",
+        description: "While creating the image.",
+        status: "error",
+        isClosable: true,
+      });
+    }
   }
 
   return (
     <Center flexDirection="column" {...restProps}>
-      <Flex direction="row">
-        <Link href={facebookLink(shareLink)} mx={1}>
-          <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
-        </Link>
-        <Link href={twitterLink(shareLink)} mx={1}>
-          <IconButton icon={<FaTwitter />} aria-label="Share in Twitter" />
-        </Link>
-        <Link href={whatsappLink(shareLink)} mx={1}>
-          <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
-        </Link>
-      </Flex>
       <Center data-testid="share-team-form">
         <Input
           data-testid="share-team-input"
@@ -60,9 +59,20 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
           {hasCopied ? "Copied" : "Copy"}
         </Button>
       </Center>
-      <Box>
-        <Button onClick={handleImageClick}>.PNG</Button>
-      </Box>
+      <Flex direction="row">
+        <Link href={facebookLink(shareLink)} mx={1}>
+          <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
+        </Link>
+        <Link href={twitterLink(shareLink)} mx={1}>
+          <IconButton icon={<FaTwitter />} aria-label="Share in Twitter" />
+        </Link>
+        <Link href={whatsappLink(shareLink)} mx={1}>
+          <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
+        </Link>
+        <Button onClick={handleImageClick} mx={1}>
+          .PNG
+        </Button>
+      </Flex>
     </Center>
   );
 }

@@ -88,7 +88,9 @@ describe("TeamLayout", () => {
     const confirmBtn = screen.getByText(/do it!/i);
     fireEvent.click(confirmBtn);
 
-    await waitForElementToBeRemoved(() => screen.getByText(/custom3/i));
+    await waitForElementToBeRemoved(() =>
+      screen.getByText(/Remove layout custom3/i)
+    );
 
     // Check the new layouts
     const customLayoutsContentAgain = screen

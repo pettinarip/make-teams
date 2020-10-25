@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Formik, Field, FieldProps } from "formik";
+import { Formik, Field, FieldProps, FormikHelpers } from "formik";
 import {
   Alert,
   AlertDescription,
@@ -20,14 +20,15 @@ import * as yup from "yup";
 
 import useSignUp from "../dal/user/useSignUp";
 import useConfirmSignUp from "../dal/user/useConfrimSignUp";
-// import ResendCodeLink from "./ResendCodeLink";
+import ResendCodeLink from "../components/ResendCodeLink";
+import toErrorMap from "../utils/toErrorMap";
 
 export interface IProps {}
 
 interface IFormValues {
   email: string;
   password: string;
-  confirmationCode: string;
+  code: string;
 }
 
 const validationSignUpSchema = yup.object({
@@ -37,7 +38,7 @@ const validationSignUpSchema = yup.object({
 
 const validationConfirmationSchema = yup.object({
   email: yup.string().email().required(),
-  confirmationCode: yup.string().required(),
+  code: yup.string().required(),
 });
 
 export default function SignUp(__props: IProps) {
@@ -50,18 +51,23 @@ export default function SignUp(__props: IProps) {
   const initialValues: IFormValues = {
     email: "",
     password: "",
-    confirmationCode: "",
+    code: "",
   };
 
-  async function handleSignUp(values: IFormValues) {
-    const { email, password, confirmationCode } = values;
+  async function handleSignUp(
+    values: IFormValues,
+    { setErrors }: FormikHelpers<IFormValues>
+  ) {
+    const { email, password, code } = values;
     setSignUpError("");
 
     try {
       if (isVerifyStep) {
-        const response = await confirmSignUp({ email, code: confirmationCode });
+        const response = await confirmSignUp({ email, code });
         const errors = response?.confirmSignUp.errors;
-        if (!errors) {
+        if (errors) {
+          setErrors(toErrorMap(errors));
+        } else {
           router.replace("/");
         }
       } else {
@@ -81,12 +87,12 @@ export default function SignUp(__props: IProps) {
     }
   }
 
-  // function handleResendCodeLinkError(error: string) {
-  //   setSignUpError(error);
-  // }
+  function handleResendCodeLinkError(error: string) {
+    setSignUpError(error);
+  }
 
   return (
-    <Box marginX="auto" width="100%" maxWidth="24rem">
+    <Box marginX="auto" width="100%" maxWidth="30rem">
       <Heading as="h2" my={6} size="md" textAlign="center">
         Create a new account
       </Heading>
@@ -98,7 +104,7 @@ export default function SignUp(__props: IProps) {
         validateOnBlur={false}
         onSubmit={handleSignUp}
       >
-        {({ handleSubmit, isSubmitting }) => (
+        {({ handleSubmit, isSubmitting, values }) => (
           <Box as="form" onSubmit={handleSubmit}>
             {!!signUpError && (
               <Alert status="error">
@@ -161,34 +167,27 @@ export default function SignUp(__props: IProps) {
 
             {isVerifyStep && (
               <div>
-                <Field name="confirmationCode">
+                <Field name="code">
                   {({ field, form }: FieldProps) => (
                     <FormControl
                       my={4}
                       isRequired
-                      isInvalid={
-                        !!form.errors.confirmationCode &&
-                        !!form.touched.confirmationCode
-                      }
+                      isInvalid={!!form.errors.code && !!form.touched.code}
                     >
-                      <FormLabel htmlFor="confirmationCode">
-                        Enter your code
-                      </FormLabel>
-                      <Input {...field} autoFocus id="confirmationCode" />
-                      <FormErrorMessage>
-                        {form.errors.confirmationCode}
-                      </FormErrorMessage>
+                      <FormLabel htmlFor="code">Enter your code</FormLabel>
+                      <Input {...field} autoFocus id="code" />
+                      <FormErrorMessage>{form.errors.code}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
 
                 <FormControl my={4}>
                   <FormHelperText>
-                    Forgot password? Lost your code?{" "}
-                    {/* <ResendCodeLink
-                        email={values.email}
-                        onError={handleResendCodeLinkError}
-                      /> */}
+                    Lost your code?{" "}
+                    <ResendCodeLink
+                      email={values.email}
+                      onError={handleResendCodeLinkError}
+                    />
                   </FormHelperText>
                 </FormControl>
 

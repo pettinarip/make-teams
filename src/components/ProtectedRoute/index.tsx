@@ -23,9 +23,9 @@ export default function ProtectedRoute({ children }: IProps) {
   if (isLoading || !user) {
     return (
       <Stack m="0 auto" w={1100}>
-        <Skeleton height="20px" />
-        <Skeleton height="20px" />
-        <Skeleton height="20px" />
+        <Skeleton height={6} />
+        <Skeleton height={6} />
+        <Skeleton height={6} />
       </Stack>
     );
   }

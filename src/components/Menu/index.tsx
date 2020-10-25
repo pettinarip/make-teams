@@ -3,6 +3,7 @@ import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
 
 import useLogout from "../../dal/user/useLogout";
 import { useAuth } from "../../contexts/auth";
+import DarkModeSwitch from "../DarkModeSwitch";
 
 export default function Menu(props: ChakraProps) {
   const router = useRouter();
@@ -20,7 +21,6 @@ export default function Menu(props: ChakraProps) {
     <Flex
       align="center"
       justifyContent="space-between"
-      borderBottomWidth={1}
       fontSize="sm"
       {...props}
     >
@@ -29,7 +29,10 @@ export default function Menu(props: ChakraProps) {
           <Link>Home</Link>
         </NextLink> */}
       </Box>
-      <Flex>
+      <Flex alignItems="center">
+        <Box mr={6}>
+          <DarkModeSwitch />
+        </Box>
         <Box mr={6} color="blue.500">
           {username}
         </Box>

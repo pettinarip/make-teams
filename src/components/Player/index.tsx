@@ -33,14 +33,21 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
   const playerName = `${player.lastName}, ${player.firstName}`;
 
   return (
-    <Flex ref={drag} onClick={handleOnClick} data-testid="player">
+    <Flex
+      ref={drag}
+      onClick={handleOnClick}
+      data-testid="player"
+      cursor="pointer"
+    >
       <Avatar name={playerName} />
       <Box ml="3">
         <Text fontWeight="bold">
           {playerName}
           <Badge ml="1">{player.number}</Badge>
         </Text>
-        <Text fontSize="sm">Defender</Text>
+        <Text fontSize="sm" d={{ base: "none", lg: "block" }}>
+          Defender
+        </Text>
       </Box>
     </Flex>
   );
