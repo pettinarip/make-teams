@@ -17,7 +17,7 @@ import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 import RadioGroup from "./RadioGroup";
 import Select from "./Select";
 
-export interface IProps extends FlexProps {
+export interface IProps extends Omit<FlexProps, "onChange"> {
   onChange: (layout: ILayout) => void;
 }
 
@@ -94,6 +94,8 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
         />
       ) : (
         <RadioGroup
+          flex={1}
+          overflow="auto"
           selected={selected!}
           defaultLayouts={defaultLayouts}
           customLayouts={customLayouts}
