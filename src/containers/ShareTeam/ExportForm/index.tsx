@@ -53,7 +53,7 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
           value={link}
           readOnly
           my={4}
-          w={400}
+          w={{ base: "auto", sm: 400 }}
         />
         <Button onClick={onCopy} ml={2} autoFocus>
           {hasCopied ? "Copied" : "Copy"}
