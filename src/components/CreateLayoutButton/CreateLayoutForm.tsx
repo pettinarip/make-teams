@@ -70,7 +70,6 @@ export default function CreateLayoutForm(props: IProps) {
                     <FormLabel htmlFor="new-layout-name">Name</FormLabel>
                     <Input
                       {...field}
-                      autoFocus
                       id="new-layout-name"
                       placeholder="4-4-2"
                     />

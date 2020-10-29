@@ -68,12 +68,7 @@ export default function CreatePlayerForm(props: IProps) {
                     }
                   >
                     <FormLabel htmlFor="firstName">First name</FormLabel>
-                    <Input
-                      {...field}
-                      autoFocus
-                      id="firstName"
-                      placeholder="First name"
-                    />
+                    <Input {...field} id="firstName" placeholder="First name" />
                     <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
                   </FormControl>
                 )}
