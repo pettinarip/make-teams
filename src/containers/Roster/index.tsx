@@ -49,7 +49,7 @@ export default function Roster({
           <Skeleton height={6} />
         </Stack>
       ) : (
-        <List overflow="auto">
+        <List overflow="auto" flex={1}>
           {players
             .filter((p) => !usedPlayersIds.includes(p.id))
             .map((player, index) => (

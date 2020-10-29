@@ -52,7 +52,7 @@ export default function Login(__props: IProps) {
       if (errors) {
         setErrors(toErrorMap(errors));
       } else {
-        router.replace("/");
+        await router.replace("/");
       }
     } catch (e) {
       setSignInError(e.message);

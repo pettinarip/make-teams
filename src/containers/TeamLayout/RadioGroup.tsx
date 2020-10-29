@@ -3,13 +3,14 @@ import {
   Divider,
   Radio,
   RadioGroup as RadioGroupUI,
+  RadioGroupProps,
   Stack,
 } from "@chakra-ui/core";
 
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 import { ILayout } from "../MakeTeam/types";
 
-interface IProps {
+interface IProps extends Omit<RadioGroupProps, "children"> {
   selected: ILayout;
   defaultLayouts: Array<ILayout>;
   customLayouts: Array<ILayout>;
@@ -23,9 +24,10 @@ export default function RadioGroup({
   customLayouts,
   onChange,
   onRemoved,
+  ...restProps
 }: IProps) {
   return (
-    <RadioGroupUI onChange={onChange} value={selected?.id} overflow="auto">
+    <RadioGroupUI onChange={onChange} value={selected?.id} {...restProps}>
       <Stack data-testid="layouts">
         {defaultLayouts.map((layout) => (
           <Box key={layout.id} data-testid="layout">
