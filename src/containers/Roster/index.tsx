@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/core";
 
 import { IPlayer } from "../MakeTeam/types";
-import { useAuth } from "../../contexts/auth";
 import useGetPlayers from "../../dal/player/useGetPlayers";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
@@ -33,8 +32,9 @@ export default function Roster({
   onResetClick,
   ...restProps
 }: IProps) {
-  const { user, isLoading } = useAuth();
-  const { status, data: players = [] } = useGetPlayers(user);
+  const { status, data: players = [] } = useGetPlayers();
+
+  const isLoading = status === "loading";
 
   return (
     <Flex {...restProps} h="100%" direction="column" justify="space-between">
@@ -42,48 +42,44 @@ export default function Roster({
         Roster ({players.length})
       </Heading>
 
-      {isLoading || status === "loading" ? (
+      {isLoading ? (
         <Stack data-testid="loading">
           <Skeleton height={6} />
           <Skeleton height={6} />
           <Skeleton height={6} />
         </Stack>
       ) : (
-        <List overflow="auto" flex={1}>
-          {players
-            .filter((p) => !usedPlayersIds.includes(p.id))
-            .map((player, index) => (
-              <ListItem
-                role="group"
-                key={player.id}
-                mt={index !== 0 ? 4 : 0}
-                d="flex"
-                flexDirection="row"
-                justifyContent="space-between"
-              >
-                <Player
-                  player={player}
-                  onDropInPosition={onPlayerDropInPosition}
-                  onClick={onPlayerClick}
-                />
-                <RemovePlayerButton
-                  player={player}
-                  opacity={0}
-                  _groupHover={{ opacity: 1 }}
-                />
-              </ListItem>
-            ))}
-        </List>
-      )}
-      {isLoading ? (
-        <Center data-testid="loading">
-          <Spinner />
-        </Center>
-      ) : (
-        <Box data-testid="roster-buttons" mt={6}>
-          <CreatePlayerButton mr={3}>New</CreatePlayerButton>
-          <Button onClick={onResetClick}>Reset</Button>
-        </Box>
+        <>
+          <List overflow="auto" flex={1}>
+            {players
+              .filter((p) => !usedPlayersIds.includes(p.id))
+              .map((player, index) => (
+                <ListItem
+                  role="group"
+                  key={player.id}
+                  mt={index !== 0 ? 4 : 0}
+                  d="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                >
+                  <Player
+                    player={player}
+                    onDropInPosition={onPlayerDropInPosition}
+                    onClick={onPlayerClick}
+                  />
+                  <RemovePlayerButton
+                    player={player}
+                    opacity={0}
+                    _groupHover={{ opacity: 1 }}
+                  />
+                </ListItem>
+              ))}
+          </List>
+          <Box data-testid="roster-buttons" mt={6}>
+            <CreatePlayerButton mr={3}>New</CreatePlayerButton>
+            <Button onClick={onResetClick}>Reset</Button>
+          </Box>
+        </>
       )}
     </Flex>
   );
