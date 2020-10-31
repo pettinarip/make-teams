@@ -21,3 +21,8 @@ export function create(layout: CreateLayoutMutationVariables): ILayout {
 export function read(): Array<ILayout> {
   return ls.get<Array<ILayout>>(QUERY_KEY) || [];
 }
+
+export function remove(id: string) {
+  const layouts = ls.get<Array<ILayout>>(QUERY_KEY) || []
+  ls.set(QUERY_KEY, layouts.filter(layout => layout.id !== id))
+}
