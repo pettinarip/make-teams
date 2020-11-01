@@ -3,19 +3,23 @@ import { QueryResult } from "react-query/types";
 
 import sdk from "../../graphql/sdk";
 import { Player as IPlayer } from "../../graphql/API";
-import { IUser } from "../user/types";
+import { useAuth } from "../../contexts/auth";
+import * as PlayerLocalStorage from '../../localStorage/player'
 
 export const QUERY_KEY = "players";
 
-export default function useGetPlayers(user: IUser | undefined): QueryResult<Array<IPlayer>> {
+export default function useGetPlayers(): QueryResult<Array<IPlayer>> {
+  const { user } = useAuth();
+  
   return useQuery(
     QUERY_KEY,
     async (): Promise<Array<IPlayer>> => {
-      const response = await sdk.Players();
-      return response.players as Array<IPlayer>;
-    },
-    {
-      enabled: !!user,
+      if (user) {
+        const response = await sdk.Players();
+        return response.players as Array<IPlayer>;
+      } else {
+        return PlayerLocalStorage.read()
+      }
     }
   );
 }

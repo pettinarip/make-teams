@@ -26,6 +26,8 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
   const [selected, setSelected] = useState<ILayout>();
   const isLargeBreakpoint = useBreakpointValue({ base: true, lg: false });
 
+  const isLoading = status === "loading";
+
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
   // doing this dirty auto-select workaround
   useEffect(() => {
@@ -79,7 +81,7 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
         Layouts
       </Heading>
 
-      {status === "loading" || (layouts.length && !selected) ? (
+      {isLoading || (layouts.length && !selected) ? (
         <Stack data-testid="loading">
           <Skeleton height={6} />
           <Skeleton height={6} />

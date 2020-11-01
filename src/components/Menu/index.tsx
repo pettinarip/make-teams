@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
+import NextLink from "next/link";
 
 import useLogout from "../../dal/user/useLogout";
 import { useAuth } from "../../contexts/auth";
@@ -33,12 +34,29 @@ export default function Menu(props: ChakraProps) {
         <Box mr={6}>
           <DarkModeSwitch />
         </Box>
-        <Box mr={6} color="blue.500">
-          {username}
-        </Box>
-        <Box>
-          <Link onClick={handleSignOut}>Logout</Link>
-        </Box>
+        {user ? (
+          <>
+            <Box mr={6} color="blue.500">
+              {username}
+            </Box>
+            <Box>
+              <Link onClick={handleSignOut}>Logout</Link>
+            </Box>
+          </>
+        ) : (
+          <>
+            <Box mr={6}>
+              <NextLink href="/login">
+                <Link>Login</Link>
+              </NextLink>
+            </Box>
+            <Box>
+              <NextLink href="/signup">
+                <Link>Sign Up</Link>
+              </NextLink>
+            </Box>
+          </>
+        )}
       </Flex>
     </Flex>
   );

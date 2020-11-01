@@ -4,12 +4,21 @@ import { IPlayer } from "../../containers/MakeTeam/types";
 import { DeletePlayerMutationVariables } from "../../graphql/API";
 import { QUERY_KEY } from "./useGetPlayers";
 import sdk from "../../graphql/sdk";
+import { useAuth } from "../../contexts/auth";
+import * as PlayerLocalStorage from "../../localStorage/player";
 
 export default function useRemovePlayer() {
+  const { user } = useAuth();
+
   return useMutation<boolean, Error, DeletePlayerMutationVariables>(
     async (player): Promise<boolean> => {
-      const response = await sdk.DeletePlayer(player);
-      return response.deletePlayer;
+      if (user) {
+        const response = await sdk.DeletePlayer(player);
+        return response.deletePlayer;
+      } else {
+        PlayerLocalStorage.remove(player.id);
+        return true;
+      }
     },
     {
       // Optimistically update the cache value on mutate, but store

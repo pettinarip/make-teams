@@ -4,12 +4,21 @@ import { ILayout } from "../../containers/MakeTeam/types";
 import { DeleteCustomLayoutMutationVariables } from "../../graphql/API";
 import { QUERY_KEY } from "./useGetLayouts";
 import sdk from "../../graphql/sdk";
+import { useAuth } from "../../contexts/auth";
+import * as LayoutLocalStorage from "../../localStorage/layout";
 
 export default function useRemoveLayout() {
+  const { user } = useAuth();
+
   return useMutation<boolean, Error, DeleteCustomLayoutMutationVariables>(
     async (layout): Promise<boolean> => {
-      const response = await sdk.DeleteCustomLayout(layout);
-      return response.deleteCustomLayout;
+      if (user) {
+        const response = await sdk.DeleteCustomLayout(layout);
+        return response.deleteCustomLayout;
+      } else {
+        LayoutLocalStorage.remove(layout.id);
+        return true;
+      }
     },
     {
       // Optimistically update the cache value on mutate, but store

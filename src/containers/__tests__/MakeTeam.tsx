@@ -1,7 +1,7 @@
 import React from "react";
 
 import {
-  render,
+  renderWithAuth as render,
   screen,
   waitFor,
   fireEvent,
