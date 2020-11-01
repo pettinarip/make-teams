@@ -2,7 +2,7 @@ import React from "react";
 import * as rtl from "@testing-library/react";
 import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
 
-import { AuthProvider } from "../contexts/auth";
+import { AuthProvider, useAuth } from "../contexts/auth";
 
 // TODO: shouldn't we just keep the same config used in the app? probably with
 // less staleTime
@@ -33,6 +33,20 @@ function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   };
 }
 
+function renderWithAuth(ui: any, renderOptions: any = {}) {
+  return render(<WaitAuth>{ui}</WaitAuth>, renderOptions);
+}
+
+function WaitAuth(props: { children: any }) {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div data-testid="loading" />;
+  }
+
+  return props.children;
+}
+
 // TODO: open an issue on DOM Testing Library to make this built-in...
 async function waitForElementToBeRemoved(cb: any, ...args: any) {
   try {
@@ -57,4 +71,10 @@ function dragAndDrop(src: Element, dst: Element) {
 
 export { default as userEvent } from "@testing-library/user-event";
 export * from "@testing-library/react";
-export { render, waitForElementToBeRemoved, sleep, dragAndDrop };
+export {
+  render,
+  renderWithAuth,
+  waitForElementToBeRemoved,
+  sleep,
+  dragAndDrop,
+};

@@ -8,7 +8,7 @@ export default function Index() {
 
   if (isLoading) {
     return (
-      <Stack maxW={{ xl: 1200 }} m="0 auto">
+      <Stack maxW={{ xl: 1200 }} m="0 auto" data-testid="loading">
         <Skeleton height={6} />
         <Skeleton height={6} />
         <Skeleton height={6} />
