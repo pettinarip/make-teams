@@ -14,14 +14,14 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  ChakraProps,
   useToast,
+  ButtonProps,
 } from "@chakra-ui/core";
 
 import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
 import CreatePlayerForm, { IFormValues } from "./CreatePlayerForm";
 
-export interface IProps extends ChakraProps {
+export interface IProps extends ButtonProps {
   children: ReactNode;
 }
 

@@ -14,16 +14,17 @@ import {
   AlertDescription,
   useDisclosure,
   useToast,
+  ButtonProps,
 } from "@chakra-ui/core";
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
 import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
 
-export interface IProps {
+export interface IProps extends ButtonProps {
   children: ReactNode;
 }
 
-export default function CreateLayoutButton(props: IProps) {
+export default function CreateLayoutButton({ children, ...restProps }: IProps) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,8 +66,9 @@ export default function CreateLayoutButton(props: IProps) {
         colorScheme="blue"
         onClick={onOpen}
         data-testid="new-layout-button"
+        {...restProps}
       >
-        {props.children}
+        {children}
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay>

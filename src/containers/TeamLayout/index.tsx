@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import {
+  Alert,
+  AlertIcon,
   Box,
   Flex,
   FlexProps,
@@ -11,6 +13,7 @@ import {
 
 import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/layout/useLayouts";
+import { hasReachedMaxNumber } from "../../domain/layout";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
@@ -106,7 +109,15 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
         />
       )}
       <Box data-testid="layout-buttons" mt={6}>
-        <CreateLayoutButton>New</CreateLayoutButton>
+        {hasReachedMaxNumber(layouts) && (
+          <Alert status="warning" mb={4}>
+            <AlertIcon />
+            You've reached the max number of layouts.
+          </Alert>
+        )}
+        <CreateLayoutButton disabled={hasReachedMaxNumber(layouts)}>
+          New
+        </CreateLayoutButton>
         {selected && isLargeBreakpoint && (
           <RemoveLayoutButton
             ml={3}
