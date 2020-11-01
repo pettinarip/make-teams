@@ -1,14 +1,12 @@
 import {
   Box,
   Button,
-  Center,
   Flex,
   FlexProps,
   Heading,
   List,
   ListItem,
   Skeleton,
-  Spinner,
   Stack,
 } from "@chakra-ui/core";
 
