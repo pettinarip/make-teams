@@ -1,7 +1,6 @@
 import { ILayout } from "../../containers/MakeTeam/types"
 
-export const MAX_LAYOUT_AMOUNT = 15
-
 export function hasReachedMaxNumber(layouts: Array<ILayout>) {
-  return layouts.length >= MAX_LAYOUT_AMOUNT
+  const max = Number(process.env.NEXT_PUBLIC_MAX_LAYOUT_AMOUNT!)
+  return layouts.length >= max
 }
