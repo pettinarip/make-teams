@@ -32,8 +32,12 @@ interface IFormValues {
 }
 
 const validationSignUpSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).max(30).required(),
+  email: yup
+    .string()
+    .label("Email")
+    .email("Enter a valid email with the following format: your@email.com")
+    .required(),
+  password: yup.string().label("Password").min(8).max(30).required(),
 });
 
 const validationConfirmationSchema = yup.object({
@@ -105,7 +109,7 @@ export default function SignUp(__props: IProps) {
         onSubmit={handleSignUp}
       >
         {({ handleSubmit, isSubmitting, values }) => (
-          <Box as="form" onSubmit={handleSubmit}>
+          <Box as="form" onSubmit={handleSubmit} noValidate>
             {!!signUpError && (
               <Alert status="error">
                 <AlertIcon />

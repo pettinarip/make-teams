@@ -1,10 +1,16 @@
 mutation CreateLayout($name: String!, $positions: [PositionInput!]!) {
   createCustomLayout(input: { name: $name, positions: $positions }) {
-    id
-    name
-    positions {
-      x
-      y
+    errors {
+      field
+      message
+    }
+    customLayout {
+      id
+      name
+      positions {
+        x
+        y
+      }
     }
   }
 }

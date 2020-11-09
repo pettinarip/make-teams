@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import { FormikHelpers } from "formik";
 import {
   Button,
   Modal,
@@ -10,7 +11,6 @@ import {
   ModalBody,
   Alert,
   AlertIcon,
-  AlertTitle,
   AlertDescription,
   useDisclosure,
   useToast,
@@ -19,6 +19,8 @@ import {
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
 import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
+import { CreateLayoutMutation } from "../../graphql/API";
+import toErrorMap from "../../utils/toErrorMap";
 
 export interface IProps extends ButtonProps {
   children: ReactNode;
@@ -28,7 +30,7 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hasErrors, setHasErrors] = useState(false);
+  const [error, setError] = useState("");
   const [addNewLayout] = useAddNewLayout();
 
   let submitForm: Function = () => {};
@@ -37,24 +39,36 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
     submitForm = submitFormFn;
   }
 
-  async function handleSubmit(values: IFormValues) {
+  async function handleSubmit(
+    values: IFormValues,
+    { setErrors }: FormikHelpers<IFormValues>
+  ) {
     setIsSubmitting(true);
-    setHasErrors(false);
+    setError("");
 
     try {
-      await addNewLayout(values);
+      const response = (await addNewLayout(values)) as CreateLayoutMutation;
+      const errors = response?.createCustomLayout?.errors;
 
-      toast({
-        title: "Layout saved.",
-        description: `The new layout ${values.name} was saved successfully.`,
-        status: "success",
-        isClosable: true,
-      });
-
-      onClose();
+      if (errors) {
+        const error = errors[0];
+        if (error.field) {
+          setErrors(toErrorMap(errors));
+        } else {
+          setError(error.message);
+        }
+      } else {
+        toast({
+          title: "Layout saved.",
+          description: `The new layout ${values.name} was saved successfully.`,
+          status: "success",
+          isClosable: true,
+        });
+        onClose();
+      }
     } catch (e) {
       console.log(e);
-      setHasErrors(true);
+      setError("There was an unexpected error while creating the layout");
     }
 
     setIsSubmitting(false);
@@ -76,15 +90,10 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
             <ModalHeader>Add a new layout</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              {hasErrors && (
-                <Alert status="error">
+              {!!error && (
+                <Alert status="error" mb={4}>
                   <AlertIcon />
-                  <AlertTitle mr={2}>
-                    There was an error with your submission
-                  </AlertTitle>
-                  <AlertDescription>
-                    Complete all the fields and try again.
-                  </AlertDescription>
+                  <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
               <CreateLayoutForm
