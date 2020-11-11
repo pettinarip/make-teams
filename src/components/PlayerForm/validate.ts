@@ -1,6 +1,6 @@
 import { FormikErrors } from "formik";
 
-import { IFormValues } from "./CreatePlayerForm";
+import { IFormValues } from ".";
 
 export default function validate(values: IFormValues) {
   const errors: FormikErrors<IFormValues> = {};

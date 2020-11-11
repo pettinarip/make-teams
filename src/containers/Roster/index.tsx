@@ -14,10 +14,11 @@ import {
 
 import { IPlayer } from "../MakeTeam/types";
 import useGetPlayers from "../../dal/player/useGetPlayers";
+import { hasReachedMaxNumber } from "../../domain/player";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
+import EditPlayerButton from "../../components/EditPlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
-import { hasReachedMaxNumber } from "../../domain/player";
 
 export interface IProps extends FlexProps {
   usedPlayersIds: Array<string>;
@@ -68,11 +69,18 @@ export default function Roster({
                     onDropInPosition={onPlayerDropInPosition}
                     onClick={onPlayerClick}
                   />
-                  <RemovePlayerButton
-                    player={player}
-                    opacity={0}
-                    _groupHover={{ opacity: 1 }}
-                  />
+                  <div>
+                    <EditPlayerButton
+                      player={player}
+                      opacity={0}
+                      _groupHover={{ opacity: 1 }}
+                    />
+                    <RemovePlayerButton
+                      player={player}
+                      opacity={0}
+                      _groupHover={{ opacity: 1 }}
+                    />
+                  </div>
                 </ListItem>
               ))}
           </List>

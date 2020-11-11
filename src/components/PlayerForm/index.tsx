@@ -27,6 +27,7 @@ export interface IFormValues {
 }
 
 export interface IProps {
+  initialValues: IFormValues;
   onSubmit: (values: IFormValues, helpers: FormikHelpers<IFormValues>) => void;
   bindSubmitForm: (submitForm: Function) => void;
 }
@@ -37,18 +38,10 @@ const GENDER_OPTIONS = [
   { text: "Other", value: "other" },
 ];
 
-export default function CreatePlayerForm(props: IProps) {
-  const initialState: IFormValues = {
-    firstName: "",
-    lastName: "",
-    gender: undefined,
-    number: undefined,
-    position: undefined,
-  };
-
+export default function PlayerForm(props: IProps) {
   return (
     <Formik
-      initialValues={initialState}
+      initialValues={props.initialValues}
       onSubmit={props.onSubmit}
       validate={validate}
       validateOnChange={false}

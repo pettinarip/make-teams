@@ -7,7 +7,7 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Button,
-  ChakraProps,
+  IconButtonProps,
   IconButton,
   useToast,
 } from "@chakra-ui/core";
@@ -16,7 +16,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { IPlayer } from "../../containers/MakeTeam/types";
 import useRemovePlayer from "../../dal/player/useRemovePlayer";
 
-export interface IProps extends ChakraProps {
+export interface IProps extends Omit<IconButtonProps, "aria-label"> {
   player: IPlayer;
 }
 

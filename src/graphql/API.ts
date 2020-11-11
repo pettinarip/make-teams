@@ -127,12 +127,21 @@ export type CustomLayoutInput = {
   positions: Array<PositionInput>;
 };
 
-export type PlayerInput = {
+export type CreatePlayerInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   number: Scalars['Float'];
   nickname?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['Float']>;
+};
+
+export type EditPlayerInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickname?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+  id: Scalars['String'];
 };
 
 export type SharePlayerInput = {
@@ -199,6 +208,7 @@ export type Mutation = {
   createCustomLayout?: Maybe<CustomLayoutResponse>;
   deleteCustomLayout: Scalars['Boolean'];
   createPlayer: Player;
+  editPlayer: Scalars['Boolean'];
   deletePlayer: Scalars['Boolean'];
   createShareLink: ShareLink;
 };
@@ -251,7 +261,12 @@ export type MutationDeleteCustomLayoutArgs = {
 
 
 export type MutationCreatePlayerArgs = {
-  input: PlayerInput;
+  input: CreatePlayerInput;
+};
+
+
+export type MutationEditPlayerArgs = {
+  input: EditPlayerInput;
 };
 
 
@@ -382,6 +397,19 @@ export type DeletePlayerMutationVariables = Exact<{
 export type DeletePlayerMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deletePlayer'>
+);
+
+export type EditPlayerMutationVariables = Exact<{
+  id: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+}>;
+
+
+export type EditPlayerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editPlayer'>
 );
 
 export type ForgotPaswordMutationVariables = Exact<{
@@ -609,6 +637,13 @@ export const DeletePlayerDocument = gql`
   deletePlayer(id: $id)
 }
     `;
+export const EditPlayerDocument = gql`
+    mutation EditPlayer($id: String!, $firstName: String!, $lastName: String!, $number: Float!) {
+  editPlayer(
+    input: {id: $id, firstName: $firstName, lastName: $lastName, number: $number}
+  )
+}
+    `;
 export const ForgotPaswordDocument = gql`
     mutation ForgotPasword($email: String!) {
   forgotPassword(email: $email)
@@ -748,6 +783,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeletePlayer(variables: DeletePlayerMutationVariables): Promise<DeletePlayerMutation> {
       return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables));
+    },
+    EditPlayer(variables: EditPlayerMutationVariables): Promise<EditPlayerMutation> {
+      return withWrapper(() => client.request<EditPlayerMutation>(print(EditPlayerDocument), variables));
     },
     ForgotPasword(variables: ForgotPaswordMutationVariables): Promise<ForgotPaswordMutation> {
       return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables));
