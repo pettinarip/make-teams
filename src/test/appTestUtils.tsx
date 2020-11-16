@@ -48,11 +48,11 @@ function WaitAuth(props: { children: any }) {
 }
 
 // TODO: open an issue on DOM Testing Library to make this built-in...
-async function waitForElementToBeRemoved(cb: any, ...args: any) {
+async function waitForElementToBeRemoved(cb: any) {
   try {
-    await rtl.waitForElementToBeRemoved(cb, ...args);
+    await rtl.waitForElementToBeRemoved(cb);
   } catch (error) {
-    rtl.screen.debug(document.body);
+    // rtl.screen.debug(document.body);
     throw error;
   }
 }

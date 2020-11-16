@@ -64,9 +64,10 @@ export default function EditPlayerButton({ player, ...restProps }: IProps) {
     <>
       <IconButton
         {...restProps}
+        data-testid="edit-player-button"
         variant="ghost"
         icon={<EditIcon />}
-        aria-label="Remove player"
+        aria-label="Edit player"
         onClick={onOpen}
       />
       <PlayerModalForm

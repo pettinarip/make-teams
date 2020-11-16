@@ -77,6 +77,7 @@ export default function PlayerModalForm(props: IProps) {
           </ModalBody>
           <ModalFooter>
             <Button
+              data-testid="player-submit-button"
               colorScheme="blue"
               onClick={() => submitForm()}
               isLoading={isSubmitting}

@@ -53,6 +53,7 @@ export default function RemovePlayerButton({ player, ...restProps }: IProps) {
     <>
       <IconButton
         {...restProps}
+        data-testid="delete-player-button"
         variant="ghost"
         icon={<DeleteIcon />}
         aria-label="Remove player"
