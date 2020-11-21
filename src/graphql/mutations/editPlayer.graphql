@@ -1,0 +1,15 @@
+mutation EditPlayer(
+  $id: String!
+  $firstName: String!
+  $lastName: String!
+  $number: Float!
+) {
+  editPlayer(
+    input: {
+      id: $id
+      firstName: $firstName
+      lastName: $lastName
+      number: $number
+    }
+  )
+}

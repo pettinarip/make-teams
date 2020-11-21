@@ -1,59 +1,60 @@
 import { ReactNode, useState } from "react";
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  useDisclosure,
-  useToast,
-} from "@chakra-ui/core";
+import { FormikHelpers } from "formik";
+import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/core";
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
-import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
+import { CreateLayoutMutation } from "../../graphql/API";
+import toErrorMap from "../../utils/toErrorMap";
+import fillPositions from "./fillPositions";
+import LayoutModalForm from "../LayoutModalForm";
+import { IFormValues, MAX_NUMBER_POSITIONS } from "../LayoutForm";
 
-export interface IProps {
+export interface IProps extends ButtonProps {
   children: ReactNode;
 }
 
-export default function CreateLayoutButton(props: IProps) {
+export default function CreateLayoutButton({ children, ...restProps }: IProps) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [hasErrors, setHasErrors] = useState(false);
+  const [error, setError] = useState("");
   const [addNewLayout] = useAddNewLayout();
 
-  let submitForm: Function = () => {};
+  const initialValues: IFormValues = {
+    name: "",
+    positions: fillPositions([], MAX_NUMBER_POSITIONS),
+  };
 
-  function bindSubmitForm(submitFormFn: Function) {
-    submitForm = submitFormFn;
-  }
-
-  async function handleSubmit(values: IFormValues) {
+  async function handleSubmit(
+    values: IFormValues,
+    { setErrors }: FormikHelpers<IFormValues>
+  ) {
     setIsSubmitting(true);
-    setHasErrors(false);
+    setError("");
 
     try {
-      await addNewLayout(values);
+      const response = (await addNewLayout(values)) as CreateLayoutMutation;
+      const errors = response?.createCustomLayout?.errors;
 
-      toast({
-        title: "Layout saved.",
-        description: `The new layout ${values.name} was saved successfully.`,
-        status: "success",
-        isClosable: true,
-      });
-
-      onClose();
+      if (errors) {
+        const error = errors[0];
+        if (error.field) {
+          setErrors(toErrorMap(errors));
+        } else {
+          setError(error.message);
+        }
+      } else {
+        toast({
+          title: "Layout saved.",
+          description: `The new layout ${values.name} was saved successfully.`,
+          status: "success",
+          isClosable: true,
+        });
+        onClose();
+      }
     } catch (e) {
       console.log(e);
-      setHasErrors(true);
+      setError("There was an unexpected error while creating the layout");
     }
 
     setIsSubmitting(false);
@@ -65,48 +66,20 @@ export default function CreateLayoutButton(props: IProps) {
         colorScheme="blue"
         onClick={onOpen}
         data-testid="new-layout-button"
+        {...restProps}
       >
-        {props.children}
+        {children}
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>Add a new layout</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              {hasErrors && (
-                <Alert status="error">
-                  <AlertIcon />
-                  <AlertTitle mr={2}>
-                    There was an error with your submission
-                  </AlertTitle>
-                  <AlertDescription>
-                    Complete all the fields and try again.
-                  </AlertDescription>
-                </Alert>
-              )}
-              <CreateLayoutForm
-                onSubmit={handleSubmit}
-                bindSubmitForm={bindSubmitForm}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                onClick={() => submitForm()}
-                isLoading={isSubmitting}
-                data-testid="new-layout-submit-button"
-                mr={3}
-              >
-                Create
-              </Button>
-              <Button onClick={onClose} data-testid="new-layout-cancel-button">
-                Cancel
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
+      <LayoutModalForm
+        title="Add a new layout"
+        submitBtnText="Create"
+        isOpen={isOpen}
+        isSubmitting={isSubmitting}
+        onClose={onClose}
+        error={error}
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+      />
     </>
   );
 }

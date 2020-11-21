@@ -1,6 +1,6 @@
 import { useMutation, queryCache } from "react-query";
 
-import { CreateLayoutMutationVariables } from "../../graphql/API";
+import { CreateLayoutMutation, CreateLayoutMutationVariables } from "../../graphql/API";
 import { ILayout } from "../../containers/MakeTeam/types";
 import { QUERY_KEY } from "./useGetLayouts";
 import sdk from "../../graphql/sdk";
@@ -10,18 +10,16 @@ import * as LayoutLocalStorage from '../../localStorage/layout'
 export default function useAddNewLayout() {
   const { user } = useAuth();
 
-  return useMutation<ILayout, Error, CreateLayoutMutationVariables>(
-    async (layout): Promise<ILayout> => {
+  return useMutation<CreateLayoutMutation | ILayout, Error, CreateLayoutMutationVariables>(
+    async (layout): Promise<CreateLayoutMutation | ILayout> => {
       if (user) {
-        const response = await sdk.CreateLayout(layout);
-        return response.createCustomLayout as ILayout;
+        return sdk.CreateLayout(layout);
       } else {
         return LayoutLocalStorage.create(layout)
       }
     },
     {
       onSuccess: () => {
-        // TODO: we should show a success global message to the user
         return queryCache.invalidateQueries(QUERY_KEY);
       },
     }

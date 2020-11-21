@@ -86,7 +86,7 @@ export type ShareLink = {
 
 export type FieldError = {
   __typename?: 'FieldError';
-  field: Scalars['String'];
+  field?: Maybe<Scalars['String']>;
   message: Scalars['String'];
 };
 
@@ -94,6 +94,12 @@ export type UserResponse = {
   __typename?: 'UserResponse';
   errors?: Maybe<Array<FieldError>>;
   user?: Maybe<User>;
+};
+
+export type CustomLayoutResponse = {
+  __typename?: 'CustomLayoutResponse';
+  errors?: Maybe<Array<FieldError>>;
+  customLayout?: Maybe<CustomLayout>;
 };
 
 export type PositionInput = {
@@ -106,17 +112,42 @@ export type LayoutInput = {
   positions: Array<PositionInput>;
 };
 
+export type UsernamePasswordInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type ConfirmSignUpInput = {
+  email: Scalars['String'];
+  code: Scalars['String'];
+};
+
 export type CustomLayoutInput = {
   name: Scalars['String'];
   positions: Array<PositionInput>;
 };
 
-export type PlayerInput = {
+export type EditCustomLayoutInput = {
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+  id: Scalars['String'];
+};
+
+export type CreatePlayerInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   number: Scalars['Float'];
   nickname?: Maybe<Scalars['String']>;
   age?: Maybe<Scalars['Float']>;
+};
+
+export type EditPlayerInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickname?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+  id: Scalars['String'];
 };
 
 export type SharePlayerInput = {
@@ -138,26 +169,16 @@ export type ShareLinkInput = {
   positions: Array<SharePositionInput>;
 };
 
-export type UsernamePasswordInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-export type ConfirmSignUpInput = {
-  email: Scalars['String'];
-  code: Scalars['String'];
-};
-
 export type Query = {
   __typename?: 'Query';
   layout?: Maybe<Layout>;
   layouts?: Maybe<Array<Layout>>;
+  me?: Maybe<User>;
   customLayout?: Maybe<CustomLayout>;
   customLayouts?: Maybe<Array<CustomLayout>>;
   player?: Maybe<Player>;
   players?: Maybe<Array<Player>>;
   shareLink?: Maybe<ShareLink>;
-  me?: Maybe<User>;
 };
 
 
@@ -183,11 +204,6 @@ export type QueryShareLinkArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createLayout: Layout;
-  createCustomLayout?: Maybe<CustomLayout>;
-  deleteCustomLayout: Scalars['Boolean'];
-  createPlayer: Player;
-  deletePlayer: Scalars['Boolean'];
-  createShareLink: ShareLink;
   register: UserResponse;
   resendConfirmationCode: Scalars['Boolean'];
   confirmSignUp: UserResponse;
@@ -195,36 +211,18 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
+  createCustomLayout?: Maybe<CustomLayoutResponse>;
+  editCustomLayout: Scalars['Boolean'];
+  deleteCustomLayout: Scalars['Boolean'];
+  createPlayer: Player;
+  editPlayer: Scalars['Boolean'];
+  deletePlayer: Scalars['Boolean'];
+  createShareLink: ShareLink;
 };
 
 
 export type MutationCreateLayoutArgs = {
   input: LayoutInput;
-};
-
-
-export type MutationCreateCustomLayoutArgs = {
-  input: CustomLayoutInput;
-};
-
-
-export type MutationDeleteCustomLayoutArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationCreatePlayerArgs = {
-  input: PlayerInput;
-};
-
-
-export type MutationDeletePlayerArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationCreateShareLinkArgs = {
-  input: ShareLinkInput;
 };
 
 
@@ -256,6 +254,41 @@ export type MutationForgotPasswordArgs = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
+};
+
+
+export type MutationCreateCustomLayoutArgs = {
+  input: CustomLayoutInput;
+};
+
+
+export type MutationEditCustomLayoutArgs = {
+  input: EditCustomLayoutInput;
+};
+
+
+export type MutationDeleteCustomLayoutArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationCreatePlayerArgs = {
+  input: CreatePlayerInput;
+};
+
+
+export type MutationEditPlayerArgs = {
+  input: EditPlayerInput;
+};
+
+
+export type MutationDeletePlayerArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationCreateShareLinkArgs = {
+  input: ShareLinkInput;
 };
 
 export type ChangePasswordMutationVariables = Exact<{
@@ -307,11 +340,17 @@ export type CreateLayoutMutationVariables = Exact<{
 export type CreateLayoutMutation = (
   { __typename?: 'Mutation' }
   & { createCustomLayout?: Maybe<(
-    { __typename?: 'CustomLayout' }
-    & Pick<CustomLayout, 'id' | 'name'>
-    & { positions: Array<(
-      { __typename?: 'Position' }
-      & Pick<Position, 'x' | 'y'>
+    { __typename?: 'CustomLayoutResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, customLayout?: Maybe<(
+      { __typename?: 'CustomLayout' }
+      & Pick<CustomLayout, 'id' | 'name'>
+      & { positions: Array<(
+        { __typename?: 'Position' }
+        & Pick<Position, 'x' | 'y'>
+      )> }
     )> }
   )> }
 );
@@ -370,6 +409,31 @@ export type DeletePlayerMutationVariables = Exact<{
 export type DeletePlayerMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deletePlayer'>
+);
+
+export type EditCustomLayoutMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+}>;
+
+
+export type EditCustomLayoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editCustomLayout'>
+);
+
+export type EditPlayerMutationVariables = Exact<{
+  id: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+}>;
+
+
+export type EditPlayerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editPlayer'>
 );
 
 export type ForgotPaswordMutationVariables = Exact<{
@@ -539,18 +603,26 @@ export const ConfirmSignUpDocument = gql`
 export const CreateLayoutDocument = gql`
     mutation CreateLayout($name: String!, $positions: [PositionInput!]!) {
   createCustomLayout(input: {name: $name, positions: $positions}) {
-    id
-    name
-    positions {
-      x
-      y
+    errors {
+      field
+      message
+    }
+    customLayout {
+      id
+      name
+      positions {
+        x
+        y
+      }
     }
   }
 }
     `;
 export const CreatePlayerDocument = gql`
     mutation CreatePlayer($firstName: String!, $lastName: String!, $number: Float!) {
-  createPlayer(input: {firstName: $firstName, lastName: $lastName, number: $number}) {
+  createPlayer(
+    input: {firstName: $firstName, lastName: $lastName, number: $number}
+  ) {
     id
     firstName
     lastName
@@ -587,6 +659,18 @@ export const DeleteCustomLayoutDocument = gql`
 export const DeletePlayerDocument = gql`
     mutation DeletePlayer($id: String!) {
   deletePlayer(id: $id)
+}
+    `;
+export const EditCustomLayoutDocument = gql`
+    mutation EditCustomLayout($id: String!, $name: String!, $positions: [PositionInput!]!) {
+  editCustomLayout(input: {id: $id, name: $name, positions: $positions})
+}
+    `;
+export const EditPlayerDocument = gql`
+    mutation EditPlayer($id: String!, $firstName: String!, $lastName: String!, $number: Float!) {
+  editPlayer(
+    input: {id: $id, firstName: $firstName, lastName: $lastName, number: $number}
+  )
 }
     `;
 export const ForgotPaswordDocument = gql`
@@ -728,6 +812,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeletePlayer(variables: DeletePlayerMutationVariables): Promise<DeletePlayerMutation> {
       return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables));
+    },
+    EditCustomLayout(variables: EditCustomLayoutMutationVariables): Promise<EditCustomLayoutMutation> {
+      return withWrapper(() => client.request<EditCustomLayoutMutation>(print(EditCustomLayoutDocument), variables));
+    },
+    EditPlayer(variables: EditPlayerMutationVariables): Promise<EditPlayerMutation> {
+      return withWrapper(() => client.request<EditPlayerMutation>(print(EditPlayerDocument), variables));
     },
     ForgotPasword(variables: ForgotPaswordMutationVariables): Promise<ForgotPaswordMutation> {
       return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables));

@@ -29,13 +29,17 @@ interface IFormValues {
 }
 
 const validationSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).max(30).required(),
+  email: yup
+    .string()
+    .label("Email")
+    .email("Enter a valid email with the following format: your@email.com")
+    .required(),
+  password: yup.string().label("Password").min(8).max(30).required(),
 });
 
 export default function Login(__props: IProps) {
   const [login] = useLogin();
-  const [signInError, setSignInError] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const initialValues: IFormValues = { email: "", password: "" };
@@ -44,18 +48,24 @@ export default function Login(__props: IProps) {
     values: IFormValues,
     { setErrors }: FormikHelpers<IFormValues>
   ) {
-    setSignInError("");
+    setError("");
 
     try {
       const response = await login(values);
       const errors = response?.login.errors;
       if (errors) {
-        setErrors(toErrorMap(errors));
+        const error = errors[0];
+        if (error.field) {
+          setErrors(toErrorMap(errors));
+        } else {
+          setError(error.message);
+        }
       } else {
         await router.replace("/");
       }
     } catch (e) {
-      setSignInError(e.message);
+      // Some unexpected error ocurred. Show a generic message.
+      setError("There was an internal error. Try again later.");
     }
   }
 
@@ -72,11 +82,11 @@ export default function Login(__props: IProps) {
         onSubmit={handleLogin}
       >
         {({ handleSubmit, isSubmitting }) => (
-          <Box as="form" onSubmit={handleSubmit}>
-            {!!signInError && (
-              <Alert status="error">
+          <Box as="form" onSubmit={handleSubmit} noValidate>
+            {!!error && (
+              <Alert status="error" mb={4}>
                 <AlertIcon />
-                <AlertDescription>{signInError}</AlertDescription>
+                <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
             <Field name="email">

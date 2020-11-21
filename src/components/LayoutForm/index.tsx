@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Formik, FormikProps, FormikHelpers, Field, FieldProps } from "formik";
+import React from "react";
+import { Formik, FormikProps, Field, FieldProps, FormikHelpers } from "formik";
 import {
   Box,
   Grid,
@@ -16,11 +16,11 @@ import {
 } from "@chakra-ui/core";
 
 import { IPosition } from "../../containers/MakeTeam/types";
-import initialFormation from "./initialFormation";
+import fillPositions from "../CreateLayoutButton/fillPositions";
 import validate from "./validate";
 import FieldEdit from "../FieldEdit";
 
-const MAX_NUMBER_POSITIONS = 11;
+export const MAX_NUMBER_POSITIONS = 11;
 
 export interface IFormValues {
   name: string;
@@ -28,27 +28,18 @@ export interface IFormValues {
 }
 
 export interface IProps {
-  onSubmit: (values: IFormValues, helpers: FormikHelpers<IFormValues>) => void;
+  initialValues: IFormValues;
+  onSubmit: (
+    values: IFormValues,
+    formikHelpers: FormikHelpers<IFormValues>
+  ) => void | Promise<any>;
   bindSubmitForm: (submitForm: Function) => void;
 }
 
 export default function CreateLayoutForm(props: IProps) {
-  // Size is a FE only value, this value is not going to be sent to the BE. It
-  // is just to control the number of positions we need to display
-  const [size, setSize] = useState(MAX_NUMBER_POSITIONS);
-
-  const initialState: IFormValues = {
-    name: "",
-    positions: initialFormation(size),
-  };
-
-  function handleSizeChange(__valueAsString: string, valueAsNumber: number) {
-    setSize(valueAsNumber);
-  }
-
   return (
     <Formik
-      initialValues={initialState}
+      initialValues={props.initialValues}
       onSubmit={props.onSubmit}
       validate={validate}
       validateOnChange={false}
@@ -56,7 +47,7 @@ export default function CreateLayoutForm(props: IProps) {
       // This allow to reinitizlize the form whenever the `size` is changed
       enableReinitialize
     >
-      {({ submitForm, setFieldValue }: FormikProps<IFormValues>) => {
+      {({ submitForm, setFieldValue, values }: FormikProps<IFormValues>) => {
         props.bindSubmitForm(submitForm);
         return (
           <Box as="form">
@@ -81,11 +72,21 @@ export default function CreateLayoutForm(props: IProps) {
               <FormControl isRequired>
                 <FormLabel htmlFor="new-layout-size">Size</FormLabel>
                 <NumberInput
+                  // Size is a FE only value, this value is not going to be sent to the BE. It
+                  // is just to control the number of positions we need to display
                   id="new-layout-size"
-                  value={size}
-                  onChange={handleSizeChange}
+                  value={values.positions.length}
+                  onChange={(
+                    __valueAsString: string,
+                    valueAsNumber: number
+                  ) => {
+                    setFieldValue(
+                      "positions",
+                      fillPositions(values.positions, valueAsNumber)
+                    );
+                  }}
                   min={1}
-                  max={11}
+                  max={MAX_NUMBER_POSITIONS}
                 >
                   <NumberInputField />
                   <NumberInputStepper>

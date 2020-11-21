@@ -320,7 +320,7 @@ describe("MakeTeam", () => {
 
     // Check that totti return to the roster
     const roster = screen
-      .getAllByTestId(/player/i)
+      .getAllByTestId("player")
       .map((player) => player.textContent);
     expect(roster).toMatchInlineSnapshot(`
       Array [

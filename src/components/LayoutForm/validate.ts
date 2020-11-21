@@ -1,6 +1,6 @@
 import { FormikErrors } from "formik";
 
-import { IFormValues } from "./CreateLayoutForm";
+import { IFormValues } from ".";
 
 export default function validate(values: IFormValues) {
   const errors: FormikErrors<IFormValues> = {};

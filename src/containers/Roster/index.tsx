@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Flex,
@@ -12,7 +14,9 @@ import {
 
 import { IPlayer } from "../MakeTeam/types";
 import useGetPlayers from "../../dal/player/useGetPlayers";
+import { hasReachedMaxNumber } from "../../domain/player";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
+import EditPlayerButton from "../../components/EditPlayerButton";
 import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
 
@@ -65,16 +69,31 @@ export default function Roster({
                     onDropInPosition={onPlayerDropInPosition}
                     onClick={onPlayerClick}
                   />
-                  <RemovePlayerButton
-                    player={player}
-                    opacity={0}
-                    _groupHover={{ opacity: 1 }}
-                  />
+                  <div>
+                    <EditPlayerButton
+                      player={player}
+                      opacity={0}
+                      _groupHover={{ opacity: 1 }}
+                    />
+                    <RemovePlayerButton
+                      player={player}
+                      opacity={0}
+                      _groupHover={{ opacity: 1 }}
+                    />
+                  </div>
                 </ListItem>
               ))}
           </List>
           <Box data-testid="roster-buttons" mt={6}>
-            <CreatePlayerButton mr={3}>New</CreatePlayerButton>
+            {hasReachedMaxNumber(players) && (
+              <Alert status="warning" mb={4}>
+                <AlertIcon />
+                You've reached the max number of players.
+              </Alert>
+            )}
+            <CreatePlayerButton mr={3} disabled={hasReachedMaxNumber(players)}>
+              New
+            </CreatePlayerButton>
             <Button onClick={onResetClick}>Reset</Button>
           </Box>
         </>

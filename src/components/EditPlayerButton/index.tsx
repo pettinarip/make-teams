@@ -1,26 +1,33 @@
-import { ReactNode, useState } from "react";
-import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/core";
+import { useState } from "react";
+import {
+  IconButton,
+  IconButtonProps,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/core";
+import { EditIcon } from "@chakra-ui/icons";
 
-import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
+import { IPlayer } from "../../containers/MakeTeam/types";
 import { IFormValues } from "../PlayerForm";
 import PlayerModalForm from "../PlayerModalForm";
+import useEditPlayer from "../../dal/player/useEditPlayer";
 
-export interface IProps extends ButtonProps {
-  children: ReactNode;
+interface IProps extends Omit<IconButtonProps, "aria-label"> {
+  player: IPlayer;
 }
 
-export default function CreatePlayerButton({ children, ...restProps }: IProps) {
+export default function EditPlayerButton({ player, ...restProps }: IProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
-  const [addNewPlayer] = useAddNewPlayer();
+  const [editPlayer] = useEditPlayer();
   const toast = useToast();
 
   const initialValues: IFormValues = {
-    firstName: "",
-    lastName: "",
+    firstName: player.firstName,
+    lastName: player.lastName,
     gender: undefined,
-    number: undefined,
+    number: player.number,
     position: undefined,
   };
 
@@ -30,15 +37,16 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
 
     try {
       const newPlayer = {
+        id: player.id,
         firstName: values.firstName,
         lastName: values.lastName,
         number: values.number || 0,
       };
-      await addNewPlayer(newPlayer);
+      await editPlayer(newPlayer);
 
       toast({
         title: "Player saved.",
-        description: `The new player ${values.lastName} was saved successfully.`,
+        description: `The player ${values.lastName} was saved successfully.`,
         status: "success",
         isClosable: true,
       });
@@ -54,12 +62,17 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
 
   return (
     <>
-      <Button colorScheme="blue" onClick={onOpen} {...restProps}>
-        {children}
-      </Button>
+      <IconButton
+        {...restProps}
+        data-testid="edit-player-button"
+        variant="ghost"
+        icon={<EditIcon />}
+        aria-label="Edit player"
+        onClick={onOpen}
+      />
       <PlayerModalForm
-        title="Add a new player to the team"
-        submitBtnText="Create"
+        title="Modify player"
+        submitBtnText="Save"
         isOpen={isOpen}
         onClose={onClose}
         isSubmitting={isSubmitting}

@@ -1,0 +1,7 @@
+mutation EditCustomLayout(
+  $id: String!
+  $name: String!
+  $positions: [PositionInput!]!
+) {
+  editCustomLayout(input: { id: $id, name: $name, positions: $positions })
+}

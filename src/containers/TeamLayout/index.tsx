@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import {
+  Alert,
+  AlertIcon,
   Box,
   Flex,
   FlexProps,
@@ -11,6 +13,7 @@ import {
 
 import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/layout/useLayouts";
+import { hasReachedMaxNumber } from "../../domain/layout";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 
@@ -23,10 +26,11 @@ export interface IProps extends Omit<FlexProps, "onChange"> {
 
 export default function TeamLayout({ onChange, ...restProps }: IProps) {
   const { status, layouts } = useLayouts();
-  const [selected, setSelected] = useState<ILayout>();
+  const [selectedId, setSelectedId] = useState<string>();
   const isLargeBreakpoint = useBreakpointValue({ base: true, lg: false });
 
   const isLoading = status === "loading";
+  const selected = layouts.find((l) => l.id === selectedId);
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
   // doing this dirty auto-select workaround
@@ -39,18 +43,18 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
   useEffect(() => {
     // Only autoselect the first layout in the list on the first load (when
     // there is no layout selected)
-    if (layouts.length && !selected) {
+    if (layouts.length && !selectedId) {
       const hasUserLayouts = layouts.some((layout) => layout.isCustom);
       if (hasUserLayouts) {
         // If the user has its own layouts then select the first custom layout
         const firstCustomLayout = layouts.find((layout) => layout.isCustom);
-        setSelected(firstCustomLayout);
+        setSelectedId(firstCustomLayout?.id);
       } else {
         // If not then select the first default layout
-        setSelected(layouts[0]);
+        setSelectedId(layouts[0].id);
       }
     }
-  }, [layouts, selected]);
+  }, [layouts, selectedId]);
 
   const defaultLayouts = useMemo(() => {
     return layouts.filter((layout) => !layout.isCustom);
@@ -63,7 +67,7 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
   function handleChange(nextValue: string) {
     const layout = layouts.find((l) => l.id === nextValue);
     if (layout) {
-      setSelected(layout);
+      setSelectedId(layout.id);
     }
   }
 
@@ -71,7 +75,7 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
     // If the removed layout was selected, clear the `selected` state so that we
     // can autoselect again the first layout in the list
     if (layout.id === selected?.id) {
-      setSelected(undefined);
+      setSelectedId(undefined);
     }
   }
 
@@ -106,7 +110,15 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
         />
       )}
       <Box data-testid="layout-buttons" mt={6}>
-        <CreateLayoutButton>New</CreateLayoutButton>
+        {hasReachedMaxNumber(layouts) && (
+          <Alert status="warning" mb={4}>
+            <AlertIcon />
+            You've reached the max number of layouts.
+          </Alert>
+        )}
+        <CreateLayoutButton disabled={hasReachedMaxNumber(layouts)}>
+          New
+        </CreateLayoutButton>
         {selected && isLargeBreakpoint && (
           <RemoveLayoutButton
             ml={3}

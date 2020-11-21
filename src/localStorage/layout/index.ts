@@ -2,7 +2,10 @@ import * as ls from "local-storage";
 
 import { ILayout } from "../../containers/MakeTeam/types";
 import { QUERY_KEY } from "../../dal/layout/useGetLayouts";
-import { CreateLayoutMutationVariables } from "../../graphql/API";
+import {
+  CreateLayoutMutationVariables,
+  EditCustomLayoutMutationVariables,
+} from "../../graphql/API";
 
 export function create(layout: CreateLayoutMutationVariables): ILayout {
   const layouts = ls.get<Array<ILayout>>(QUERY_KEY) || [];
@@ -23,6 +26,28 @@ export function read(): Array<ILayout> {
 }
 
 export function remove(id: string) {
-  const layouts = ls.get<Array<ILayout>>(QUERY_KEY) || []
-  ls.set(QUERY_KEY, layouts.filter(layout => layout.id !== id))
+  const layouts = ls.get<Array<ILayout>>(QUERY_KEY) || [];
+  ls.set(
+    QUERY_KEY,
+    layouts.filter((layout) => layout.id !== id)
+  );
+}
+
+export function edit(layout: EditCustomLayoutMutationVariables) {
+  try {
+    const layouts = read();
+    const index = layouts.findIndex((l) => l.id === layout.id);
+    if (index > -1) {
+      ls.set(QUERY_KEY, [
+        ...layouts.slice(0, index),
+        { ...layouts[index], ...layout },
+        ...layouts.slice(index + 1),
+      ]);
+    }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+
+  return true;
 }
