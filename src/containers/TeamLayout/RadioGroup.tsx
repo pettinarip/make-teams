@@ -7,6 +7,7 @@ import {
   Stack,
 } from "@chakra-ui/core";
 
+import EditLayoutButton from "../../components/EditLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
 import { ILayout } from "../MakeTeam/types";
 
@@ -32,7 +33,7 @@ export default function RadioGroup({
         {defaultLayouts.map((layout) => (
           <Box key={layout.id} data-testid="layout">
             <Radio id={`layout-${layout.id}`} value={layout.id} mb={2}>
-              {layout.name}
+              <Box cursor="pointer">{layout.name}</Box>
             </Radio>
           </Box>
         ))}
@@ -51,14 +52,21 @@ export default function RadioGroup({
           my={2}
         >
           <Radio id={`layout-${layout.id}`} value={layout.id}>
-            {layout.name}
+            <Box cursor="pointer">{layout.name}</Box>
           </Radio>
-          <RemoveLayoutButton
-            layout={layout}
-            onRemoved={onRemoved}
-            opacity={0}
-            _groupHover={{ opacity: 1 }}
-          />
+          <div>
+            <EditLayoutButton
+              layout={layout}
+              opacity={0}
+              _groupHover={{ opacity: 1 }}
+            />
+            <RemoveLayoutButton
+              layout={layout}
+              onRemoved={onRemoved}
+              opacity={0}
+              _groupHover={{ opacity: 1 }}
+            />
+          </div>
         </Box>
       ))}
     </RadioGroupUI>

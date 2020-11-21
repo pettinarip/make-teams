@@ -1,26 +1,13 @@
 import { ReactNode, useState } from "react";
 import { FormikHelpers } from "formik";
-import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Alert,
-  AlertIcon,
-  AlertDescription,
-  useDisclosure,
-  useToast,
-  ButtonProps,
-} from "@chakra-ui/core";
+import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/core";
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
-import CreateLayoutForm, { IFormValues } from "./CreateLayoutForm";
 import { CreateLayoutMutation } from "../../graphql/API";
 import toErrorMap from "../../utils/toErrorMap";
+import fillPositions from "./fillPositions";
+import LayoutModalForm from "../LayoutModalForm";
+import { IFormValues, MAX_NUMBER_POSITIONS } from "../LayoutForm";
 
 export interface IProps extends ButtonProps {
   children: ReactNode;
@@ -33,11 +20,10 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
   const [error, setError] = useState("");
   const [addNewLayout] = useAddNewLayout();
 
-  let submitForm: Function = () => {};
-
-  function bindSubmitForm(submitFormFn: Function) {
-    submitForm = submitFormFn;
-  }
+  const initialValues: IFormValues = {
+    name: "",
+    positions: fillPositions([], MAX_NUMBER_POSITIONS),
+  };
 
   async function handleSubmit(
     values: IFormValues,
@@ -84,40 +70,16 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
       >
         {children}
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>Add a new layout</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              {!!error && (
-                <Alert status="error" mb={4}>
-                  <AlertIcon />
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-              <CreateLayoutForm
-                onSubmit={handleSubmit}
-                bindSubmitForm={bindSubmitForm}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                onClick={() => submitForm()}
-                isLoading={isSubmitting}
-                data-testid="new-layout-submit-button"
-                mr={3}
-              >
-                Create
-              </Button>
-              <Button onClick={onClose} data-testid="new-layout-cancel-button">
-                Cancel
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
+      <LayoutModalForm
+        title="Add a new layout"
+        submitBtnText="Create"
+        isOpen={isOpen}
+        isSubmitting={isSubmitting}
+        onClose={onClose}
+        error={error}
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+      />
     </>
   );
 }

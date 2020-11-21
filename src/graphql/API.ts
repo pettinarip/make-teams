@@ -127,6 +127,12 @@ export type CustomLayoutInput = {
   positions: Array<PositionInput>;
 };
 
+export type EditCustomLayoutInput = {
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+  id: Scalars['String'];
+};
+
 export type CreatePlayerInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
@@ -206,6 +212,7 @@ export type Mutation = {
   forgotPassword: Scalars['Boolean'];
   changePassword: UserResponse;
   createCustomLayout?: Maybe<CustomLayoutResponse>;
+  editCustomLayout: Scalars['Boolean'];
   deleteCustomLayout: Scalars['Boolean'];
   createPlayer: Player;
   editPlayer: Scalars['Boolean'];
@@ -252,6 +259,11 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateCustomLayoutArgs = {
   input: CustomLayoutInput;
+};
+
+
+export type MutationEditCustomLayoutArgs = {
+  input: EditCustomLayoutInput;
 };
 
 
@@ -397,6 +409,18 @@ export type DeletePlayerMutationVariables = Exact<{
 export type DeletePlayerMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deletePlayer'>
+);
+
+export type EditCustomLayoutMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+  positions: Array<PositionInput>;
+}>;
+
+
+export type EditCustomLayoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editCustomLayout'>
 );
 
 export type EditPlayerMutationVariables = Exact<{
@@ -637,6 +661,11 @@ export const DeletePlayerDocument = gql`
   deletePlayer(id: $id)
 }
     `;
+export const EditCustomLayoutDocument = gql`
+    mutation EditCustomLayout($id: String!, $name: String!, $positions: [PositionInput!]!) {
+  editCustomLayout(input: {id: $id, name: $name, positions: $positions})
+}
+    `;
 export const EditPlayerDocument = gql`
     mutation EditPlayer($id: String!, $firstName: String!, $lastName: String!, $number: Float!) {
   editPlayer(
@@ -783,6 +812,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeletePlayer(variables: DeletePlayerMutationVariables): Promise<DeletePlayerMutation> {
       return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables));
+    },
+    EditCustomLayout(variables: EditCustomLayoutMutationVariables): Promise<EditCustomLayoutMutation> {
+      return withWrapper(() => client.request<EditCustomLayoutMutation>(print(EditCustomLayoutDocument), variables));
     },
     EditPlayer(variables: EditPlayerMutationVariables): Promise<EditPlayerMutation> {
       return withWrapper(() => client.request<EditPlayerMutation>(print(EditPlayerDocument), variables));

@@ -1,5 +1,14 @@
-export default function initialFormation(size: number) {
-  return [
+import { IPosition } from "../../containers/MakeTeam/types";
+
+export default function fillPositions(
+  positions: Array<IPosition>,
+  size: number
+) {
+  if (positions.length > size) {
+    return positions.slice(0, size);
+  }
+
+  const initial = [
     ...new Array(2).fill(0).map((__item, index) => ({
       x: (index % 3) * (100 / 3) + 30,
       y: 15,
@@ -17,4 +26,7 @@ export default function initialFormation(size: number) {
       y: 90,
     },
   ].slice(0, size);
+
+  const rest = initial.slice(positions.length);
+  return positions.concat(rest);
 }
