@@ -20,7 +20,9 @@ export default function MakeTeam(props: IProps) {
 
   const isDark = colorMode === "dark";
 
-  const { assignments, assign, toggle, reset } = useAssignments(positions);
+  const { assignments, assign, unassign, toggle, reset } = useAssignments(
+    positions
+  );
 
   useEffect(() => {
     setUsedPlayersIds(
@@ -54,6 +56,13 @@ export default function MakeTeam(props: IProps) {
       toggle(draggedIndex, droppedIndex);
     },
     [toggle]
+  );
+
+  const handlePositionClick = useCallback(
+    (positionIndex: number) => {
+      unassign(positionIndex);
+    },
+    [unassign]
   );
 
   const handleOnClear = useCallback(() => {
@@ -90,6 +99,7 @@ export default function MakeTeam(props: IProps) {
               showNames={showNames}
               positions={assignments}
               onPositionDropInPosition={handlePositionDropInPosition}
+              onPositionClick={handlePositionClick}
             />
           </Flex>
 

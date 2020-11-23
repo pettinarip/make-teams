@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref } from "react";
+import React, { forwardRef, Ref, useCallback } from "react";
 import { useDrop } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
 
@@ -12,6 +12,7 @@ export const ITEM_TYPE = "positionDrop";
 export interface IProps {
   index: number;
   position: IPosition | IShareLinkPosition;
+  onClick?: (index: number) => void;
 }
 
 export interface IDropPosition {
@@ -21,7 +22,7 @@ export interface IDropPosition {
 }
 
 function PositionDrop(
-  { index, position, ...restProps }: IProps,
+  { index, position, onClick, ...restProps }: IProps,
   ref: Ref<HTMLDivElement>
 ) {
   const dropPosition: IDropPosition = {
@@ -41,11 +42,16 @@ function PositionDrop(
 
   const isActive = canDrop && isOver;
 
+  const handleClick = useCallback(() => {
+    if (onClick) onClick(index);
+  }, [onClick, index]);
+
   return (
     <PositionStatic
       ref={composeRefs(ref, drop) as () => void}
       position={position}
       isActive={isActive}
+      onClick={handleClick}
       {...restProps}
     />
   );
