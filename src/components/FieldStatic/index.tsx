@@ -16,7 +16,7 @@ interface IProps {
     positionDraggedIndex: number,
     positionDroppedIndex: number
   ) => void;
-  onPositionClick: (positionIndex: number) => void;
+  onPositionClick?: (positionIndex: number) => void;
 }
 
 export default function FieldStatic(props: IProps) {
