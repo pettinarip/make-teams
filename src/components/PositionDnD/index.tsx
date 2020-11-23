@@ -12,7 +12,7 @@ export interface IProps {
     positionDraggedIndex: number,
     positionDroppedIndex: number
   ) => void;
-  onPositionClick: (positionIndex: number) => void;
+  onPositionClick?: (positionIndex: number) => void;
 }
 
 export interface IDragPosition {

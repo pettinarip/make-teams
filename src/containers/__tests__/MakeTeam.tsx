@@ -340,6 +340,81 @@ describe("MakeTeam", () => {
     `);
   });
 
+  test("clicking in an ocuppied position, unassign it and put it back to the Roster", async () => {
+    render(<MakeTeam />);
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
+
+    // Drag the player named Pablo Pettinari into the first position
+    const player = screen.getByText(/pablo/i);
+    let positions = screen.getAllByTestId(/position/i);
+    dragAndDrop(player, positions[0]);
+
+    const oldPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(oldPositions).toMatchInlineSnapshot(`
+      Array [
+        "PP5",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+
+    // Click on the occupied position
+    positions = screen.getAllByTestId(/position/i);
+    fireEvent.click(positions[0]);
+
+    const newPositions = screen
+      .getAllByTestId(/position/i)
+      .map((position) => position.textContent);
+    expect(newPositions).toMatchInlineSnapshot(`
+      Array [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ]
+    `);
+
+    // Check that the player is back in the Roster
+    const roster = screen
+      .getAllByTestId("player")
+      .map((player) => player.textContent);
+    expect(roster).toMatchInlineSnapshot(`
+      Array [
+        "PCPuyol, Charles6Defender",
+        "TFTotti, Francesco10Defender",
+        "PRPalacios, Rodrigo14Defender",
+        "PPPettinari, Pablo5Defender",
+        "TTTest, Test1Defender",
+        "TTTest2, Test2Defender",
+        "TTTest3, Test3Defender",
+        "TTTest4, Test4Defender",
+        "TTTest5, Test7Defender",
+        "TTTest6, Test8Defender",
+        "TTTest7, Test9Defender",
+        "TTTest8, Test11Defender",
+        "TTTest9, Test12Defender",
+      ]
+    `);
+  });
+
   test("an empty position can not be dragged", async () => {
     render(<MakeTeam />);
 
