@@ -12,6 +12,7 @@ export interface IProps {
     positionDraggedIndex: number,
     positionDroppedIndex: number
   ) => void;
+  onPositionClick: (positionIndex: number) => void;
 }
 
 export interface IDragPosition {
@@ -24,6 +25,7 @@ export default function PositionDnD({
   index,
   position,
   onPositionDropInPosition,
+  onPositionClick,
   ...restProps
 }: IProps) {
   const dragPosition: IDragPosition = {
@@ -46,6 +48,12 @@ export default function PositionDnD({
   });
 
   return (
-    <PositionDrop ref={drag} index={index} position={position} {...restProps} />
+    <PositionDrop
+      ref={drag}
+      index={index}
+      position={position}
+      onClick={onPositionClick}
+      {...restProps}
+    />
   );
 }

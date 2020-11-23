@@ -6,6 +6,7 @@ import { IPlayer, IPosition } from "./types";
 interface IReturn {
   assignments: Array<IPosition>;
   assign: (player: IPlayer, positionIndex?: number) => void;
+  unassign: (positionIndex: number) => void;
   toggle: (positionAIndex: number, positionBIndex: number) => void;
   reset: () => void;
 }
@@ -34,6 +35,14 @@ export default function useAssignments(
     }
   }
 
+  function unassign(positionIndex: number) {
+    setAssignments(
+      produce((positions: Array<IPosition>) => {
+        delete positions[positionIndex].player;
+      })
+    );
+  }
+
   function toggle(positionAIndex: number, positionBIndex: number) {
     setAssignments(
       produce((positions: Array<IPosition>) => {
@@ -49,5 +58,5 @@ export default function useAssignments(
     setAssignments(positions);
   }
 
-  return { assignments, assign, toggle, reset };
+  return { assignments, assign, unassign, toggle, reset };
 }
