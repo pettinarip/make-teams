@@ -12,6 +12,7 @@ interface IProps {
   readonly?: boolean;
   showNames?: boolean;
   positions: Array<IPosition | IShareLinkPosition>;
+  highlight?: boolean;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
     positionDroppedIndex: number
@@ -27,6 +28,7 @@ export default function FieldStatic(props: IProps) {
           key: index,
           position,
           showName: props.showNames,
+          isActive: props.highlight,
         };
 
         return props.readonly ? (
@@ -36,10 +38,15 @@ export default function FieldStatic(props: IProps) {
             index={index}
             onPositionDropInPosition={props.onPositionDropInPosition}
             onPositionClick={props.onPositionClick}
+            cursor="pointer"
             {...commonProps}
           />
         ) : (
-          <PositionDrop index={index} {...commonProps} />
+          <PositionDrop
+            index={index}
+            onClick={props.onPositionClick}
+            {...commonProps}
+          />
         );
       })}
     </Field>

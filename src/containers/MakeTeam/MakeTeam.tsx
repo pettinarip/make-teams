@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Box, ChakraProps, Flex, useColorMode } from "@chakra-ui/core";
 
 import FieldStatic from "../../components/FieldStatic";
@@ -14,8 +14,8 @@ export interface IProps extends ChakraProps {}
 
 export default function MakeTeam(props: IProps) {
   const [positions, setPositions] = useState<Array<IPosition>>([]);
-  const [usedPlayersIds, setUsedPlayersIds] = useState<Array<string>>([]);
   const [showNames, setShowNames] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<IPlayer>();
   const { colorMode } = useColorMode();
 
   const isDark = colorMode === "dark";
@@ -24,15 +24,14 @@ export default function MakeTeam(props: IProps) {
     positions
   );
 
-  useEffect(() => {
-    setUsedPlayersIds(
-      assignments.map((a) => a.player?.id).filter((id) => !!id) as string[]
-    );
-  }, [assignments]);
+  const usedPlayersIds = assignments
+    .map((a) => a.player?.id)
+    .filter((id) => !!id) as string[];
 
   const handleLayoutChange = useCallback(
     (layout: ILayout) => {
       setPositions(layout.positions);
+      setSelectedPlayer(undefined);
     },
     [setPositions]
   );
@@ -40,13 +39,18 @@ export default function MakeTeam(props: IProps) {
   const handlePlayerDropInPosition = useCallback(
     (player: IPlayer, positionIndex: number) => {
       assign(player, positionIndex);
+      setSelectedPlayer(undefined);
     },
     [assign]
   );
 
   const handlePlayerClick = useCallback(
     (player: IPlayer) => {
-      assign(player);
+      if (player !== selectedPlayer) {
+        setSelectedPlayer(player);
+      } else {
+        setSelectedPlayer(undefined);
+      }
     },
     [assign]
   );
@@ -60,7 +64,13 @@ export default function MakeTeam(props: IProps) {
 
   const handlePositionClick = useCallback(
     (positionIndex: number) => {
-      unassign(positionIndex);
+      if (selectedPlayer) {
+        assign(selectedPlayer, positionIndex);
+        setSelectedPlayer(undefined);
+      } else {
+        const player = assignments[positionIndex].player;
+        setSelectedPlayer(player);
+      }
     },
     [unassign]
   );
@@ -98,6 +108,10 @@ export default function MakeTeam(props: IProps) {
             <FieldStatic
               showNames={showNames}
               positions={assignments}
+              // This is used to highlight the available positions when the user
+              // has selected a player in the Roster and want to assign it to a
+              // position in the field
+              highlight={!!selectedPlayer}
               onPositionDropInPosition={handlePositionDropInPosition}
               onPositionClick={handlePositionClick}
             />
@@ -106,6 +120,7 @@ export default function MakeTeam(props: IProps) {
           <Roster
             flex={1}
             mt={{ base: 6, sm: 0 }}
+            selected={selectedPlayer}
             usedPlayersIds={usedPlayersIds}
             onPlayerDropInPosition={handlePlayerDropInPosition}
             onPlayerClick={handlePlayerClick}

@@ -10,6 +10,7 @@ import {
   ListItem,
   Skeleton,
   Stack,
+  useColorMode,
 } from "@chakra-ui/core";
 
 import { IPlayer } from "../MakeTeam/types";
@@ -21,6 +22,7 @@ import RemovePlayerButton from "../../components/RemovePlayerButton";
 import Player from "../../components/Player";
 
 export interface IProps extends FlexProps {
+  selected: IPlayer | undefined;
   usedPlayersIds: Array<string>;
   onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
@@ -28,6 +30,7 @@ export interface IProps extends FlexProps {
 }
 
 export default function Roster({
+  selected,
   usedPlayersIds,
   onPlayerDropInPosition,
   onPlayerClick,
@@ -35,6 +38,9 @@ export default function Roster({
   ...restProps
 }: IProps) {
   const { status, data: players = [] } = useGetPlayers();
+  const { colorMode } = useColorMode();
+  const isDark = colorMode === "dark";
+  const selectedItemColor = isDark ? "gray.600" : "gray.300";
 
   const isLoading = status === "loading";
 
@@ -55,14 +61,22 @@ export default function Roster({
           <List overflow="auto" flex={1}>
             {players
               .filter((p) => !usedPlayersIds.includes(p.id))
-              .map((player, index) => (
+              .map((player) => (
                 <ListItem
                   role="group"
                   key={player.id}
-                  mt={index !== 0 ? 4 : 0}
+                  p={1}
                   d="flex"
                   flexDirection="row"
                   justifyContent="space-between"
+                  border="1px solid"
+                  borderRadius={3}
+                  borderColor="transparent"
+                  bgColor={
+                    player.id === selected?.id
+                      ? selectedItemColor
+                      : "transparent"
+                  }
                 >
                   <Player
                     player={player}

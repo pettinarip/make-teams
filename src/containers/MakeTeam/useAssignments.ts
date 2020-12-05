@@ -29,7 +29,24 @@ export default function useAssignments(
     if (positionIndex > -1) {
       setAssignments(
         produce((positions: Array<IPosition>) => {
-          positions[positionIndex as number].player = player;
+          // Check if the player was not in another position. If so, then
+          // unassign it from there
+          const prevPositionIndex = assignments.findIndex(
+            (p) => p?.player?.id === player.id
+          );
+          if (prevPositionIndex > -1) {
+            delete positions[prevPositionIndex].player;
+          }
+
+          const prevPlayer = positions[positionIndex!].player;
+
+          // The actual assignment
+          positions[positionIndex!].player = player;
+
+          // If there is already a player in the newer position then toggle the players
+          if (prevPlayer) {
+            positions[prevPositionIndex].player = prevPlayer;
+          }
         })
       );
     }

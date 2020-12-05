@@ -3,9 +3,9 @@ import { useDrag, DragSourceMonitor } from "react-dnd";
 
 import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
 import ItemTypes from "./ItemTypes";
-import PositionDrop from "../PositionDrop";
+import PositionDrop, { IProps as IPositionDropProps } from "../PositionDrop";
 
-export interface IProps {
+export interface IProps extends IPositionDropProps {
   index: number;
   position: IPosition | IShareLinkPosition;
   onPositionDropInPosition: (

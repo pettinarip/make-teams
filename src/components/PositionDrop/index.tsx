@@ -3,13 +3,15 @@ import { useDrop } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
 
 import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
-import PositionStatic from "../PositionStatic";
+import PositionStatic, {
+  IProps as IPositionStaticProps,
+} from "../PositionStatic";
 import ItemTypes from "../PositionDnD/ItemTypes";
 import { ITEM_TYPE as PLAYER_ITEM_TYPE } from "../Player";
 
 export const ITEM_TYPE = "positionDrop";
 
-export interface IProps {
+export interface IProps extends Omit<IPositionStaticProps, "onClick"> {
   index: number;
   position: IPosition | IShareLinkPosition;
   onClick?: (index: number) => void;
