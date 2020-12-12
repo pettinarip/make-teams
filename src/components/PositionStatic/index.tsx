@@ -22,7 +22,8 @@ const Wrapper = styled.div<{ x: number; y: number }>(
   {
     position: "absolute",
     textAlign: "center",
-    marginLeft: -20,
+    marginLeft: -24,
+    marginTop: -24,
   },
   (props) => ({
     left: `${props.x}%`,

@@ -3,11 +3,11 @@ import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 
 import { IPosition } from "../../containers/MakeTeam/types";
-import PositionStatic from "../PositionStatic";
+import PositionStatic, { IProps as IStaticProps } from "../PositionStatic";
 
 export const ITEM_TYPE = "positionDrag";
 
-export interface IProps {
+export interface IProps extends IStaticProps {
   index: number;
   position: IPosition;
 }

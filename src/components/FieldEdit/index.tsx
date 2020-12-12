@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrop, XYCoord } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
 import produce from "immer";
@@ -13,6 +13,7 @@ import Field from "../Field";
 import FieldDragLayer from "../FieldDragLayer";
 import useDimensions from "../../hooks/useDimensions";
 import snapToGrid from "./snapToGrid";
+import FieldGrid, { IGridPosition } from "../FieldGrid";
 
 interface IProps {
   positions: Array<IPosition>;
@@ -21,6 +22,7 @@ interface IProps {
 
 export default function FieldEdit(props: IProps) {
   const [dropArea, dimensions] = useDimensions();
+  const [selectedPosition, setSelectedPosition] = useState<IPosition>();
 
   const [, drop] = useDrop({
     accept: POSITION_DRAG_ITEM_TYPE,
@@ -55,11 +57,39 @@ export default function FieldEdit(props: IProps) {
     props.onChange(newPositions);
   }
 
+  function handleGridPositionClick(gridPosition: IGridPosition) {
+    const positionIndex = props.positions.indexOf(selectedPosition!);
+    setSelectedPosition(undefined);
+    updatePositions(positionIndex, { ...selectedPosition, ...gridPosition });
+  }
+
+  function handleGridClick() {
+    setSelectedPosition(undefined);
+  }
+
+  function handlePositionClick(position: IPosition) {
+    setSelectedPosition(position);
+  }
+
   return (
     <Field ref={composeRefs(drop, dropArea) as (arg: HTMLDivElement) => void}>
       {props.positions.map((position, index) => (
-        <PositionDrag key={index} index={index} position={position} />
+        <PositionDrag
+          key={index}
+          index={index}
+          position={position}
+          onClick={() => handlePositionClick(position)}
+          isActive={selectedPosition && selectedPosition === position}
+          cursor="pointer"
+        />
       ))}
+      <FieldGrid
+        visible={!!selectedPosition}
+        width={dimensions.width}
+        height={dimensions.height}
+        onClick={handleGridPositionClick}
+        onGridClick={handleGridClick}
+      />
       <FieldDragLayer width={dimensions.width} height={dimensions.height} />
     </Field>
   );
