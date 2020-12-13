@@ -18,6 +18,7 @@ interface IProps {
     positionDroppedIndex: number
   ) => void;
   onPositionClick?: (positionIndex: number) => void;
+  onPositionRemove: (positionIndex: number) => void;
 }
 
 export default function FieldStatic(props: IProps) {
@@ -38,6 +39,7 @@ export default function FieldStatic(props: IProps) {
             index={index}
             onPositionDropInPosition={props.onPositionDropInPosition}
             onPositionClick={props.onPositionClick}
+            onRemoveClick={() => props.onPositionRemove(index)}
             cursor="pointer"
             {...commonProps}
           />

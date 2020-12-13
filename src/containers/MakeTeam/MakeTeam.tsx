@@ -33,7 +33,7 @@ export default function MakeTeam(props: IProps) {
       setPositions(layout.positions);
       setSelectedPlayer(undefined);
     },
-    [setPositions]
+    [setPositions, setSelectedPlayer]
   );
 
   const handlePlayerDropInPosition = useCallback(
@@ -41,7 +41,7 @@ export default function MakeTeam(props: IProps) {
       assign(player, positionIndex);
       setSelectedPlayer(undefined);
     },
-    [assign]
+    [assign, setSelectedPlayer]
   );
 
   const handlePlayerClick = useCallback(
@@ -52,7 +52,7 @@ export default function MakeTeam(props: IProps) {
         setSelectedPlayer(undefined);
       }
     },
-    [assign]
+    [setSelectedPlayer]
   );
 
   const handlePositionDropInPosition = useCallback(
@@ -71,6 +71,13 @@ export default function MakeTeam(props: IProps) {
         const player = assignments[positionIndex].player;
         setSelectedPlayer(player);
       }
+    },
+    [assign, setSelectedPlayer]
+  );
+
+  const handlePositionRemove = useCallback(
+    (positionIndex: number) => {
+      unassign(positionIndex);
     },
     [unassign]
   );
@@ -114,6 +121,7 @@ export default function MakeTeam(props: IProps) {
               highlight={!!selectedPlayer}
               onPositionDropInPosition={handlePositionDropInPosition}
               onPositionClick={handlePositionClick}
+              onPositionRemove={handlePositionRemove}
             />
           </Flex>
 
