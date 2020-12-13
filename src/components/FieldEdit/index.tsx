@@ -81,6 +81,7 @@ export default function FieldEdit(props: IProps) {
           onClick={() => handlePositionClick(position)}
           isActive={selectedPosition && selectedPosition === position}
           cursor="pointer"
+          opacity={selectedPosition ? 0.6 : 1}
         />
       ))}
       <FieldGrid

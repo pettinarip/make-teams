@@ -12,6 +12,8 @@ export interface IGridProps {
   height: number;
   onClick: ({ x, y }: IGridPosition) => void;
   onGridClick: () => void;
+  rowsAmount?: number;
+  colsAmount?: number;
 }
 
 export default function FieldGrid({
@@ -20,14 +22,15 @@ export default function FieldGrid({
   height,
   onClick,
   onGridClick,
+  rowsAmount = 7,
+  colsAmount = 6,
 }: IGridProps) {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
+  // Padding that will define the inner content space
   const paddingX = 24;
   const paddingY = 50;
-  const rowsAmount = 7;
-  const colsAmount = 6;
 
   const rows = range(rowsAmount + 1);
   const cols = range(colsAmount + 1);
@@ -36,10 +39,13 @@ export default function FieldGrid({
   const colsP = 100 / colsAmount;
 
   function handleClick({ x, y }: IGridPosition) {
+    // Since we receive percentages from the inner content, we need to project
+    // this values to the outer container which is what interests our consumers
     const innerWidth = width - paddingX * 2;
     const innerHeight = height - paddingY * 2;
     const innerX = innerWidth * (x / 100);
     const innerY = innerHeight * (y / 100);
+
     onClick({
       x: ((innerX + paddingX) / width) * 100,
       y: ((innerY + paddingY) / height) * 100,
@@ -64,10 +70,10 @@ export default function FieldGrid({
                 position="absolute"
                 left={`${colsP * cIndex}%`}
                 top={`${rowsP * rIndex}%`}
-                w="10px"
-                h="10px"
-                ml="-5px"
-                mt="-5px"
+                w="20px"
+                h="20px"
+                ml="-10px"
+                mt="-10px"
                 cursor="pointer"
                 _hover={{ transform: "scale(2)" }}
                 onClick={(e) => {
