@@ -17,6 +17,7 @@ export interface IProps extends Omit<BoxProps, "position"> {
   position: IPosition | IShareLinkPosition;
   isActive?: boolean;
   showName?: boolean;
+  showRemoveButton?: boolean;
   onRemoveClick?: () => void;
 }
 
@@ -24,6 +25,7 @@ export default function Position({
   position,
   isActive,
   showName,
+  showRemoveButton,
   onRemoveClick,
   ...restProps
 }: IProps) {
@@ -54,7 +56,7 @@ export default function Position({
         icon={<FiUser fontSize="1.5rem" />}
         border={isActive ? "1px dashed" : "1px solid transparent"}
       >
-        {player && (
+        {player && showRemoveButton && (
           <AvatarBadge
             left={-2}
             top={-2}

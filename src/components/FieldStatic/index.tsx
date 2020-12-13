@@ -18,7 +18,7 @@ interface IProps {
     positionDroppedIndex: number
   ) => void;
   onPositionClick?: (positionIndex: number) => void;
-  onPositionRemove: (positionIndex: number) => void;
+  onPositionRemove?: (positionIndex: number) => void;
 }
 
 export default function FieldStatic(props: IProps) {
@@ -37,9 +37,14 @@ export default function FieldStatic(props: IProps) {
         ) : position.player ? (
           <PositionDnD
             index={index}
+            showRemoveButton
             onPositionDropInPosition={props.onPositionDropInPosition}
             onPositionClick={props.onPositionClick}
-            onRemoveClick={() => props.onPositionRemove(index)}
+            onRemoveClick={() => {
+              if (props.onPositionRemove) {
+                props.onPositionRemove(index);
+              }
+            }}
             cursor="pointer"
             {...commonProps}
           />
