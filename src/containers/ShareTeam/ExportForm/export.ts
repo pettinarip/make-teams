@@ -1,4 +1,5 @@
 import domtoimage from "dom-to-image";
+import { saveAs } from 'file-saver';
 
 import isMobileOrTablet from "../../../utils/isMobileOrTablet";
 import objectToGetParams from "../../../utils/objectToGetParams";
@@ -12,11 +13,8 @@ export async function exportFieldToImage(__type: EImageExt = EImageExt.PNG) {
   const fieldNode = document.getElementById(FIELD_ID_ATTR);
 
   if (fieldNode) {
-    const dataURL = await domtoimage.toPng(fieldNode);
-    const link = document.createElement("a");
-    link.download = "team.png";
-    link.href = dataURL;
-    link.click();
+    const blob = await domtoimage.toBlob(fieldNode)
+    saveAs(blob, 'team.png');
   }
 }
 
