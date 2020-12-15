@@ -13,9 +13,19 @@ export async function exportFieldToImage(__type: EImageExt = EImageExt.PNG) {
   const fieldNode = document.getElementById(FIELD_ID_ATTR);
 
   if (fieldNode) {
+    const waterMarkNode = createWaterMark()
+    fieldNode.appendChild(waterMarkNode)
     const blob = await domtoimage.toBlob(fieldNode)
     saveAs(blob, 'team.png');
+    fieldNode.removeChild(waterMarkNode)
   }
+}
+
+function createWaterMark() {
+  const node = document.createElement("p")
+  node.style.cssText = "position:absolute;bottom:0;right:10px;opacity:0.6;color:white;"
+  node.innerText = "maketeams.xyz"
+  return node
 }
 
 export function whatsappLink(text: string): string {
