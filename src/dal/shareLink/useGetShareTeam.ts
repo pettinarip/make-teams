@@ -12,11 +12,15 @@ export default function useGetShareTeam(
   return useQuery(
     QUERY_KEY,
     async (): Promise<IShareTeam | undefined | null> => {
-      const response = await sdk.ShareLink({ id: id! });
-      return response.shareLink;
+      return fetchShareTeam(id!);
     },
     {
       enabled: !!id,
     }
   );
+}
+
+export async function fetchShareTeam(id: string): Promise<IShareTeam> {
+  const response = await sdk.ShareLink({ id });
+  return response.shareLink!;
 }

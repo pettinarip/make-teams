@@ -80,6 +80,7 @@ export type ShareLink = {
   __typename?: 'ShareLink';
   id: Scalars['ID'];
   name: Scalars['String'];
+  snapshotUrl?: Maybe<Scalars['String']>;
   positions: Array<ShareLinkPosition>;
   createdAt: Scalars['String'];
 };
@@ -493,7 +494,7 @@ export type ShareLinkQuery = (
   { __typename?: 'Query' }
   & { shareLink?: Maybe<(
     { __typename?: 'ShareLink' }
-    & Pick<ShareLink, 'id' | 'name' | 'createdAt'>
+    & Pick<ShareLink, 'id' | 'name' | 'createdAt' | 'snapshotUrl'>
     & { positions: Array<(
       { __typename?: 'ShareLinkPosition' }
       & Pick<ShareLinkPosition, 'id' | 'x' | 'y'>
@@ -710,6 +711,7 @@ export const ShareLinkDocument = gql`
     id
     name
     createdAt
+    snapshotUrl
     positions {
       id
       x
