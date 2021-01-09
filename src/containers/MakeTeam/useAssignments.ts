@@ -43,8 +43,9 @@ export default function useAssignments(
           // The actual assignment
           positions[positionIndex!].player = player;
 
-          // If there is already a player in the newer position then toggle the players
-          if (prevPlayer) {
+          // If there is already a player in the newer position then toggle the
+          // players
+          if (prevPlayer && prevPositionIndex > -1) {
             positions[prevPositionIndex].player = prevPlayer;
           }
         })

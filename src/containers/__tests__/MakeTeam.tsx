@@ -64,62 +64,6 @@ describe("MakeTeam", () => {
     expect(newPositions.length).toEqual(1);
   });
 
-  test("when click on a player in the Roster, it has to occupied the first available position from bottom to top", async () => {
-    render(<MakeTeam />);
-
-    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
-
-    // Check that the positions are empty intialy
-    const positions = screen
-      .getAllByTestId("position")
-      .map((position) => position.textContent);
-    expect(positions).toMatchInlineSnapshot(`
-      Array [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-      ]
-    `);
-
-    // Check the number of players we have initialy
-    const playersInRoster = screen.getAllByTestId("player");
-    expect(playersInRoster.length).toEqual(13);
-
-    // Click on the player named Pablo Pettinari
-    const player = screen.getByText(/pablo/i);
-    fireEvent.click(player);
-
-    // Check that it was positioned in the first position available
-    const newPlayersInRoster = screen.getAllByTestId("player");
-    expect(newPlayersInRoster.length).toEqual(12);
-    const newPositions = screen
-      .getAllByTestId("position")
-      .map((position) => position.textContent);
-    expect(newPositions).toMatchInlineSnapshot(`
-      Array [
-        "PP5",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-      ]
-    `);
-  });
-
   test("when reset button is clicked on the Roster, all the positions are cleared and the players go back to the Roster", async () => {
     render(<MakeTeam />);
 
@@ -130,16 +74,20 @@ describe("MakeTeam", () => {
     expect(playersInRoster.length).toEqual(13);
 
     // Click on 3 players to populate 3 positions
+    const positions = screen.getAllByTestId("position");
     fireEvent.click(screen.getByText(/test, test/i));
+    fireEvent.click(positions[0]);
     fireEvent.click(screen.getByText(/test2, test/i));
+    fireEvent.click(positions[1]);
     fireEvent.click(screen.getByText(/test3, test/i));
+    fireEvent.click(positions[2]);
 
     // Check that we have 3 less players in the Roster and 3 positions occupied
     expect(screen.getAllByTestId("player").length).toEqual(10);
-    const positions = screen
+    const positionsNames = screen
       .getAllByTestId("position")
       .map((position) => position.textContent);
-    expect(positions).toMatchInlineSnapshot(`
+    expect(positionsNames).toMatchInlineSnapshot(`
       Array [
         "TT1",
         "TT2",
@@ -182,59 +130,6 @@ describe("MakeTeam", () => {
     `);
   });
 
-  test("when click on a player in the Roster and all the positions are completed, nothing should happen", async () => {
-    render(<MakeTeam />);
-
-    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
-
-    // Click on 11 players in the Roster
-    screen.getAllByTestId("player").slice(0, 11).forEach(fireEvent.click);
-
-    // Check that all the positions are occupied
-    const positions = screen
-      .getAllByTestId("position")
-      .map((position) => position.textContent);
-    expect(positions).toMatchInlineSnapshot(`
-      Array [
-        "PC6",
-        "TF10",
-        "PR14",
-        "PP5",
-        "TT1",
-        "TT2",
-        "TT3",
-        "TT4",
-        "TT7",
-        "TT8",
-        "TT9",
-      ]
-    `);
-
-    // Click in one more player in the Roster and check that nothing has changed
-    const players = screen.getAllByTestId("player");
-    fireEvent.click(players[0]);
-
-    expect(screen.getAllByTestId("player").length).toEqual(2);
-    const newPositions = screen
-      .getAllByTestId("position")
-      .map((position) => position.textContent);
-    expect(newPositions).toMatchInlineSnapshot(`
-      Array [
-        "PC6",
-        "TF10",
-        "PR14",
-        "PP5",
-        "TT1",
-        "TT2",
-        "TT3",
-        "TT4",
-        "TT7",
-        "TT8",
-        "TT9",
-      ]
-    `);
-  });
-
   test("a player can be dragged and dropped from the Roster into an empty position", async () => {
     render(<MakeTeam />);
 
@@ -271,13 +166,15 @@ describe("MakeTeam", () => {
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
     // Assign totti player to the first position
+    const positions = screen.getAllByTestId("position");
     const totti = screen.getByText(/totti/i);
     fireEvent.click(totti);
+    fireEvent.click(positions[0]);
 
-    const positions = screen
-      .getAllByTestId(/position/i)
+    const positionsNames = screen
+      .getAllByTestId("position")
       .map((position) => position.textContent);
-    expect(positions).toMatchInlineSnapshot(`
+    expect(positionsNames).toMatchInlineSnapshot(`
       Array [
         "TF10",
         "",
@@ -340,7 +237,8 @@ describe("MakeTeam", () => {
     `);
   });
 
-  test("clicking in an ocuppied position, unassign it and put it back to the Roster", async () => {
+  // FIXME: now we have to test it against the remove button each position has
+  test.skip("clicking in an ocuppied position, unassign it and put it back to the Roster", async () => {
     render(<MakeTeam />);
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
@@ -475,13 +373,15 @@ describe("MakeTeam", () => {
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
     // Assign totti player to the first position
+    const positions = screen.getAllByTestId("position");
     const totti = screen.getByText(/totti/i);
     fireEvent.click(totti);
+    fireEvent.click(positions[0]);
 
-    const positions = screen
+    const positionsNames = screen
       .getAllByTestId(/position/i)
       .map((position) => position.textContent);
-    expect(positions).toMatchInlineSnapshot(`
+    expect(positionsNames).toMatchInlineSnapshot(`
       Array [
         "TF10",
         "",
