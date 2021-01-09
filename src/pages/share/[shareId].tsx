@@ -19,7 +19,7 @@ export default function ViewShareLink({ shareTeam }: IProps) {
     setShowNames((showNames) => !showNames);
   }, []);
 
-  const shareLink = `${process.env.NEXT_PUBLIC_VERCEL_URL}/share/${shareTeam?.id}`;
+  const shareLink = `${process.env.NEXT_PUBLIC_BASE_URL}/share/${shareTeam?.id}`;
 
   return (
     <Center flexDirection="column">
