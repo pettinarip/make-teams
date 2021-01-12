@@ -33,8 +33,8 @@ export default function ViewShareLink({ shareTeam }: IProps) {
           images: [
             {
               url: shareTeam.snapshotUrl || "",
-              width: 130,
-              height: 200,
+              width: 261.6,
+              height: 400,
               alt: "Share your team!",
             },
           ],
