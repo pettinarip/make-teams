@@ -144,7 +144,7 @@ export default function MakeTeam(props: IProps) {
         />
       </Box>
       <Box mt={6}>
-        <ShareTeam positions={assignments} />
+        <ShareTeam positions={assignments} showNames={showNames} />
       </Box>
     </Box>
   );

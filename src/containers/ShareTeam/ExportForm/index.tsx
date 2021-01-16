@@ -9,41 +9,31 @@ import {
   Input,
   Link,
   useClipboard,
-  useToast,
+  useColorMode,
 } from "@chakra-ui/core";
 
-import {
-  exportFieldToImage,
-  whatsappLink,
-  twitterLink,
-  facebookLink,
-} from "./export";
+import { whatsappLink, twitterLink, facebookLink } from "./export";
 
 export interface IProps extends ChakraProps {
+  id: string;
   shareLink: string;
+  showNames: boolean;
 }
 
-export default function ExportForm({ shareLink, ...restProps }: IProps) {
+export default function ExportForm({
+  id,
+  shareLink,
+  showNames,
+  ...restProps
+}: IProps) {
   const [link, setLink] = useState("");
   const { hasCopied, onCopy } = useClipboard(link);
-  const toast = useToast();
+  const { colorMode } = useColorMode();
+  const isDark = colorMode === "dark";
 
   useEffect(() => {
     setLink(shareLink);
   }, [shareLink]);
-
-  function handleImageClick() {
-    try {
-      exportFieldToImage();
-    } catch (e) {
-      toast({
-        title: "An error ocurred.",
-        description: "While creating the image.",
-        status: "error",
-        isClosable: true,
-      });
-    }
-  }
 
   return (
     <Center flexDirection="column" {...restProps}>
@@ -69,7 +59,15 @@ export default function ExportForm({ shareLink, ...restProps }: IProps) {
         <Link href={whatsappLink(shareLink)} mx={1}>
           <IconButton icon={<FaWhatsapp />} aria-label="Share in Whatsapp" />
         </Link>
-        <Button onClick={handleImageClick} mx={1}>
+        <Button
+          as={Link}
+          href={`${process.env.NEXT_PUBLIC_API_URL}/image?id=${id}&dark=${
+            isDark ? 1 : 0
+          }&names=${showNames ? 1 : 0}`}
+          download
+          target="__blank"
+          mx={1}
+        >
           .PNG
         </Button>
       </Flex>

@@ -7,9 +7,11 @@ import ExportForm from "./ExportForm";
 
 interface IProps {
   positions: Array<IPosition>;
+  showNames: boolean;
 }
 
-export default function ShareTeam({ positions }: IProps) {
+export default function ShareTeam({ positions, showNames }: IProps) {
+  const [id, setId] = useState("");
   const [link, setLink] = useState("");
   const toast = useToast();
 
@@ -20,6 +22,7 @@ export default function ShareTeam({ positions }: IProps) {
       // TODO: add a name to the share team
       const shareLink = await createShareTeam({ name: "test", positions });
       setLink(`${window.location.origin}/share/${shareLink?.id}`);
+      setId(shareLink?.id!);
     } catch (error) {
       toast({
         title: "An error ocurred.",
@@ -41,7 +44,9 @@ export default function ShareTeam({ positions }: IProps) {
       >
         Share your team!
       </Button>
-      {link && <ExportForm shareLink={link} my={6} />}
+      {link && (
+        <ExportForm id={id} shareLink={link} showNames={showNames} my={6} />
+      )}
     </Center>
   );
 }
