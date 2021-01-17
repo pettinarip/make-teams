@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Skeleton, Stack } from "@chakra-ui/core";
+import { Skeleton, Stack } from "@chakra-ui/react";
 
 import { useAuth } from "../../contexts/auth";
 

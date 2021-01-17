@@ -1,13 +1,13 @@
-import { queryCache, useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import sdk from "../../graphql/sdk";
 import { LogoutMutation, FieldError } from "../../graphql/API";
 
-export interface IMutationProps {}
-
 export default function useLogout() {
-  return useMutation<LogoutMutation, FieldError[], IMutationProps>(() => {
-    queryCache.clear()
+  const queryClient = useQueryClient();
+
+  return useMutation<LogoutMutation, FieldError[]>(() => {
+    queryClient.clear();
     return sdk.Logout();
   });
 }

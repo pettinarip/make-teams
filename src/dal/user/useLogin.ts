@@ -1,4 +1,4 @@
-import { useMutation, queryCache } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import sdk from "../../graphql/sdk";
 import { FieldError, LoginMutation } from "../../graphql/API";
@@ -10,6 +10,8 @@ export interface IArgs {
 }
 
 export default function useLogin() {
+  const queryClient = useQueryClient();
+
   return useMutation<LoginMutation, FieldError[], IArgs>(
     (variables) => {
       return sdk.Login(variables);
@@ -17,7 +19,7 @@ export default function useLogin() {
     {
       onSuccess: (response) => {
         if (!response.login.errors) {
-          queryCache.setQueryData(USER_QUERY_KEY, () => response.login.user);
+          queryClient.setQueryData(USER_QUERY_KEY, () => response.login.user);
         }
       },
     }

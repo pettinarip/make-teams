@@ -12,7 +12,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import PlayerForm, { IProps as IPlayerFormProps } from "../PlayerForm";
 

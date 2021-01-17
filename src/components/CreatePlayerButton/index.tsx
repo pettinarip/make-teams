@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/core";
+import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/react";
 
 import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
 import { IFormValues } from "../PlayerForm";
@@ -13,7 +13,7 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
-  const [addNewPlayer] = useAddNewPlayer();
+  const { mutateAsync: addNewPlayer } = useAddNewPlayer();
   const toast = useToast();
 
   const initialValues: IFormValues = {

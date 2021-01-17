@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import * as yup from "yup";
-import { Formik, Field, FormikHelpers, FieldProps } from "formik";
+import { Formik, Field, FormikHelpers, FieldProps, Form } from "formik";
 import {
   Alert,
   AlertDescription,
@@ -16,7 +16,7 @@ import {
   Heading,
   Input,
   Link,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import toErrorMap from "../utils/toErrorMap";
 import useLogin from "../dal/user/useLogin";
@@ -38,7 +38,7 @@ const validationSchema = yup.object({
 });
 
 export default function Login(__props: IProps) {
-  const [login] = useLogin();
+  const { mutateAsync: login } = useLogin();
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -81,8 +81,8 @@ export default function Login(__props: IProps) {
         validateOnBlur={false}
         onSubmit={handleLogin}
       >
-        {({ handleSubmit, isSubmitting }) => (
-          <Box as="form" onSubmit={handleSubmit} noValidate>
+        {({ isSubmitting }) => (
+          <Form noValidate>
             {!!error && (
               <Alert status="error" mb={4}>
                 <AlertIcon />
@@ -131,7 +131,7 @@ export default function Login(__props: IProps) {
             >
               Login
             </Button>
-          </Box>
+          </Form>
         )}
       </Formik>
       <FormControl textAlign="center" my={4}>

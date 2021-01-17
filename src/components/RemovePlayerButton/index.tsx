@@ -10,7 +10,7 @@ import {
   IconButtonProps,
   IconButton,
   useToast,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
@@ -22,7 +22,7 @@ export interface IProps extends Omit<IconButtonProps, "aria-label"> {
 
 export default function RemovePlayerButton({ player, ...restProps }: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [removePlayer] = useRemovePlayer();
+  const { mutateAsync: removePlayer } = useRemovePlayer();
   const cancelRef = useRef(null);
   const toast = useToast();
 

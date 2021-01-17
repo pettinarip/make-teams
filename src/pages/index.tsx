@@ -1,4 +1,4 @@
-import { Skeleton, Stack } from "@chakra-ui/core";
+import { Skeleton, Stack } from "@chakra-ui/react";
 
 import { useAuth } from "../contexts/auth";
 import MakeTeam from "../containers/MakeTeam";

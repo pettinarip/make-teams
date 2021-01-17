@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Formik, Field, FieldProps, FormikHelpers } from "formik";
+import { Formik, Field, FieldProps, FormikHelpers, Form } from "formik";
 import {
   Alert,
   AlertDescription,
@@ -15,7 +15,7 @@ import {
   Heading,
   Input,
   Link as LinkUI,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import * as yup from "yup";
 
 import useSignUp from "../dal/user/useSignUp";
@@ -49,8 +49,8 @@ export default function SignUp(__props: IProps) {
   const [isVerifyStep, setIsVerifyStep] = useState(false);
   const [signUpError, setSignUpError] = useState("");
   const router = useRouter();
-  const [signUp] = useSignUp();
-  const [confirmSignUp] = useConfirmSignUp();
+  const { mutateAsync: signUp } = useSignUp();
+  const { mutateAsync: confirmSignUp } = useConfirmSignUp();
 
   const initialValues: IFormValues = {
     email: "",
@@ -108,8 +108,8 @@ export default function SignUp(__props: IProps) {
         validateOnBlur={false}
         onSubmit={handleSignUp}
       >
-        {({ handleSubmit, isSubmitting, values }) => (
-          <Box as="form" onSubmit={handleSubmit} noValidate>
+        {({ isSubmitting, values }) => (
+          <Form noValidate>
             {!!signUpError && (
               <Alert status="error">
                 <AlertIcon />
@@ -205,7 +205,7 @@ export default function SignUp(__props: IProps) {
                 </Button>
               </div>
             )}
-          </Box>
+          </Form>
         )}
       </Formik>
       <FormControl textAlign="center" my={4}>

@@ -6,7 +6,7 @@ import {
   BoxProps,
   AvatarBadge,
   Icon,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { FiUser } from "react-icons/fi";
 import { FaTimes } from "react-icons/fa";

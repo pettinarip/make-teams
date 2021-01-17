@@ -4,7 +4,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 export interface IProps extends ChakraProps {
   showNames: boolean;

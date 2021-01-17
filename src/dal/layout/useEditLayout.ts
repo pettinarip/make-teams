@@ -1,4 +1,4 @@
-import { useMutation, queryCache } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { EditCustomLayoutMutationVariables } from "../../graphql/API";
 import { ILayout } from "../../containers/MakeTeam/types";
@@ -9,6 +9,7 @@ import * as LayoutLocalStorage from "../../localStorage/layout";
 
 export default function useEditLayout() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   return useMutation<Boolean, Error, EditCustomLayoutMutationVariables>(
     async (layout): Promise<boolean> => {
@@ -23,11 +24,11 @@ export default function useEditLayout() {
       // the old value and return it so that it's accessible in case of
       // an error
       onMutate: (layout) => {
-        queryCache.cancelQueries(QUERY_KEY);
+        queryClient.cancelQueries(QUERY_KEY);
 
-        const previousValue = queryCache.getQueryData(QUERY_KEY);
+        const previousValue = queryClient.getQueryData(QUERY_KEY);
 
-        queryCache.setQueryData(
+        queryClient.setQueryData(
           QUERY_KEY,
           (layouts: Array<ILayout> | undefined): Array<ILayout> => {
             if (!layouts) {
@@ -48,12 +49,12 @@ export default function useEditLayout() {
       // On failure, roll back to the previous value
       onError: (__err, __variables, previousValue) => {
         // TODO: we should show an error global message to the user
-        queryCache.setQueryData(QUERY_KEY, previousValue);
+        queryClient.setQueryData(QUERY_KEY, previousValue);
       },
       // After success or failure, refetch the todos query
       onSettled: () => {
         // TODO: we should show a success global message to the user
-        queryCache.invalidateQueries(QUERY_KEY);
+        queryClient.invalidateQueries(QUERY_KEY);
       },
     }
   );

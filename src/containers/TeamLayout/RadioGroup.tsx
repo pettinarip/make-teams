@@ -5,7 +5,7 @@ import {
   RadioGroup as RadioGroupUI,
   RadioGroupProps,
   Stack,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import EditLayoutButton from "../../components/EditLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";

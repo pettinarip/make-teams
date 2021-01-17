@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { createContext, ReactNode, useContext } from "react";
 
 import useGetCurrentUser from "../dal/user/useGetCurrentUser";
-import useLogin from "../dal/user/useLogin";
+import useLogin, { IArgs } from "../dal/user/useLogin";
 import useLogout from "../dal/user/useLogout";
 import { IUser } from "../dal/user/types";
 import { FieldError } from "../graphql/API";
@@ -12,7 +12,7 @@ interface IAuthContext {
   isLoading: boolean;
   user?: IUser;
   error?: FieldError[] | null;
-  login: () => void;
+  login: (args: IArgs) => void;
   logout: () => void;
 }
 
@@ -33,8 +33,8 @@ AuthContext.displayName = "AuthContext";
 export function AuthProvider({ children }: IAuthProviderProps) {
   const router = useRouter();
   const { data: user, isLoading, error } = useGetCurrentUser();
-  const [login] = useLogin();
-  const [logout] = useLogout();
+  const { mutateAsync: login } = useLogin();
+  const { mutateAsync: logout } = useLogout();
 
   async function logoutWithRedirect() {
     await logout();

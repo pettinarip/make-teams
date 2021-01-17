@@ -10,7 +10,7 @@ import {
   Alert,
   AlertIcon,
   AlertDescription,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import LayoutForm, { IProps as ILayoutFormProps } from "../LayoutForm";
 

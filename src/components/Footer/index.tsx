@@ -1,5 +1,4 @@
-import { Box } from "@chakra-ui/core";
-import { Link, Text } from "@chakra-ui/core";
+import { Box, Link, Text } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 
 export default function Footer() {

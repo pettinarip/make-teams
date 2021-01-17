@@ -1,5 +1,4 @@
-import { useQuery } from "react-query";
-import { QueryResult } from "react-query/types";
+import { useQuery, UseQueryResult } from "react-query";
 
 import { ILayout } from "../../containers/MakeTeam/types";
 import sdk from "../../graphql/sdk";
@@ -8,7 +7,7 @@ import * as LayoutLocalStorage from '../../localStorage/layout'
 
 export const QUERY_KEY = "layouts";
 
-export default function useGetLayouts(): QueryResult<Array<ILayout>> {
+export default function useGetLayouts(): UseQueryResult<Array<ILayout>> {
   const { user } = useAuth();
 
   return useQuery(

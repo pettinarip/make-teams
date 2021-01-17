@@ -1,7 +1,7 @@
 import React from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Box } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/react";
 
 import MakeTeam from "./MakeTeam";
 import Menu from "../../components/Menu";

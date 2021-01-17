@@ -1,4 +1,4 @@
-import { useMutation, queryCache } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
 import { DeletePlayerMutationVariables } from "../../graphql/API";
@@ -9,6 +9,7 @@ import * as PlayerLocalStorage from "../../localStorage/player";
 
 export default function useRemovePlayer() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   return useMutation<boolean, Error, DeletePlayerMutationVariables>(
     async (player): Promise<boolean> => {
@@ -25,11 +26,11 @@ export default function useRemovePlayer() {
       // the old value and return it so that it's accessible in case of
       // an error
       onMutate: (player) => {
-        queryCache.cancelQueries(QUERY_KEY);
+        queryClient.cancelQueries(QUERY_KEY);
 
-        const previousValue = queryCache.getQueryData(QUERY_KEY);
+        const previousValue = queryClient.getQueryData(QUERY_KEY);
 
-        queryCache.setQueryData(
+        queryClient.setQueryData(
           QUERY_KEY,
           (players: Array<IPlayer> | undefined) => {
             if (!players) return [];
@@ -42,12 +43,12 @@ export default function useRemovePlayer() {
       // On failure, roll back to the previous value
       onError: (__err, __variables, previousValue) => {
         // TODO: we should show an error global message to the user
-        queryCache.setQueryData(QUERY_KEY, previousValue);
+        queryClient.setQueryData(QUERY_KEY, previousValue);
       },
       // After success or failure, refetch the todos query
       onSettled: () => {
         // TODO: we should show a success global message to the user
-        queryCache.invalidateQueries(QUERY_KEY);
+        queryClient.invalidateQueries(QUERY_KEY);
       },
     }
   );

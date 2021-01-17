@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Box, ChakraProps, Flex, useColorMode } from "@chakra-ui/core";
+import { Box, ChakraProps, Flex, useColorMode } from "@chakra-ui/react";
 
 import FieldStatic from "../../components/FieldStatic";
 import Controls from "../../components/Controls";

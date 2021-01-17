@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Flex, Box, Text, Badge } from "@chakra-ui/core";
+import { Avatar, Flex, Box, Text, Badge } from "@chakra-ui/react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
 import { IPlayer } from "../../containers/MakeTeam/types";

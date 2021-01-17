@@ -1,4 +1,4 @@
-import { Box, Center, useColorMode } from "@chakra-ui/core";
+import { Box, Center, useColorMode } from "@chakra-ui/react";
 import range from "lodash/range";
 
 export interface IGridPosition {

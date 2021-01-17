@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref } from "react";
-import { Box, Center, Spinner, useColorMode } from "@chakra-ui/core";
+import { Box, Center, Spinner, useColorMode } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
 export const ID_ATTR = "field";

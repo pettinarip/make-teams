@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Formik, Field, FieldProps } from "formik";
+import { Formik, Field, FieldProps, Form } from "formik";
 import * as yup from "yup";
 import NextLink from "next/link";
 import {
@@ -15,7 +15,7 @@ import {
   Heading,
   Input,
   Link,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import useForgotPassword from "../dal/user/useForgotPassword";
 
@@ -32,7 +32,7 @@ const validationEmailSchema = yup.object({
 export default function ForgotPassword(__props: IProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
-  const [forgotPassword] = useForgotPassword();
+  const { mutateAsync: forgotPassword } = useForgotPassword();
 
   const initialValues: IFormValues = {
     email: "",
@@ -69,7 +69,7 @@ export default function ForgotPassword(__props: IProps) {
         onSubmit={handleResetPassword}
       >
         {({ handleSubmit, isSubmitting }) => (
-          <Box as="form" onSubmit={handleSubmit}>
+          <Form>
             {!!formError && (
               <Alert status="error" mb={4}>
                 <AlertIcon />
@@ -126,7 +126,7 @@ export default function ForgotPassword(__props: IProps) {
                 </Button>
               </>
             )}
-          </Box>
+          </Form>
         )}
       </Formik>
       <FormControl textAlign="center" my={4}>

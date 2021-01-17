@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Center, useToast } from "@chakra-ui/core";
+import { Button, Center, useToast } from "@chakra-ui/react";
 
 import { IPosition } from "../MakeTeam/types";
 import useCreateShareTeam from "../../dal/shareLink/useCreateShareTeam";
@@ -15,7 +15,7 @@ export default function ShareTeam({ positions, showNames }: IProps) {
   const [link, setLink] = useState("");
   const toast = useToast();
 
-  const [createShareTeam, { status }] = useCreateShareTeam();
+  const { mutateAsync: createShareTeam, status } = useCreateShareTeam();
 
   async function handleClick() {
     try {

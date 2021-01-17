@@ -10,7 +10,7 @@ import {
   Button,
   useToast,
   IconButtonProps,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 import { ILayout } from "../../containers/MakeTeam/types";
@@ -28,7 +28,7 @@ export default function RemoveLayoutButton({
 }: IProps) {
   const toast = useToast();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [removeLayout] = useRemoveLayout();
+  const { mutateAsync: removeLayout } = useRemoveLayout();
   const cancelRef = useRef(null);
 
   function toggleConfirmModal() {

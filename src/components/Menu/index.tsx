@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Box, ChakraProps, Flex, Link } from "@chakra-ui/core";
+import { Box, ChakraProps, Flex, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 import useLogout from "../../dal/user/useLogout";
@@ -9,7 +9,7 @@ import DarkModeSwitch from "../DarkModeSwitch";
 export default function Menu(props: ChakraProps) {
   const router = useRouter();
   const { user } = useAuth();
-  const [logout] = useLogout();
+  const { mutateAsync: logout } = useLogout();
 
   const username = getUsername(user);
 

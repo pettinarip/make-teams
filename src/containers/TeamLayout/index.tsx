@@ -9,7 +9,7 @@ import {
   Skeleton,
   Stack,
   useBreakpointValue,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/layout/useLayouts";

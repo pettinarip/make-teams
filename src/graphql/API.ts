@@ -3,6 +3,8 @@ import { print } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -10,6 +12,33 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+};
+
+export type ShareLinkPlayer = {
+  __typename?: 'ShareLinkPlayer';
+  id: Scalars['ID'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  number: Scalars['Float'];
+  nickName?: Maybe<Scalars['String']>;
+  age?: Maybe<Scalars['Float']>;
+};
+
+export type ShareLinkPosition = {
+  __typename?: 'ShareLinkPosition';
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+  player?: Maybe<ShareLinkPlayer>;
+};
+
+export type ShareLink = {
+  __typename?: 'ShareLink';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  snapshotUrl?: Maybe<Scalars['String']>;
+  positions: Array<ShareLinkPosition>;
+  createdAt: Scalars['String'];
 };
 
 export type Position = {
@@ -56,33 +85,6 @@ export type Player = {
   userId: Scalars['Float'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type ShareLinkPlayer = {
-  __typename?: 'ShareLinkPlayer';
-  id: Scalars['ID'];
-  firstName: Scalars['String'];
-  lastName: Scalars['String'];
-  number: Scalars['Float'];
-  nickName?: Maybe<Scalars['String']>;
-  age?: Maybe<Scalars['Float']>;
-};
-
-export type ShareLinkPosition = {
-  __typename?: 'ShareLinkPosition';
-  id: Scalars['ID'];
-  x: Scalars['Float'];
-  y: Scalars['Float'];
-  player?: Maybe<ShareLinkPlayer>;
-};
-
-export type ShareLink = {
-  __typename?: 'ShareLink';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  snapshotUrl?: Maybe<Scalars['String']>;
-  positions: Array<ShareLinkPosition>;
-  createdAt: Scalars['String'];
 };
 
 export type FieldError = {
@@ -334,7 +336,7 @@ export type ConfirmSignUpMutation = (
 
 export type CreateLayoutMutationVariables = Exact<{
   name: Scalars['String'];
-  positions: Array<PositionInput>;
+  positions: Array<PositionInput> | PositionInput;
 }>;
 
 
@@ -415,7 +417,7 @@ export type DeletePlayerMutation = (
 export type EditCustomLayoutMutationVariables = Exact<{
   id: Scalars['String'];
   name: Scalars['String'];
-  positions: Array<PositionInput>;
+  positions: Array<PositionInput> | PositionInput;
 }>;
 
 
@@ -794,59 +796,59 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    ChangePassword(variables: ChangePasswordMutationVariables): Promise<ChangePasswordMutation> {
-      return withWrapper(() => client.request<ChangePasswordMutation>(print(ChangePasswordDocument), variables));
+    ChangePassword(variables: ChangePasswordMutationVariables, requestHeaders?: Headers): Promise<ChangePasswordMutation> {
+      return withWrapper(() => client.request<ChangePasswordMutation>(print(ChangePasswordDocument), variables, requestHeaders));
     },
-    ConfirmSignUp(variables: ConfirmSignUpMutationVariables): Promise<ConfirmSignUpMutation> {
-      return withWrapper(() => client.request<ConfirmSignUpMutation>(print(ConfirmSignUpDocument), variables));
+    ConfirmSignUp(variables: ConfirmSignUpMutationVariables, requestHeaders?: Headers): Promise<ConfirmSignUpMutation> {
+      return withWrapper(() => client.request<ConfirmSignUpMutation>(print(ConfirmSignUpDocument), variables, requestHeaders));
     },
-    CreateLayout(variables: CreateLayoutMutationVariables): Promise<CreateLayoutMutation> {
-      return withWrapper(() => client.request<CreateLayoutMutation>(print(CreateLayoutDocument), variables));
+    CreateLayout(variables: CreateLayoutMutationVariables, requestHeaders?: Headers): Promise<CreateLayoutMutation> {
+      return withWrapper(() => client.request<CreateLayoutMutation>(print(CreateLayoutDocument), variables, requestHeaders));
     },
-    CreatePlayer(variables: CreatePlayerMutationVariables): Promise<CreatePlayerMutation> {
-      return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables));
+    CreatePlayer(variables: CreatePlayerMutationVariables, requestHeaders?: Headers): Promise<CreatePlayerMutation> {
+      return withWrapper(() => client.request<CreatePlayerMutation>(print(CreatePlayerDocument), variables, requestHeaders));
     },
-    CreateShareLink(variables: CreateShareLinkMutationVariables): Promise<CreateShareLinkMutation> {
-      return withWrapper(() => client.request<CreateShareLinkMutation>(print(CreateShareLinkDocument), variables));
+    CreateShareLink(variables: CreateShareLinkMutationVariables, requestHeaders?: Headers): Promise<CreateShareLinkMutation> {
+      return withWrapper(() => client.request<CreateShareLinkMutation>(print(CreateShareLinkDocument), variables, requestHeaders));
     },
-    DeleteCustomLayout(variables: DeleteCustomLayoutMutationVariables): Promise<DeleteCustomLayoutMutation> {
-      return withWrapper(() => client.request<DeleteCustomLayoutMutation>(print(DeleteCustomLayoutDocument), variables));
+    DeleteCustomLayout(variables: DeleteCustomLayoutMutationVariables, requestHeaders?: Headers): Promise<DeleteCustomLayoutMutation> {
+      return withWrapper(() => client.request<DeleteCustomLayoutMutation>(print(DeleteCustomLayoutDocument), variables, requestHeaders));
     },
-    DeletePlayer(variables: DeletePlayerMutationVariables): Promise<DeletePlayerMutation> {
-      return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables));
+    DeletePlayer(variables: DeletePlayerMutationVariables, requestHeaders?: Headers): Promise<DeletePlayerMutation> {
+      return withWrapper(() => client.request<DeletePlayerMutation>(print(DeletePlayerDocument), variables, requestHeaders));
     },
-    EditCustomLayout(variables: EditCustomLayoutMutationVariables): Promise<EditCustomLayoutMutation> {
-      return withWrapper(() => client.request<EditCustomLayoutMutation>(print(EditCustomLayoutDocument), variables));
+    EditCustomLayout(variables: EditCustomLayoutMutationVariables, requestHeaders?: Headers): Promise<EditCustomLayoutMutation> {
+      return withWrapper(() => client.request<EditCustomLayoutMutation>(print(EditCustomLayoutDocument), variables, requestHeaders));
     },
-    EditPlayer(variables: EditPlayerMutationVariables): Promise<EditPlayerMutation> {
-      return withWrapper(() => client.request<EditPlayerMutation>(print(EditPlayerDocument), variables));
+    EditPlayer(variables: EditPlayerMutationVariables, requestHeaders?: Headers): Promise<EditPlayerMutation> {
+      return withWrapper(() => client.request<EditPlayerMutation>(print(EditPlayerDocument), variables, requestHeaders));
     },
-    ForgotPasword(variables: ForgotPaswordMutationVariables): Promise<ForgotPaswordMutation> {
-      return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables));
+    ForgotPasword(variables: ForgotPaswordMutationVariables, requestHeaders?: Headers): Promise<ForgotPaswordMutation> {
+      return withWrapper(() => client.request<ForgotPaswordMutation>(print(ForgotPaswordDocument), variables, requestHeaders));
     },
-    Login(variables: LoginMutationVariables): Promise<LoginMutation> {
-      return withWrapper(() => client.request<LoginMutation>(print(LoginDocument), variables));
+    Login(variables: LoginMutationVariables, requestHeaders?: Headers): Promise<LoginMutation> {
+      return withWrapper(() => client.request<LoginMutation>(print(LoginDocument), variables, requestHeaders));
     },
-    Logout(variables?: LogoutMutationVariables): Promise<LogoutMutation> {
-      return withWrapper(() => client.request<LogoutMutation>(print(LogoutDocument), variables));
+    Logout(variables?: LogoutMutationVariables, requestHeaders?: Headers): Promise<LogoutMutation> {
+      return withWrapper(() => client.request<LogoutMutation>(print(LogoutDocument), variables, requestHeaders));
     },
-    ResendConfirmationCode(variables: ResendConfirmationCodeMutationVariables): Promise<ResendConfirmationCodeMutation> {
-      return withWrapper(() => client.request<ResendConfirmationCodeMutation>(print(ResendConfirmationCodeDocument), variables));
+    ResendConfirmationCode(variables: ResendConfirmationCodeMutationVariables, requestHeaders?: Headers): Promise<ResendConfirmationCodeMutation> {
+      return withWrapper(() => client.request<ResendConfirmationCodeMutation>(print(ResendConfirmationCodeDocument), variables, requestHeaders));
     },
-    ShareLink(variables: ShareLinkQueryVariables): Promise<ShareLinkQuery> {
-      return withWrapper(() => client.request<ShareLinkQuery>(print(ShareLinkDocument), variables));
+    ShareLink(variables: ShareLinkQueryVariables, requestHeaders?: Headers): Promise<ShareLinkQuery> {
+      return withWrapper(() => client.request<ShareLinkQuery>(print(ShareLinkDocument), variables, requestHeaders));
     },
-    SignUp(variables: SignUpMutationVariables): Promise<SignUpMutation> {
-      return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables));
+    SignUp(variables: SignUpMutationVariables, requestHeaders?: Headers): Promise<SignUpMutation> {
+      return withWrapper(() => client.request<SignUpMutation>(print(SignUpDocument), variables, requestHeaders));
     },
-    ListLayouts(variables?: ListLayoutsQueryVariables): Promise<ListLayoutsQuery> {
-      return withWrapper(() => client.request<ListLayoutsQuery>(print(ListLayoutsDocument), variables));
+    ListLayouts(variables?: ListLayoutsQueryVariables, requestHeaders?: Headers): Promise<ListLayoutsQuery> {
+      return withWrapper(() => client.request<ListLayoutsQuery>(print(ListLayoutsDocument), variables, requestHeaders));
     },
-    Me(variables?: MeQueryVariables): Promise<MeQuery> {
-      return withWrapper(() => client.request<MeQuery>(print(MeDocument), variables));
+    Me(variables?: MeQueryVariables, requestHeaders?: Headers): Promise<MeQuery> {
+      return withWrapper(() => client.request<MeQuery>(print(MeDocument), variables, requestHeaders));
     },
-    Players(variables?: PlayersQueryVariables): Promise<PlayersQuery> {
-      return withWrapper(() => client.request<PlayersQuery>(print(PlayersDocument), variables));
+    Players(variables?: PlayersQueryVariables, requestHeaders?: Headers): Promise<PlayersQuery> {
+      return withWrapper(() => client.request<PlayersQuery>(print(PlayersDocument), variables, requestHeaders));
     }
   };
 }

@@ -4,7 +4,7 @@ import {
   IconButtonProps,
   useDisclosure,
   useToast,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
@@ -20,7 +20,7 @@ export default function EditPlayerButton({ player, ...restProps }: IProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasErrors, setHasErrors] = useState(false);
-  const [editPlayer] = useEditPlayer();
+  const { mutateAsync: editPlayer } = useEditPlayer();
   const toast = useToast();
 
   const initialValues: IFormValues = {

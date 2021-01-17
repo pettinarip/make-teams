@@ -1,4 +1,4 @@
-import { Select as SelectUI } from "@chakra-ui/core";
+import { Select as SelectUI } from "@chakra-ui/react";
 
 import { ILayout } from "../MakeTeam/types";
 

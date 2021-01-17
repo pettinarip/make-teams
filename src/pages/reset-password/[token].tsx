@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Formik, Field, FieldProps } from "formik";
+import { Formik, Field, FieldProps, Form } from "formik";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import {
@@ -15,7 +15,7 @@ import {
   Heading,
   Input,
   Link,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import * as yup from "yup";
 
 import useChangePassword from "../../dal/user/useChangePassword";
@@ -32,7 +32,7 @@ const validationResetSchema = yup.object({
 
 export default function ResetPassword(__props: IProps) {
   const [formError, setFormError] = useState("");
-  const [changePassword] = useChangePassword();
+  const { mutateAsync: changePassword } = useChangePassword();
   const router = useRouter();
 
   const { token } = router.query;
@@ -73,8 +73,8 @@ export default function ResetPassword(__props: IProps) {
         validateOnBlur={false}
         onSubmit={handleResetPassword}
       >
-        {({ handleSubmit, isSubmitting }) => (
-          <Box as="form" onSubmit={handleSubmit}>
+        {({ isSubmitting }) => (
+          <Form>
             {!!formError && (
               <Alert status="error">
                 <AlertIcon />
@@ -111,7 +111,7 @@ export default function ResetPassword(__props: IProps) {
             >
               Submit
             </Button>
-          </Box>
+          </Form>
         )}
       </Formik>
       <FormControl textAlign="center" my={4}>

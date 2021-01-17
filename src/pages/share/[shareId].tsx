@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Center } from "@chakra-ui/core";
+import { Center } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 
 import { fetchShareTeam } from "../../dal/shareLink/useGetShareTeam";

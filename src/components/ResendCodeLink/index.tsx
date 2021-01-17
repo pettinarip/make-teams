@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Spinner } from "@chakra-ui/core";
+import { Link, Spinner } from "@chakra-ui/react";
 
 import useResendConfirmationCode from "../../dal/user/useResendConfirmationCode";
 
@@ -10,7 +10,7 @@ interface IProps {
 
 export default function ResendCodeLink({ email, onError }: IProps) {
   const [loading, setLoading] = useState(false);
-  const [resendConfirmationCode] = useResendConfirmationCode();
+  const { mutateAsync: resendConfirmationCode } = useResendConfirmationCode();
 
   async function handleResend() {
     setLoading(true);

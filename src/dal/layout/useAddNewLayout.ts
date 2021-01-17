@@ -1,26 +1,34 @@
-import { useMutation, queryCache } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
-import { CreateLayoutMutation, CreateLayoutMutationVariables } from "../../graphql/API";
+import {
+  CreateLayoutMutation,
+  CreateLayoutMutationVariables,
+} from "../../graphql/API";
 import { ILayout } from "../../containers/MakeTeam/types";
 import { QUERY_KEY } from "./useGetLayouts";
 import sdk from "../../graphql/sdk";
 import { useAuth } from "../../contexts/auth";
-import * as LayoutLocalStorage from '../../localStorage/layout'
+import * as LayoutLocalStorage from "../../localStorage/layout";
 
 export default function useAddNewLayout() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
-  return useMutation<CreateLayoutMutation | ILayout, Error, CreateLayoutMutationVariables>(
+  return useMutation<
+    CreateLayoutMutation | ILayout,
+    Error,
+    CreateLayoutMutationVariables
+  >(
     async (layout): Promise<CreateLayoutMutation | ILayout> => {
       if (user) {
         return sdk.CreateLayout(layout);
       } else {
-        return LayoutLocalStorage.create(layout)
+        return LayoutLocalStorage.create(layout);
       }
     },
     {
       onSuccess: () => {
-        return queryCache.invalidateQueries(QUERY_KEY);
+        return queryClient.invalidateQueries(QUERY_KEY);
       },
     }
   );

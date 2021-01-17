@@ -1,6 +1,6 @@
-import { useMutation, queryCache } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
-import * as PlayerLocalStorage from '../../localStorage/player'
+import * as PlayerLocalStorage from "../../localStorage/player";
 
 import {
   CreatePlayerMutationVariables,
@@ -12,6 +12,7 @@ import { useAuth } from "../../contexts/auth";
 
 export default function useAddNewPlayer() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   return useMutation<IPlayer, Error, CreatePlayerMutationVariables>(
     async (player): Promise<IPlayer> => {
@@ -19,12 +20,12 @@ export default function useAddNewPlayer() {
         const response = await sdk.CreatePlayer(player);
         return response.createPlayer as IPlayer;
       } else {
-        return PlayerLocalStorage.create(player)
+        return PlayerLocalStorage.create(player);
       }
     },
     {
       onSuccess: () => {
-        return queryCache.invalidateQueries(QUERY_KEY);
+        return queryClient.invalidateQueries(QUERY_KEY);
       },
     }
   );

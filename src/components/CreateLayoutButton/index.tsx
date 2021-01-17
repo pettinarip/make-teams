@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { FormikHelpers } from "formik";
-import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/core";
+import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/react";
 
 import useAddNewLayout from "../../dal/layout/useAddNewLayout";
 import { CreateLayoutMutation } from "../../graphql/API";
@@ -18,7 +18,7 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [addNewLayout] = useAddNewLayout();
+  const { mutateAsync: addNewLayout } = useAddNewLayout();
 
   const initialValues: IFormValues = {
     name: "",

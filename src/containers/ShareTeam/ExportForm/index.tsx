@@ -10,7 +10,7 @@ import {
   Link,
   useClipboard,
   useColorMode,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import { whatsappLink, twitterLink, facebookLink } from "./export";
 

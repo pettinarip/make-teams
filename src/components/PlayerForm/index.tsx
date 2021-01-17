@@ -13,7 +13,7 @@ import {
   RadioGroup,
   Radio,
   Stack,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { Formik, FormikProps, FormikHelpers, Field, FieldProps } from "formik";
 
 import validate from "./validate";

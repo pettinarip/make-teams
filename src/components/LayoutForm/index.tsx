@@ -13,7 +13,7 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import fillPositions from "../CreateLayoutButton/fillPositions";

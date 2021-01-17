@@ -1,28 +1,16 @@
 import React from "react";
 import * as rtl from "@testing-library/react";
-import { ReactQueryConfigProvider, ReactQueryConfig } from "react-query";
+import { QueryClientProvider } from "react-query";
 
 import { AuthProvider, useAuth } from "../contexts/auth";
-
-// TODO: shouldn't we just keep the same config used in the app? probably with
-// less staleTime
-const queryConfig: ReactQueryConfig = {
-  queries: {
-    retry: 0,
-    refetchOnWindowFocus: false,
-    useErrorBoundary: true,
-  },
-  mutations: {
-    throwOnError: true,
-  },
-};
+import { queryClient } from "../setupTests";
 
 function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   function Wrapper({ children }: any) {
     return (
-      <ReactQueryConfigProvider config={queryConfig}>
+      <QueryClientProvider client={queryClient}>
         <AuthProvider>{children}</AuthProvider>
-      </ReactQueryConfigProvider>
+      </QueryClientProvider>
     );
   }
   return {

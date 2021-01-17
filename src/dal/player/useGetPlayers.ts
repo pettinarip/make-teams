@@ -1,5 +1,4 @@
-import { useQuery } from "react-query";
-import { QueryResult } from "react-query/types";
+import { useQuery, UseQueryResult } from "react-query";
 
 import sdk from "../../graphql/sdk";
 import { Player as IPlayer } from "../../graphql/API";
@@ -8,7 +7,7 @@ import * as PlayerLocalStorage from '../../localStorage/player'
 
 export const QUERY_KEY = "players";
 
-export default function useGetPlayers(): QueryResult<Array<IPlayer>> {
+export default function useGetPlayers(): UseQueryResult<Array<IPlayer>> {
   const { user } = useAuth();
   
   return useQuery(

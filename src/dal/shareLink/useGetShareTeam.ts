@@ -1,5 +1,4 @@
-import { useQuery } from "react-query";
-import { QueryResult } from "react-query/types";
+import { useQuery, UseQueryResult } from "react-query";
 
 import { IShareTeam } from "../../containers/MakeTeam/types";
 import sdk from "../../graphql/sdk";
@@ -8,7 +7,7 @@ export const QUERY_KEY = "shareTeam";
 
 export default function useGetShareTeam(
   id: string | undefined
-): QueryResult<IShareTeam | undefined | null> {
+): UseQueryResult<IShareTeam | undefined | null> {
   return useQuery(
     QUERY_KEY,
     async (): Promise<IShareTeam | undefined | null> => {

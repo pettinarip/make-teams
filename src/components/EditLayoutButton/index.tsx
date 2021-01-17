@@ -4,7 +4,7 @@ import {
   useToast,
   IconButtonProps,
   useDisclosure,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 
 import { ILayout } from "../../containers/MakeTeam/types";
@@ -21,7 +21,7 @@ export default function EditLayoutButton({ layout, ...restProps }: IProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [editLayout] = useEditLayout();
+  const { mutateAsync: editLayout } = useEditLayout();
 
   const initialValues: IFormValues = {
     name: layout.name,
