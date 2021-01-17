@@ -1,3 +1,3 @@
 export default {
-  POSITION: "position"
+  POSITION: "position",
 };

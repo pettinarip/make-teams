@@ -3,7 +3,7 @@ import { useQuery, UseQueryResult } from "react-query";
 import { ILayout } from "../../containers/MakeTeam/types";
 import sdk from "../../graphql/sdk";
 import { useAuth } from "../../contexts/auth";
-import * as LayoutLocalStorage from '../../localStorage/layout'
+import * as LayoutLocalStorage from "../../localStorage/layout";
 
 export const QUERY_KEY = "layouts";
 
@@ -26,7 +26,7 @@ export default function useGetLayouts(): UseQueryResult<Array<ILayout>> {
           })
         );
       } else {
-        customLayouts = LayoutLocalStorage.read()
+        customLayouts = LayoutLocalStorage.read();
       }
 
       return layouts.concat(customLayouts);

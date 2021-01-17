@@ -8,9 +8,11 @@ export interface IMutationProps {
 }
 
 export default function useResendConfirmationCode() {
-  return useMutation<ResendConfirmationCodeMutation, FieldError[], IMutationProps>(
-    (variables) => {
-      return sdk.ResendConfirmationCode(variables);
-    }
-  );
+  return useMutation<
+    ResendConfirmationCodeMutation,
+    FieldError[],
+    IMutationProps
+  >((variables) => {
+    return sdk.ResendConfirmationCode(variables);
+  });
 }

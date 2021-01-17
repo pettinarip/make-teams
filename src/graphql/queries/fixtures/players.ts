@@ -9,7 +9,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-05-02T15:13:10.779Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "2",
@@ -21,7 +21,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-05-02T15:12:48.814Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "3",
@@ -33,7 +33,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-05-02T15:12:25.236Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "4",
@@ -45,7 +45,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "5",
@@ -57,7 +57,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "6",
@@ -69,7 +69,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "7",
@@ -81,7 +81,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "8",
@@ -93,7 +93,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "9",
@@ -105,7 +105,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "10",
@@ -117,7 +117,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "11",
@@ -129,7 +129,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "12",
@@ -141,7 +141,7 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
   {
     id: "13",
@@ -153,6 +153,6 @@ export const playersFixture = [
     createdBy: "123",
     createdAt: "2020-04-27T07:58:02.717Z",
     updatedAt: "2020-05-02T15:13:10.779Z",
-    userId: 1
+    userId: 1,
   },
 ];

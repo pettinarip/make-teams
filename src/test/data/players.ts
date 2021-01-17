@@ -44,7 +44,7 @@ export function edit({
     { ...players[index], ...rest },
     ...players.slice(index + 1),
   ];
-  return true
+  return true;
 }
 
 export function remove({ id }: { id: string }): Array<IPlayer> {
