@@ -55,6 +55,7 @@ export default function Position({
         {...avatarProps}
         icon={<FiUser fontSize="1.5rem" />}
         border={isActive ? "1px dashed" : "1px solid transparent"}
+        color="white"
       >
         {player && showRemoveButton && (
           <AvatarBadge
