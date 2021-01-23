@@ -76,7 +76,10 @@ describe("TeamLayout", () => {
     // We are going to delete `custom3` layout, so here we grab the wrapper in
     // order to get its delete button
     const layoutWrapper = getByTestId((id, el) => {
-      return /custom-layout/i.test(id) && el.textContent === "custom3";
+      return (
+        /custom-layout/i.test(id) &&
+        (el as HTMLElement).textContent === "custom3"
+      );
     });
     const utils = within(layoutWrapper);
 
@@ -91,6 +94,8 @@ describe("TeamLayout", () => {
     await waitForElementToBeRemoved(() =>
       screen.getByText(/Remove layout custom3/i)
     );
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
     // Check the new layouts
     const customLayoutsContentAgain = screen

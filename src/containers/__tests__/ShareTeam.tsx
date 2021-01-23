@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  render,
-  screen,
-  fireEvent,
-  waitForElementToBeRemoved,
-} from "../../test/appTestUtils";
+import { render, screen, fireEvent } from "../../test/appTestUtils";
 
 import ShareTeam from "../ShareTeam";
 import * as shareTeamDB from "../../test/data/shareTeam";
@@ -19,7 +14,7 @@ async function renderShareTeam({ shareLink }: IRenderProps = {}) {
     shareLink = shareTeamDB.create();
   }
 
-  const utils = render(<ShareTeam positions={[{ x: 1, y: 1 }]} />);
+  const utils = render(<ShareTeam positions={[{ x: 1, y: 1 }]} showNames />);
 
   return {
     ...utils,
@@ -45,8 +40,10 @@ describe("ShareTeam", () => {
     const newShareLink = shareTeamDB.create();
     fireEvent.click(shareTeamBtn);
 
-    // // Check that the link has changed its id
-    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+    // Check that the link has changed its id
+    await screen.findByText(/loading/i);
+    await screen.findByText(/share your team/i);
+
     expect(shareInput.value).toEqual(
       `http://localhost/share/${newShareLink.id}`
     );

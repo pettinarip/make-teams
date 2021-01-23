@@ -15,7 +15,7 @@ export default function ShareTeam({ positions, showNames }: IProps) {
   const [link, setLink] = useState("");
   const toast = useToast();
 
-  const { mutateAsync: createShareTeam, status } = useCreateShareTeam();
+  const { mutateAsync: createShareTeam, isLoading } = useCreateShareTeam();
 
   async function handleClick() {
     try {
@@ -38,7 +38,7 @@ export default function ShareTeam({ positions, showNames }: IProps) {
       <Button
         onClick={handleClick}
         colorScheme="green"
-        isLoading={status === "loading"}
+        isLoading={isLoading}
         data-testid="share-team-btn"
         disabled={!positions.length}
       >

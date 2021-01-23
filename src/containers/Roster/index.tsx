@@ -11,10 +11,12 @@ import {
   Skeleton,
   Stack,
   useColorMode,
+  useToast,
 } from "@chakra-ui/react";
 
 import { IPlayer } from "../MakeTeam/types";
 import useGetPlayers from "../../dal/player/useGetPlayers";
+import useRemovePlayer from "../../dal/player/useRemovePlayer";
 import { hasReachedMaxNumber } from "../../domain/player";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
 import EditPlayerButton from "../../components/EditPlayerButton";
@@ -38,9 +40,33 @@ export default function Roster({
   ...restProps
 }: IProps) {
   const { data: players = [], isLoading } = useGetPlayers();
+  const toast = useToast();
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const selectedItemColor = isDark ? "gray.600" : "gray.300";
+  const {
+    mutateAsync: removePlayer,
+    isLoading: isRemoveLoading,
+  } = useRemovePlayer();
+
+  async function handleRemove(player: IPlayer) {
+    try {
+      await removePlayer(player);
+      toast({
+        title: "Player removed.",
+        description: `The new player ${player.lastName} was removed successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: "An error occured.",
+        description: `While trying to remove the player.`,
+        status: "error",
+        isClosable: true,
+      });
+    }
+  }
 
   return (
     <Flex {...restProps} h="100%" direction="column" justify="space-between">
@@ -48,7 +74,7 @@ export default function Roster({
         Roster ({players.length})
       </Heading>
 
-      {isLoading ? (
+      {isLoading || isRemoveLoading ? (
         <Stack data-testid="loading">
           <Skeleton height={6} />
           <Skeleton height={6} />
@@ -89,6 +115,7 @@ export default function Roster({
                     />
                     <RemovePlayerButton
                       player={player}
+                      onRemoved={handleRemove}
                       opacity={0}
                       _groupHover={{ opacity: 1 }}
                     />

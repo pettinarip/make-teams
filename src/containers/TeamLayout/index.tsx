@@ -9,10 +9,12 @@ import {
   Skeleton,
   Stack,
   useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
 
 import { ILayout } from "../MakeTeam/types";
 import useLayouts from "../../domain/layout/useLayouts";
+import useRemoveLayout from "../../dal/layout/useRemoveLayout";
 import { hasReachedMaxNumber } from "../../domain/layout";
 import CreateLayoutButton from "../../components/CreateLayoutButton";
 import RemoveLayoutButton from "../../components/RemoveLayoutButton";
@@ -25,11 +27,15 @@ export interface IProps extends Omit<FlexProps, "onChange"> {
 }
 
 export default function TeamLayout({ onChange, ...restProps }: IProps) {
-  const { status, layouts } = useLayouts();
+  const { layouts, isLoading } = useLayouts();
   const [selectedId, setSelectedId] = useState<string>();
   const isLargeBreakpoint = useBreakpointValue({ base: true, lg: false });
+  const {
+    mutateAsync: removeLayout,
+    isLoading: isRemoveLoading,
+  } = useRemoveLayout();
+  const toast = useToast();
 
-  const isLoading = status === "loading";
   const selected = layouts.find((l) => l.id === selectedId);
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
@@ -71,7 +77,24 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
     }
   }
 
-  function handleLayoutRemoved(layout: ILayout) {
+  async function handleLayoutRemoved(layout: ILayout) {
+    try {
+      await removeLayout(layout);
+      toast({
+        title: "Layout removed.",
+        description: `The layout ${layout.name} was removed successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+    } catch (e) {
+      toast({
+        title: "An error occured.",
+        description: `While trying to remove the layout ${layout.name}.`,
+        status: "error",
+        isClosable: true,
+      });
+    }
+
     // If the removed layout was selected, clear the `selected` state so that we
     // can autoselect again the first layout in the list
     if (layout.id === selected?.id) {
@@ -85,7 +108,7 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
         Layouts
       </Heading>
 
-      {isLoading || (layouts.length && !selected) ? (
+      {isLoading || isRemoveLoading || (layouts.length && !selected) ? (
         <Stack data-testid="loading">
           <Skeleton height={6} />
           <Skeleton height={6} />

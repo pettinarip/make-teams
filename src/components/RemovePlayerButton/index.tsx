@@ -9,43 +9,31 @@ import {
   Button,
   IconButtonProps,
   IconButton,
-  useToast,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
 import { IPlayer } from "../../containers/MakeTeam/types";
-import useRemovePlayer from "../../dal/player/useRemovePlayer";
 
 export interface IProps extends Omit<IconButtonProps, "aria-label"> {
   player: IPlayer;
+  onRemoved?: (player: IPlayer) => void;
 }
 
-export default function RemovePlayerButton({ player, ...restProps }: IProps) {
+export default function RemovePlayerButton({
+  player,
+  onRemoved,
+  ...restProps
+}: IProps) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { mutateAsync: removePlayer } = useRemovePlayer();
   const cancelRef = useRef(null);
-  const toast = useToast();
 
   function toggleConfirmModal() {
     setIsConfirmOpen(!isConfirmOpen);
   }
 
-  async function handleRemove() {
-    try {
-      await removePlayer(player);
-      toast({
-        title: "Player removed.",
-        description: `The new player ${player.lastName} was removed successfully.`,
-        status: "success",
-        isClosable: true,
-      });
-    } catch (e) {
-      toast({
-        title: "An error occured.",
-        description: `While trying to remove the player.`,
-        status: "error",
-        isClosable: true,
-      });
+  function handleRemove() {
+    if (onRemoved) {
+      onRemoved(player);
     }
   }
 

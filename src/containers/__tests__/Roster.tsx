@@ -262,6 +262,9 @@ describe("Roster", () => {
       fireEvent.click(submitButton);
 
       await waitForElementToBeRemoved(queryByText(/pablo/i));
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
+      );
 
       const players = getAllByTestId("player").map(
         (position) => position.textContent

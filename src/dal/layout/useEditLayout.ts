@@ -38,7 +38,7 @@ export default function useEditLayout() {
             const index = layouts.findIndex((l) => l.id === layout.id);
             return [
               ...layouts.slice(0, index),
-              { ...layouts[index], ...layout },
+              { ...layouts[index], ...(layout as ILayout) },
               ...layouts.slice(index + 1),
             ];
           }
