@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Button, Center, useToast } from "@chakra-ui/react";
+import { Button, Center, useDisclosure, useToast } from "@chakra-ui/react";
 
-import { IPosition } from "../MakeTeam/types";
 import useCreateShareTeam from "../../dal/shareLink/useCreateShareTeam";
-import ExportForm from "./ExportForm";
+import { IPosition } from "../MakeTeam/types";
+import ShareModal from "./Modal";
 
 interface IProps {
   positions: Array<IPosition>;
@@ -11,17 +11,18 @@ interface IProps {
 }
 
 export default function ShareTeam({ positions, showNames }: IProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [id, setId] = useState("");
-  const [link, setLink] = useState("");
   const toast = useToast();
 
   const { mutateAsync: createShareTeam, isLoading } = useCreateShareTeam();
 
   async function handleClick() {
+    setId("")
+    onOpen();
     try {
       // TODO: add a name to the share team
       const shareLink = await createShareTeam({ name: "test", positions });
-      setLink(`${window.location.origin}/share/${shareLink?.id}`);
       setId(shareLink?.id!);
     } catch (error) {
       toast({
@@ -44,9 +45,13 @@ export default function ShareTeam({ positions, showNames }: IProps) {
       >
         Share your team!
       </Button>
-      {link && (
-        <ExportForm id={id} shareLink={link} showNames={showNames} my={6} />
-      )}
+      <ShareModal
+        isOpen={isOpen}
+        isLoading={isLoading}
+        onClose={onClose}
+        showNames={showNames}
+        id={id}
+      />
     </Center>
   );
 }
