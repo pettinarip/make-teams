@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   Button,
   Center,
@@ -32,7 +31,7 @@ export default function ShareModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent data-testid="share-team-modal">
         <ModalHeader>Share Team</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

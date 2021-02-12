@@ -6,8 +6,8 @@
     "build": "next build",
     "start": "next start",
     "gen": "graphql-codegen --config codegen.yml",
-    "test": "jest --setupTestFrameworkScriptFile=./src/setupTests.ts",
-    "test:watch": "yarn test --watch",
+    "test": "jest --setupTestFrameworkScriptFile=./src/setupTests.ts --testTimeout=10000",
+    "test:watch": "yarn test --watch --testTimeout=10000",
     "format": "prettier --write \"./src/**/*.{js,ts,jsx,tsx}\""
   },
   "dependencies": {

@@ -11,6 +11,9 @@ import {
   Box,
   Flex,
   Image,
+  Alert,
+  AlertIcon,
+  AlertDescription,
 } from "@chakra-ui/react";
 
 import { whatsappLink, twitterLink, facebookLink } from "./export";
@@ -21,28 +24,34 @@ export interface IProps extends ChakraProps {
   showNames: boolean;
 }
 
-export default function ExportForm({
-  id,
-  showNames,
-  ...restProps
-}: IProps) {
-  const link = `${window.location.origin}/share/${id}`
+export default function ExportForm({ id, showNames, ...restProps }: IProps) {
+  const link = `${window.location.origin}/share/${id}`;
 
   const [imageURL, setImageURL] = useState<string>();
+  const [error, setError] = useState<string>();
   const { hasCopied, onCopy } = useClipboard(link);
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
   useEffect(() => {
     async function fetchImage() {
-      const image = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/image?id=${id}&dark=${
-          isDark ? 1 : 0
-        }&names=${showNames ? 1 : 0}`
-      );
+      try {
+        // TODO: move this logic into some other place
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/image?id=${id}&dark=${
+            isDark ? 1 : 0
+          }&names=${showNames ? 1 : 0}`
+        );
 
-      const blob = await image.blob();
-      setImageURL(URL.createObjectURL(blob));
+        if (response.ok) {
+          const blob = await response.blob();
+          setImageURL(URL.createObjectURL(blob));
+        } else {
+          throw new Error("Error generating the image");
+        }
+      } catch (e) {
+        setError("There was an error generating the image.");
+      }
     }
 
     fetchImage();
@@ -50,9 +59,16 @@ export default function ExportForm({
 
   return (
     <Box {...restProps}>
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
       {imageURL && (
         <Center my={4} flexDirection="column">
           <Image
+            data-testid="share-team-image"
             src={imageURL}
             fallbackSrc="https://via.placeholder.com/262x400"
             maxW={262}

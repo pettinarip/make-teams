@@ -10,8 +10,9 @@ import MatchMediaMock from "jest-matchmedia-mock";
 // with NODE_ENV=test
 next({});
 
-import { server } from "./test/server";
+import { setupServer, SetupServerApi } from "msw/node";
 import { QueryClient } from "react-query";
+import apiHandlers from "./test/apiHandlers";
 
 // make debug output for TestingLibrary Errors larger
 process.env.DEBUG_PRINT_LIMIT = "15000";
@@ -29,7 +30,10 @@ export const queryClient = new QueryClient({
 });
 
 // Establish API mocking before all tests.
+export let server: SetupServerApi;
 beforeAll(() => {
+  const handlers = apiHandlers();
+  server = setupServer(...handlers);
   server.listen();
   new MatchMediaMock();
 });

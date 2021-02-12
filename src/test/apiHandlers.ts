@@ -1,10 +1,10 @@
-import { graphql } from "msw";
+import { graphql, rest } from "msw";
 
 import * as shareTeamDB from "./data/shareTeam";
 import * as layoutsDB from "./data/layouts";
 import * as playersDB from "./data/players";
 
-export default [
+export default () => [
   graphql.query("Me", (__req, res, ctx) => {
     return res(
       ctx.data({
@@ -53,5 +53,9 @@ export default [
   graphql.mutation("DeletePlayer", (req, res, ctx) => {
     const removed = playersDB.remove((req?.body as any).variables);
     return res(ctx.data({ deletePlayer: removed }));
+  }),
+
+  rest.get(`${process.env.NEXT_PUBLIC_API_URL}/image`, (_req, res, ctx) => {
+    return res(ctx.set("Content-Type", "image/png"), ctx.body("blob"));
   }),
 ];

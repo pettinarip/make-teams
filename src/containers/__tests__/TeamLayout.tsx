@@ -111,14 +111,15 @@ describe("TeamLayout", () => {
 
   describe("add new layout", () => {
     test("(happy path) complete the fields and create the layout", async () => {
-      const { getByTestId } = renderTeamLayout();
+      const utils = renderTeamLayout();
 
-      await waitForElementToBeRemoved(() =>
-        screen.queryAllByTestId(/loading/i)
+      await waitForElementToBeRemoved(
+        () => screen.queryAllByTestId(/loading/i),
+        { container: utils.container as HTMLElement }
       );
 
       // Click in New layout button
-      const newButton = getByTestId("new-layout-button");
+      const newButton = utils.getByTestId("new-layout-button");
       fireEvent.click(newButton);
 
       // Complete fields
@@ -130,11 +131,13 @@ describe("TeamLayout", () => {
       });
 
       // Click on submit button
-      const submitButton = getByTestId("new-layout-submit-button");
+      const submitButton = utils.getByTestId("new-layout-submit-button");
       fireEvent.click(submitButton);
 
       // Wait for saving process
-      await waitForElementToBeRemoved(submitButton);
+      await waitForElementToBeRemoved(submitButton, {
+        container: utils.container as HTMLElement,
+      });
 
       // Check that the new layout is at the bottom of the custom layouts list
       const layouts = screen

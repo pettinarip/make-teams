@@ -42,6 +42,7 @@ describe("Roster", () => {
         getByLabelText,
         getAllByTestId,
         getByTestId,
+        findByText,
       } = renderRoster();
 
       await waitForElementToBeRemoved(() =>
@@ -85,10 +86,10 @@ describe("Roster", () => {
       fireEvent.click(submitButton);
 
       // Wait for saving process
-      await waitFor(
-        () => expect(getByText(/newFirstName/i)).toBeInTheDocument(),
-        { timeout: 3000 }
-      );
+      await findByText(/newFirstName/i, undefined, {
+        timeout: 5000,
+        interval: 1000,
+      });
 
       // Check that the new player is at the bottom of the roster list
       const players = getAllByTestId("player").map(

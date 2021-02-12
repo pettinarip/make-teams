@@ -18,7 +18,7 @@ export default function ShareTeam({ positions, showNames }: IProps) {
   const { mutateAsync: createShareTeam, isLoading } = useCreateShareTeam();
 
   async function handleClick() {
-    setId("")
+    setId("");
     onOpen();
     try {
       // TODO: add a name to the share team
