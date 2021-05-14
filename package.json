@@ -20,7 +20,7 @@
     "framer-motion": "^3.2.1",
     "graphql": "^15.4.0",
     "graphql-request": "^3.4.0",
-    "immer": "^8.0.0",
+    "immer": "^8.0.1",
     "local-storage": "^2.0.0",
     "lodash.clamp": "^4.0.3",
     "lodash.omit": "^4.5.0",
