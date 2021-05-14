@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useDragLayer } from "react-dnd";
-import clamp from "lodash.clamp";
+import { clamp } from "lodash";
 
 import snapToGrid from "../FieldEdit/snapToGrid";
 

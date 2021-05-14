@@ -1,5 +1,5 @@
 import { useMutation } from "react-query";
-import omit from "lodash.omit";
+import { omit } from "lodash";
 
 import { IPlayer, IPosition } from "../../containers/MakeTeam/types";
 import { ShareLink } from "../../graphql/API";
