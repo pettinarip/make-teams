@@ -1,20 +1,43 @@
-import { Skeleton, Stack } from "@chakra-ui/react";
-
-import { useAuth } from "../contexts/auth";
+import { GetServerSideProps } from "next";
+import { AuthContext } from "../contexts/auth";
 import MakeTeam from "../containers/MakeTeam";
+import { IUser } from "../dal/user/types";
+import sdk from "../graphql/sdk";
 
-export default function Index() {
-  const { isLoading } = useAuth();
+export interface IProps {
+  user?: IUser;
+}
 
-  if (isLoading) {
-    return (
-      <Stack maxW={{ xl: 1200 }} m="0 auto" data-testid="loading">
-        <Skeleton height={6} />
-        <Skeleton height={6} />
-        <Skeleton height={6} />
-      </Stack>
-    );
+export const getServerSideProps: GetServerSideProps<IProps> = async ({
+  req,
+}) => {
+  const headers = new Headers();
+  if (req.headers.cookie) {
+    headers.append("cookie", req.headers.cookie);
   }
 
-  return <MakeTeam />;
+  try {
+    const response = await sdk.Me(undefined, headers);
+    const user = response.me as IUser;
+
+    return {
+      props: { user },
+    };
+  } catch (e) {
+    // TODO: log error information
+  }
+
+  return { props: {} };
+};
+
+export default function Index({ user }: IProps) {
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+      }}
+    >
+      <MakeTeam />
+    </AuthContext.Provider>
+  );
 }

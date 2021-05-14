@@ -2,14 +2,15 @@ import React from "react";
 import * as rtl from "@testing-library/react";
 import { QueryClientProvider } from "react-query";
 
-import { AuthProvider, useAuth } from "../contexts/auth";
+import { AuthContext } from "../contexts/auth";
 import { queryClient } from "../setupTests";
+import { IUser } from "../dal/user/types";
 
 function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   function Wrapper({ children }: any) {
     return (
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>
       </QueryClientProvider>
     );
   }
@@ -22,17 +23,18 @@ function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
 }
 
 function renderWithAuth(ui: any, renderOptions: any = {}) {
-  return render(<WaitAuth>{ui}</WaitAuth>, renderOptions);
-}
+  const user: IUser = { id: "test", email: "test@test.com" };
 
-function WaitAuth(props: { children: any }) {
-  const { isLoading } = useAuth();
-
-  if (isLoading) {
-    return <div data-testid="loading" />;
-  }
-
-  return props.children;
+  return render(
+    <AuthContext.Provider
+      value={{
+        user,
+      }}
+    >
+      {ui}
+    </AuthContext.Provider>,
+    renderOptions
+  );
 }
 
 // TODO: open an issue on DOM Testing Library to make this built-in...

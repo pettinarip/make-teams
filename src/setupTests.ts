@@ -5,6 +5,10 @@
 import "@testing-library/jest-dom/extend-expect";
 import next from "next";
 import MatchMediaMock from "jest-matchmedia-mock";
+import { loadEnvConfig } from "@next/env";
+
+const projectDir = process.cwd();
+loadEnvConfig(projectDir);
 
 // Instantiate Next.js in order to load env.test file. Jest automatically runs
 // with NODE_ENV=test
