@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDrop, XYCoord } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
 import produce from "immer";
-import clamp from "lodash.clamp";
+import { clamp } from "lodash";
 
 import { IPosition } from "../../containers/MakeTeam/types";
 import PositionDrag, {
