@@ -7,7 +7,6 @@ import {
   renderWithAuth as render,
   screen,
   userEvent,
-  waitFor,
   waitForElementToBeRemoved,
   within,
 } from "../../test/appTestUtils";
@@ -37,64 +36,58 @@ describe("Roster", () => {
 
   describe("Create player", () => {
     test("happy path, complete all fields and save", async () => {
-      const {
-        getByText,
-        getByLabelText,
-        getAllByTestId,
-        getByTestId,
-        findByText,
-      } = renderRoster();
+      renderRoster();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
       // Click in New player button
-      const newButton = getByText("New");
+      const newButton = screen.getByText("New");
       fireEvent.click(newButton);
 
       // Complete fields
-      const firstNameInput = getByLabelText(/First name/i);
+      const firstNameInput = screen.getByLabelText(/First name/i);
       fireEvent.change(firstNameInput, {
         target: {
           value: "newFirstName",
         },
       });
 
-      const lastNameInput = getByLabelText(/Last name/i);
+      const lastNameInput = screen.getByLabelText(/Last name/i);
       fireEvent.change(lastNameInput, {
         target: {
           value: "last",
         },
       });
 
-      const genderSelect = getByLabelText(/Gender/i);
+      const genderSelect = screen.getByLabelText(/Gender/i);
       userEvent.selectOptions(genderSelect, "male");
 
-      const numberInput = getByLabelText(/Number/i);
+      const numberInput = screen.getByLabelText(/Number/i);
       fireEvent.change(numberInput, {
         target: {
           value: "99",
         },
       });
 
-      const positionRadio = getByLabelText(/Mid/i);
+      const positionRadio = screen.getByLabelText(/Mid/i);
       fireEvent.click(positionRadio);
 
       // Submit form
-      const submitButton = getByTestId("player-submit-button");
+      const submitButton = screen.getByTestId("player-submit-button");
       fireEvent.click(submitButton);
 
       // Wait for saving process
-      await findByText(/newFirstName/i, undefined, {
+      await screen.findByText(/newFirstName/i, undefined, {
         timeout: 5000,
         interval: 1000,
       });
 
       // Check that the new player is at the bottom of the roster list
-      const players = getAllByTestId("player").map(
-        (position) => position.textContent
-      );
+      const players = screen
+        .getAllByTestId("player")
+        .map((position) => position.textContent);
       expect(players).toMatchInlineSnapshot(`
         Array [
           "PCPuyol, Charles6Defender",
@@ -116,21 +109,21 @@ describe("Roster", () => {
     });
 
     test("missing fields, should display required errors", async () => {
-      const { getByText, getByTestId, findAllByText } = renderRoster();
+      renderRoster();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
       // Click in New player button
-      const newButton = getByText("New");
+      const newButton = screen.getByText("New");
       fireEvent.click(newButton);
 
       // Submit form
-      const submitButton = getByTestId("player-submit-button");
+      const submitButton = screen.getByTestId("player-submit-button");
       fireEvent.click(submitButton);
 
-      const requiredFields = await findAllByText(/required/i);
+      const requiredFields = await screen.findAllByText(/required/i);
       expect(requiredFields.map((position) => position.textContent))
         .toMatchInlineSnapshot(`
         Array [
@@ -144,19 +137,14 @@ describe("Roster", () => {
 
   describe("Edit player", () => {
     test("happy path, modify a field and save", async () => {
-      const {
-        getByLabelText,
-        getByTestId,
-        getByText,
-        getAllByTestId,
-      } = renderRoster();
+      renderRoster();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
       // Hover on a player
-      const playerItem = getByText(/pablo/i).closest("li");
+      const playerItem = screen.getByText(/pablo/i).closest("li");
       const utils = within(playerItem!);
 
       // Click on the edit button
@@ -164,7 +152,7 @@ describe("Roster", () => {
       fireEvent.click(editButton);
 
       // Leave a required field empty
-      const firstNameInput = getByLabelText(/First name/i);
+      const firstNameInput = screen.getByLabelText(/First name/i);
       fireEvent.change(firstNameInput, {
         target: {
           value: "newname",
@@ -172,15 +160,15 @@ describe("Roster", () => {
       });
 
       // Submit form
-      const submitButton = getByTestId("player-submit-button");
+      const submitButton = screen.getByTestId("player-submit-button");
       fireEvent.click(submitButton);
 
-      // Wait for saving process
+      // Wait for saving process, modal has been closed
       await waitForElementToBeRemoved(screen.queryByText(/Modify player/i));
 
-      const players = getAllByTestId("player").map(
-        (position) => position.textContent
-      );
+      const players = screen
+        .getAllByTestId("player")
+        .map((position) => position.textContent);
       expect(players).toMatchInlineSnapshot(`
         Array [
           "PCPuyol, Charles6Defender",
@@ -201,19 +189,14 @@ describe("Roster", () => {
     });
 
     test("missing fields, should display required errors", async () => {
-      const {
-        getByLabelText,
-        getByTestId,
-        getByText,
-        findAllByText,
-      } = renderRoster();
+      renderRoster();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
       // Hover on a player
-      const playerItem = getByText(/pablo/i).closest("li");
+      const playerItem = screen.getByText(/pablo/i).closest("li");
       const utils = within(playerItem!);
 
       // Click on the edit button
@@ -221,7 +204,7 @@ describe("Roster", () => {
       fireEvent.click(editButton);
 
       // Leave a required field empty
-      const firstNameInput = getByLabelText(/First name/i);
+      const firstNameInput = screen.getByLabelText(/First name/i);
       fireEvent.change(firstNameInput, {
         target: {
           value: "",
@@ -229,10 +212,10 @@ describe("Roster", () => {
       });
 
       // Submit form
-      const submitButton = getByTestId("player-submit-button");
+      const submitButton = screen.getByTestId("player-submit-button");
       fireEvent.click(submitButton);
 
-      const requiredFields = await findAllByText(/required/i);
+      const requiredFields = await screen.findAllByText(/required/i);
       expect(requiredFields.map((position) => position.textContent))
         .toMatchInlineSnapshot(`
         Array [
@@ -244,14 +227,14 @@ describe("Roster", () => {
 
   describe("Delete player", () => {
     test("happy path", async () => {
-      const { getByText, getAllByTestId, queryByText } = renderRoster();
+      renderRoster();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
       // Hover on a player
-      const playerItem = getByText(/pablo/i).closest("li");
+      const playerItem = screen.getByText(/pablo/i).closest("li");
       const utils = within(playerItem!);
 
       // Click on the delete button
@@ -259,17 +242,17 @@ describe("Roster", () => {
       fireEvent.click(deleteButton);
 
       // Submit form
-      const submitButton = getByText(/do it/i);
+      const submitButton = screen.getByText(/do it/i);
       fireEvent.click(submitButton);
 
-      await waitForElementToBeRemoved(queryByText(/pablo/i));
+      await waitForElementToBeRemoved(screen.queryByText(/pablo/i));
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
       );
 
-      const players = getAllByTestId("player").map(
-        (position) => position.textContent
-      );
+      const players = screen
+        .getAllByTestId("player")
+        .map((position) => position.textContent);
       expect(players).toMatchInlineSnapshot(`
         Array [
           "PCPuyol, Charles6Defender",

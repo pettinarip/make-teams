@@ -57,7 +57,7 @@ describe("TeamLayout", () => {
   });
 
   test("delete layout", async () => {
-    const { getByTestId } = renderTeamLayout();
+    renderTeamLayout();
 
     await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
@@ -75,7 +75,7 @@ describe("TeamLayout", () => {
 
     // We are going to delete `custom3` layout, so here we grab the wrapper in
     // order to get its delete button
-    const layoutWrapper = getByTestId((id, el) => {
+    const layoutWrapper = screen.getByTestId((id, el) => {
       return (
         /custom-layout/i.test(id) &&
         (el as HTMLElement).textContent === "custom3"
@@ -111,15 +111,14 @@ describe("TeamLayout", () => {
 
   describe("add new layout", () => {
     test("(happy path) complete the fields and create the layout", async () => {
-      const utils = renderTeamLayout();
+      renderTeamLayout();
 
-      await waitForElementToBeRemoved(
-        () => screen.queryAllByTestId(/loading/i),
-        { container: utils.container as HTMLElement }
+      await waitForElementToBeRemoved(() =>
+        screen.queryAllByTestId(/loading/i)
       );
 
       // Click in New layout button
-      const newButton = utils.getByTestId("new-layout-button");
+      const newButton = screen.getByTestId("new-layout-button");
       fireEvent.click(newButton);
 
       // Complete fields
@@ -131,13 +130,11 @@ describe("TeamLayout", () => {
       });
 
       // Click on submit button
-      const submitButton = utils.getByTestId("new-layout-submit-button");
+      const submitButton = screen.getByTestId("new-layout-submit-button");
       fireEvent.click(submitButton);
 
       // Wait for saving process
-      await waitForElementToBeRemoved(submitButton, {
-        container: utils.container as HTMLElement,
-      });
+      await waitForElementToBeRemoved(submitButton);
 
       // Check that the new layout is at the bottom of the custom layouts list
       const layouts = screen
@@ -204,7 +201,7 @@ describe("TeamLayout", () => {
     });
 
     test("change size and save the new layout", async () => {
-      const { getAllByTestId } = renderTeamLayout();
+      renderTeamLayout();
 
       await waitForElementToBeRemoved(() =>
         screen.queryAllByTestId(/loading/i)
@@ -223,7 +220,7 @@ describe("TeamLayout", () => {
       });
 
       // Check that we have the default number of positions displayed
-      const oldPositions = getAllByTestId(/position/i);
+      const oldPositions = screen.getAllByTestId(/position/i);
       expect(oldPositions).toHaveLength(11);
 
       // Change size to 5
@@ -235,7 +232,7 @@ describe("TeamLayout", () => {
       });
 
       // Check that we have 5 positions displayed
-      const positions = getAllByTestId(/position/i);
+      const positions = screen.getAllByTestId(/position/i);
       expect(positions).toHaveLength(5);
     });
   });

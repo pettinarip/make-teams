@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
-import { IPlayer } from "../../containers/MakeTeam/types";
+import { IPlayer } from "../../../MakeTeam/types";
 
 export interface IProps extends Omit<IconButtonProps, "aria-label"> {
   player: IPlayer;

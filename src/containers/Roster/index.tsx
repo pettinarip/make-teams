@@ -6,28 +6,18 @@ import {
   Flex,
   FlexProps,
   Heading,
-  List,
-  ListItem,
   Skeleton,
   Stack,
-  useColorMode,
-  useToast,
 } from "@chakra-ui/react";
 
-import { IPlayer } from "../MakeTeam/types";
 import useGetPlayers from "../../dal/player/useGetPlayers";
-import useRemovePlayer from "../../dal/player/useRemovePlayer";
 import { hasReachedMaxNumber } from "../../domain/player";
 import CreatePlayerButton from "../../components/CreatePlayerButton";
-import EditPlayerButton from "../../components/EditPlayerButton";
-import RemovePlayerButton from "../../components/RemovePlayerButton";
-import Player from "../../components/Player";
+import PlayersList, {
+  IProps as IPlayersListProps,
+} from "./components/PlayersList";
 
-export interface IProps extends FlexProps {
-  selected?: IPlayer;
-  usedPlayersIds: Array<string>;
-  onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
-  onPlayerClick: (player: IPlayer) => void;
+export interface IProps extends FlexProps, Omit<IPlayersListProps, "players"> {
   onResetClick: () => void;
 }
 
@@ -40,33 +30,6 @@ export default function Roster({
   ...restProps
 }: IProps) {
   const { data: players = [], isLoading } = useGetPlayers();
-  const toast = useToast();
-  const { colorMode } = useColorMode();
-  const isDark = colorMode === "dark";
-  const selectedItemColor = isDark ? "gray.600" : "gray.300";
-  const {
-    mutateAsync: removePlayer,
-    isLoading: isRemoveLoading,
-  } = useRemovePlayer();
-
-  async function handleRemove(player: IPlayer) {
-    try {
-      await removePlayer(player);
-      toast({
-        title: "Player removed.",
-        description: `The new player ${player.lastName} was removed successfully.`,
-        status: "success",
-        isClosable: true,
-      });
-    } catch (e) {
-      toast({
-        title: "An error occured.",
-        description: `While trying to remove the player.`,
-        status: "error",
-        isClosable: true,
-      });
-    }
-  }
 
   return (
     <Flex {...restProps} h="100%" direction="column" justify="space-between">
@@ -74,7 +37,7 @@ export default function Roster({
         Roster ({players.length})
       </Heading>
 
-      {isLoading || isRemoveLoading ? (
+      {isLoading ? (
         <Stack data-testid="loading">
           <Skeleton height={6} />
           <Skeleton height={6} />
@@ -82,47 +45,13 @@ export default function Roster({
         </Stack>
       ) : (
         <>
-          <List overflow="auto" flex={1}>
-            {players
-              .filter((player: IPlayer) => !usedPlayersIds.includes(player.id))
-              .map((player: IPlayer) => (
-                <ListItem
-                  role="group"
-                  key={player.id}
-                  p={1}
-                  d="flex"
-                  flexDirection="row"
-                  justifyContent="space-between"
-                  border="1px solid"
-                  borderRadius={3}
-                  borderColor="transparent"
-                  bgColor={
-                    player.id === selected?.id
-                      ? selectedItemColor
-                      : "transparent"
-                  }
-                >
-                  <Player
-                    player={player}
-                    onDropInPosition={onPlayerDropInPosition}
-                    onClick={onPlayerClick}
-                  />
-                  <div>
-                    <EditPlayerButton
-                      player={player}
-                      opacity={0}
-                      _groupHover={{ opacity: 1 }}
-                    />
-                    <RemovePlayerButton
-                      player={player}
-                      onRemoved={handleRemove}
-                      opacity={0}
-                      _groupHover={{ opacity: 1 }}
-                    />
-                  </div>
-                </ListItem>
-              ))}
-          </List>
+          <PlayersList
+            players={players}
+            selected={selected}
+            usedPlayersIds={usedPlayersIds}
+            onPlayerClick={onPlayerClick}
+            onPlayerDropInPosition={onPlayerDropInPosition}
+          />
           <Box data-testid="roster-buttons" mt={6}>
             {hasReachedMaxNumber(players) && (
               <Alert status="warning" mb={4}>

@@ -16,8 +16,10 @@ export interface IProps extends ButtonProps {
 export default function CreateLayoutButton({ children, ...restProps }: IProps) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [state, setState] = useState({
+    isSubmitting: false,
+    error: "",
+  });
   const { mutateAsync: addNewLayout } = useAddNewLayout();
 
   const initialValues: IFormValues = {
@@ -29,8 +31,7 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
     values: IFormValues,
     { setErrors }: FormikHelpers<IFormValues>
   ) {
-    setIsSubmitting(true);
-    setError("");
+    setState({ isSubmitting: true, error: "" });
 
     try {
       const response = (await addNewLayout(values)) as CreateLayoutMutation;
@@ -41,7 +42,7 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
         if (error.field) {
           setErrors(toErrorMap(errors));
         } else {
-          setError(error.message);
+          setState({ ...state, error: error.message });
         }
       } else {
         toast({
@@ -54,10 +55,13 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
       }
     } catch (e) {
       console.log(e);
-      setError("There was an unexpected error while creating the layout");
+      setState({
+        ...state,
+        error: "There was an unexpected error while creating the layout",
+      });
     }
 
-    setIsSubmitting(false);
+    setState({ ...state, isSubmitting: false });
   }
 
   return (
@@ -74,9 +78,9 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
         title="Add a new layout"
         submitBtnText="Create"
         isOpen={isOpen}
-        isSubmitting={isSubmitting}
+        isSubmitting={state.isSubmitting}
         onClose={onClose}
-        error={error}
+        error={state.error}
         initialValues={initialValues}
         onSubmit={handleSubmit}
       />
