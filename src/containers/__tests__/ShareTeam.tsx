@@ -1,5 +1,6 @@
 import React from "react";
 import { rest } from "msw";
+import { waitForElementToBeRemoved } from "@testing-library/dom";
 
 import { render, screen, fireEvent, waitFor } from "../../test/appTestUtils";
 
@@ -11,7 +12,7 @@ interface IRenderProps {
   shareLink?: any;
 }
 
-async function renderShareTeam({ shareLink }: IRenderProps = {}) {
+function renderShareTeam({ shareLink }: IRenderProps = {}) {
   if (shareLink === undefined) {
     shareLink = shareTeamDB.create();
   }
@@ -41,14 +42,14 @@ describe("ShareTeam", () => {
       }
     };
 
-    const { shareLink, getByTestId, findByTestId } = await renderShareTeam();
+    const { shareLink } = renderShareTeam();
 
     // Click on the share team button
     const shareTeamBtn = screen.getByText(/share your team/i);
     fireEvent.click(shareTeamBtn);
 
     // Check that the correct modal appears
-    getByTestId("share-team-modal");
+    screen.getByTestId("share-team-modal");
 
     // Check that the form and the link are displayed
     const shareInput = (await screen.findByTestId(
@@ -57,28 +58,34 @@ describe("ShareTeam", () => {
     expect(shareInput.value).toEqual(`http://localhost/share/${shareLink.id}`);
 
     // Initialy it displays the fallback image
-    const image = await findByTestId("share-team-image");
+    const image = await screen.findByTestId("share-team-image");
     expect(image).toHaveAttribute("src", "https://via.placeholder.com/262x400");
 
     // Check that the correct image is displayed
     await waitFor(() => {
-      const image = getByTestId("share-team-image");
+      const image = screen.getByTestId("share-team-image");
       expect(image).toHaveAttribute("src", imageURL);
     });
   });
 
   test("when the image fails to load, display an error message and a fallback broken image", async () => {
-    const { getByTestId, findByTestId } = await renderShareTeam();
+    const imageURL = "http://imageURL.com";
+    // Mock URL createObjectURL
+    global.URL.createObjectURL = jest.fn(() => imageURL);
+
+    await renderShareTeam();
 
     // Click on the share team button
     const shareTeamBtn = screen.getByText(/share your team/i);
     fireEvent.click(shareTeamBtn);
 
     // Check that the correct modal appears
-    getByTestId("share-team-modal");
+    screen.getByTestId("share-team-modal");
+
+    await waitForElementToBeRemoved(() => screen.queryAllByTestId(/loading/i));
 
     // Check that the placeholder image is displayed
-    const image = await findByTestId("share-team-image");
+    const image = await screen.findByTestId("share-team-image");
     expect(image).toMatchInlineSnapshot(`
       <img
         class="chakra-image__placeholder css-11kgfqa"
@@ -98,7 +105,7 @@ describe("ShareTeam", () => {
 
     server.use(handler);
 
-    await renderShareTeam();
+    renderShareTeam();
 
     // Click on the share team button
     const shareTeamBtn = screen.getByText(/share your team/i);

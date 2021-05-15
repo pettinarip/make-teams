@@ -37,7 +37,7 @@ export default function ShareModal({
         <ModalBody>
           {isLoading || !id ? (
             <Center>
-              <Spinner />
+              <Spinner data-testid="loading" />
             </Center>
           ) : (
             <ExportForm id={id} showNames={showNames} my={6} />
