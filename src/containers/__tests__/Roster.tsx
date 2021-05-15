@@ -164,7 +164,12 @@ describe("Roster", () => {
       fireEvent.click(submitButton);
 
       // Wait for saving process, modal has been closed
-      await waitForElementToBeRemoved(screen.queryByText(/Modify player/i));
+      await waitForElementToBeRemoved(() => {
+        // console.log(screen.queryByText(/Modify player/i));
+        return screen.queryByText(/Modify player/i);
+      });
+
+      await screen.findByLabelText(/newname/i);
 
       const players = screen
         .getAllByTestId("player")
