@@ -44,15 +44,17 @@ export default function CreateLayoutButton({ children, ...restProps }: IProps) {
         } else {
           setState({ ...state, error: error.message });
         }
-      } else {
-        toast({
-          title: "Layout saved.",
-          description: `The new layout ${values.name} was saved successfully.`,
-          status: "success",
-          isClosable: true,
-        });
-        onClose();
+        return;
       }
+
+      toast({
+        title: "Layout saved.",
+        description: `The new layout ${values.name} was saved successfully.`,
+        status: "success",
+        isClosable: true,
+      });
+
+      onClose();
     } catch (e) {
       console.log(e);
       setState({

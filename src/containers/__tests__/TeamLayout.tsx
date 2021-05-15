@@ -136,6 +136,8 @@ describe("TeamLayout", () => {
       // Wait for saving process
       await waitForElementToBeRemoved(submitButton);
 
+      await screen.findByLabelText(/test/i);
+
       // Check that the new layout is at the bottom of the custom layouts list
       const layouts = screen
         .getAllByTestId("custom-layout")

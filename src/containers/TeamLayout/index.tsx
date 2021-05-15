@@ -27,6 +27,7 @@ export interface IProps extends Omit<FlexProps, "onChange"> {
 }
 
 export default function TeamLayout({ onChange, ...restProps }: IProps) {
+  const toast = useToast();
   const { layouts, isLoading } = useLayouts();
   const [selectedId, setSelectedId] = useState<string>();
   const isLargeBreakpoint = useBreakpointValue({ base: true, lg: false });
@@ -34,9 +35,11 @@ export default function TeamLayout({ onChange, ...restProps }: IProps) {
     mutateAsync: removeLayout,
     isLoading: isRemoveLoading,
   } = useRemoveLayout();
-  const toast = useToast();
 
-  const selected = layouts.find((l) => l.id === selectedId);
+  const selected = useMemo(() => layouts.find((l) => l.id === selectedId), [
+    layouts,
+    selectedId,
+  ]);
 
   // TODO: refactor, move all the layouts fetch to an upper level and avoid
   // doing this dirty auto-select workaround
