@@ -1,16 +1,16 @@
+import React, { useState } from "react";
 import { useColorMode } from "@chakra-ui/color-mode";
 import { List, ListItem, Stack } from "@chakra-ui/layout";
 import { Skeleton } from "@chakra-ui/skeleton";
 import { useToast } from "@chakra-ui/toast";
+import { IconButton } from "@chakra-ui/button";
+import { EditIcon } from "@chakra-ui/icons";
+import { useDisclosure } from "@chakra-ui/hooks";
 import EditPlayerModalForm from "../EditPlayerModalForm";
 import Player from "../../../../components/Player";
 import RemovePlayerButton from "../RemovePlayerButton";
 import useRemovePlayer from "../../../../dal/player/useRemovePlayer";
 import { IPlayer } from "../../../MakeTeam/types";
-import { IconButton } from "@chakra-ui/button";
-import { EditIcon } from "@chakra-ui/icons";
-import { useDisclosure } from "@chakra-ui/hooks";
-import { useState } from "react";
 
 export interface IProps {
   players: Array<IPlayer>;
@@ -130,4 +130,4 @@ function PlayersList({
   );
 }
 
-export default PlayersList;
+export default React.memo(PlayersList);

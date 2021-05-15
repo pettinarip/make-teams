@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Box, ChakraProps, Flex, useColorMode } from "@chakra-ui/react";
 
 import FieldStatic from "../../components/FieldStatic";
@@ -24,9 +24,10 @@ export default function MakeTeam(props: IProps) {
     positions
   );
 
-  const usedPlayersIds = assignments
-    .map((a) => a.player?.id)
-    .filter((id) => !!id) as string[];
+  const usedPlayersIds = useMemo(
+    () => assignments.map((a) => a.player?.id).filter((id) => !!id) as string[],
+    [assignments]
+  );
 
   const handleLayoutChange = useCallback(
     (layout: ILayout) => {
@@ -127,7 +128,6 @@ export default function MakeTeam(props: IProps) {
 
           <Roster
             flex={1}
-            mt={{ base: 6, sm: 0 }}
             selected={selectedPlayer}
             usedPlayersIds={usedPlayersIds}
             onPlayerDropInPosition={handlePlayerDropInPosition}

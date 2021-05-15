@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
 import { IPlayer } from "../../../MakeTeam/types";
@@ -13,11 +13,7 @@ interface IProps {
   onClose: () => void;
 }
 
-export default function EditPlayerModalForm({
-  player,
-  isOpen,
-  onClose,
-}: IProps) {
+function EditPlayerModalForm({ player, isOpen, onClose }: IProps) {
   const toast = useToast();
   const { mutateAsync: editPlayer } = useEditPlayer();
   const [state, setState] = useState({
@@ -25,15 +21,18 @@ export default function EditPlayerModalForm({
     hasErrors: false,
   });
 
-  const initialValues: IFormValues = {
-    firstName: player.firstName,
-    lastName: player.lastName,
-    gender: undefined,
-    number: player.number,
-    position: undefined,
-  };
+  const initialValues: IFormValues = useMemo(
+    () => ({
+      firstName: player.firstName,
+      lastName: player.lastName,
+      gender: undefined,
+      number: player.number,
+      position: undefined,
+    }),
+    [player]
+  );
 
-  async function handleSubmit(values: IFormValues) {
+  const handleSubmit = useCallback(async function (values: IFormValues) {
     setState({
       isSubmitting: true,
       hasErrors: false,
@@ -65,12 +64,7 @@ export default function EditPlayerModalForm({
 
       return;
     }
-
-    setState({
-      isSubmitting: false,
-      hasErrors: false,
-    });
-  }
+  }, []);
 
   return (
     <PlayerModalForm
@@ -85,3 +79,5 @@ export default function EditPlayerModalForm({
     />
   );
 }
+
+export default React.memo(EditPlayerModalForm);

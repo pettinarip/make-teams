@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Alert,
   AlertIcon,
@@ -32,7 +33,13 @@ export default function Roster({
   const { data: players = [], isLoading } = useGetPlayers();
 
   return (
-    <Flex {...restProps} h="100%" direction="column" justify="space-between">
+    <Flex
+      {...restProps}
+      mt={{ base: 6, sm: 0 }}
+      h="100%"
+      direction="column"
+      justify="space-between"
+    >
       <Heading as="h4" fontSize="md" mb={6}>
         Roster ({players.length})
       </Heading>
