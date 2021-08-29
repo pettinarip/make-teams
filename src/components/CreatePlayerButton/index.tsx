@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import { Button, useDisclosure, useToast, ButtonProps } from "@chakra-ui/react";
 
 import useAddNewPlayer from "../../dal/player/useAddNewPlayer";
-import { IFormValues } from "../PlayerForm";
+import { EGender, IFormValues } from "../PlayerForm";
 import PlayerModalForm from "../PlayerModalForm";
 
 export interface IProps extends ButtonProps {
@@ -19,9 +19,9 @@ export default function CreatePlayerButton({ children, ...restProps }: IProps) {
   const initialValues: IFormValues = {
     firstName: "",
     lastName: "",
-    gender: undefined,
+    gender: EGender.OTHER,
     number: undefined,
-    position: undefined,
+    position: "gl",
   };
 
   async function handleSubmit(values: IFormValues) {

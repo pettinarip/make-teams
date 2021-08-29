@@ -17,5 +17,9 @@ export default function validate(values: IFormValues) {
     errors.number = "Required";
   }
 
+  if (!values.position) {
+    errors.position = "Required";
+  }
+
   return errors;
 }

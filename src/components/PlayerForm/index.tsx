@@ -10,20 +10,32 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
-  RadioGroup,
   Radio,
-  Stack,
 } from "@chakra-ui/react";
-import { Formik, FormikProps, FormikHelpers, Field, FieldProps } from "formik";
+import {
+  Formik,
+  FormikProps,
+  FormikHelpers,
+  Field,
+  FieldProps,
+  Form,
+} from "formik";
+import { RadioGroupControl } from "formik-chakra-ui";
 
 import validate from "./validate";
+
+export enum EGender {
+  MALE = "male",
+  FEMALE = "female",
+  OTHER = "other",
+}
 
 export interface IFormValues {
   firstName: string;
   lastName: string;
-  gender?: string;
+  gender: EGender;
   number?: number;
-  position?: "gl" | "def" | "mid" | "fwd";
+  position: "gl" | "def" | "mid" | "fwd";
 }
 
 export interface IProps {
@@ -32,11 +44,11 @@ export interface IProps {
   bindSubmitForm: (submitForm: Function) => void;
 }
 
-const GENDER_OPTIONS = [
-  { text: "Male", value: "male" },
-  { text: "Female", value: "female" },
-  { text: "Other", value: "other" },
-];
+const GENDER_OPTIONS: { [gender: string]: string } = {
+  [EGender.MALE]: "Male",
+  [EGender.FEMALE]: "Female",
+  [EGender.OTHER]: "Other",
+};
 
 export default function PlayerForm(props: IProps) {
   return (
@@ -50,7 +62,7 @@ export default function PlayerForm(props: IProps) {
       {({ submitForm }: FormikProps<IFormValues>) => {
         props.bindSubmitForm(submitForm);
         return (
-          <form>
+          <Form>
             <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={6}>
               <Field name="firstName">
                 {({ field, form }: FieldProps) => (
@@ -90,9 +102,9 @@ export default function PlayerForm(props: IProps) {
                 >
                   <FormLabel htmlFor="gender">Gender</FormLabel>
                   <Select {...field} id="gender" placeholder="Gender">
-                    {GENDER_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.text}
+                    {Object.keys(GENDER_OPTIONS).map((key) => (
+                      <option key={key} value={key}>
+                        {GENDER_OPTIONS[key]}
                       </option>
                     ))}
                   </Select>
@@ -127,33 +139,27 @@ export default function PlayerForm(props: IProps) {
                 </FormControl>
               )}
             </Field>
-            <Field name="position">
-              {({ field, form }: FieldProps) => (
-                <FormControl
-                  isRequired
-                  isInvalid={!!form.errors.position && !!form.touched.position}
-                  mt={6}
-                >
-                  <FormLabel htmlFor="position">Position</FormLabel>
-                  <RadioGroup
-                    {...field}
-                    id="position"
-                    onChange={(value) => {
-                      form.setFieldValue("position", value);
-                    }}
-                  >
-                    <Stack>
-                      <Radio value="gl">Goalkeeper</Radio>
-                      <Radio value="def">Defender</Radio>
-                      <Radio value="mid">Mid</Radio>
-                      <Radio value="fwd">Forward</Radio>
-                    </Stack>
-                  </RadioGroup>
-                  <FormErrorMessage>{form.errors.position}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-          </form>
+            <RadioGroupControl
+              name="position"
+              label="Position"
+              isRequired
+              stackProps={{ direction: "column" }}
+              mt={6}
+            >
+              <Radio id="position-gl" value="gl">
+                Goalkeeper
+              </Radio>
+              <Radio id="position-def" value="def">
+                Defender
+              </Radio>
+              <Radio id="position-mid" value="mid">
+                Mid
+              </Radio>
+              <Radio id="position-fwd" value="fwd">
+                Forward
+              </Radio>
+            </RadioGroupControl>
+          </Form>
         );
       }}
     </Formik>
