@@ -17,7 +17,7 @@ import {
   Input,
   Link,
 } from "@chakra-ui/react";
-import { FaGithub } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaTwitter } from "react-icons/fa";
 
 import useLogin from "../dal/user/useLogin";
 
@@ -136,6 +136,24 @@ export default function Login(__props: IProps) {
       >
         Github
       </Button>
+      {/* <Button
+        as="a"
+        mt={3}
+        width="100%"
+        href={`${process.env.NEXT_PUBLIC_API_URL}/facebook`}
+        leftIcon={<FaFacebook />}
+      >
+        Facebook
+      </Button>
+      <Button
+        as="a"
+        mt={3}
+        width="100%"
+        href={`${process.env.NEXT_PUBLIC_API_URL}/twitter`}
+        leftIcon={<FaTwitter />}
+      >
+        Twitter
+      </Button> */}
       <FormControl textAlign="center" my={4}>
         <FormHelperText>
           New to us?{" "}
