@@ -1,26 +1,11 @@
+import { Grid, Radio } from "@chakra-ui/react";
+import { Formik, FormikProps, FormikHelpers, Form } from "formik";
 import {
-  Grid,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  Select,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Radio,
-} from "@chakra-ui/react";
-import {
-  Formik,
-  FormikProps,
-  FormikHelpers,
-  Field,
-  FieldProps,
-  Form,
-} from "formik";
-import { RadioGroupControl } from "formik-chakra-ui";
+  InputControl,
+  NumberInputControl,
+  RadioGroupControl,
+  SelectControl,
+} from "formik-chakra-ui";
 
 import validate from "./validate";
 
@@ -64,85 +49,33 @@ export default function PlayerForm(props: IProps) {
         return (
           <Form>
             <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={6}>
-              <Field name="firstName">
-                {({ field, form }: FieldProps) => (
-                  <FormControl
-                    isRequired
-                    isInvalid={
-                      !!form.errors.firstName && !!form.touched.firstName
-                    }
-                  >
-                    <FormLabel htmlFor="firstName">First name</FormLabel>
-                    <Input {...field} id="firstName" placeholder="First name" />
-                    <FormErrorMessage>{form.errors.firstName}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-              <Field name="lastName">
-                {({ field, form }: FieldProps) => (
-                  <FormControl
-                    isRequired
-                    isInvalid={
-                      !!form.errors.lastName && !!form.touched.lastName
-                    }
-                  >
-                    <FormLabel htmlFor="lastName">Last name</FormLabel>
-                    <Input {...field} id="lastName" placeholder="Last name" />
-                    <FormErrorMessage>{form.errors.lastName}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
+              <InputControl name="firstName" label="First name" isRequired />
+              <InputControl name="lastName" label="Last name" isRequired />
             </Grid>
-            <Field name="gender">
-              {({ field, form }: FieldProps) => (
-                <FormControl
-                  isRequired
-                  isInvalid={!!form.errors.gender && !!form.touched.gender}
-                  mt={6}
-                >
-                  <FormLabel htmlFor="gender">Gender</FormLabel>
-                  <Select {...field} id="gender" placeholder="Gender">
-                    {Object.keys(GENDER_OPTIONS).map((key) => (
-                      <option key={key} value={key}>
-                        {GENDER_OPTIONS[key]}
-                      </option>
-                    ))}
-                  </Select>
-                  <FormErrorMessage>{form.errors.gender}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
-            <Field name="number">
-              {({ field, form }: FieldProps) => (
-                <FormControl
-                  isRequired
-                  isInvalid={!!form.errors.number && !!form.touched.number}
-                  mt={6}
-                >
-                  <FormLabel htmlFor="number">Number</FormLabel>
-                  <NumberInput
-                    {...field}
-                    id="number"
-                    onChange={(value) => {
-                      form.setFieldValue("number", parseInt(value));
-                    }}
-                    min={0}
-                    max={99}
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                  <FormErrorMessage>{form.errors.number}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+            <SelectControl
+              isRequired
+              label="Gender"
+              name="gender"
+              selectProps={{ placeholder: "Select option" }}
+              mt={6}
+            >
+              {Object.keys(GENDER_OPTIONS).map((key) => (
+                <option key={key} value={key}>
+                  {GENDER_OPTIONS[key]}
+                </option>
+              ))}
+            </SelectControl>
+            <NumberInputControl
+              isRequired
+              name="number"
+              label="Number"
+              numberInputProps={{ min: 0, max: 99 }}
+              mt={6}
+            />
             <RadioGroupControl
+              isRequired
               name="position"
               label="Position"
-              isRequired
               stackProps={{ direction: "column" }}
               mt={6}
             >
