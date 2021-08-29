@@ -84,6 +84,7 @@ export default function MakeTeam(props: IProps) {
   );
 
   const handleOnClear = useCallback(() => {
+    setSelectedPlayer(undefined);
     reset();
   }, [reset]);
 
