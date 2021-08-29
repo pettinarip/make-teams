@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
 import * as yup from "yup";
-import { Formik, Field, FormikHelpers, FieldProps, Form } from "formik";
+import { Formik, Field, FieldProps, Form } from "formik";
 import {
   Alert,
   AlertDescription,
@@ -17,8 +17,8 @@ import {
   Input,
   Link,
 } from "@chakra-ui/react";
+import { FaGithub } from "react-icons/fa";
 
-import toErrorMap from "../utils/toErrorMap";
 import useLogin from "../dal/user/useLogin";
 
 export interface IProps {}
@@ -44,25 +44,18 @@ export default function Login(__props: IProps) {
 
   const initialValues: IFormValues = { email: "", password: "" };
 
-  async function handleLogin(
-    values: IFormValues,
-    { setErrors }: FormikHelpers<IFormValues>
-  ) {
+  async function handleLogin(values: IFormValues) {
     setError("");
 
     try {
       const response = await login(values);
-      const errors = response?.login.errors;
-      if (errors) {
-        const error = errors[0];
-        if (error.field) {
-          setErrors(toErrorMap(errors));
-        } else {
-          setError(error.message);
-        }
-      } else {
-        await router.replace("/");
+      const error = response?.message;
+      if (error) {
+        setError(error);
+        return;
       }
+
+      await router.replace("/");
     } catch (e) {
       // Some unexpected error ocurred. Show a generic message.
       setError("There was an internal error. Try again later.");
@@ -134,6 +127,15 @@ export default function Login(__props: IProps) {
           </Form>
         )}
       </Formik>
+      <Button
+        as="a"
+        mt={3}
+        width="100%"
+        href={`${process.env.NEXT_PUBLIC_API_URL}/github`}
+        leftIcon={<FaGithub />}
+      >
+        Github
+      </Button>
       <FormControl textAlign="center" my={4}>
         <FormHelperText>
           New to us?{" "}
