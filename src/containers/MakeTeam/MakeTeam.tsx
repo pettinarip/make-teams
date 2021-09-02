@@ -78,6 +78,7 @@ export default function MakeTeam(props: IProps) {
 
   const handlePositionRemove = useCallback(
     (positionIndex: number) => {
+      setSelectedPlayer(undefined);
       unassign(positionIndex);
     },
     [unassign]
