@@ -53,7 +53,7 @@ export default function MakeTeam(props: IProps) {
         setSelectedPlayer(undefined);
       }
     },
-    [setSelectedPlayer]
+    [setSelectedPlayer, selectedPlayer]
   );
 
   const handlePositionDropInPosition = useCallback(
