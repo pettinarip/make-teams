@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 
 import { IPlayer } from "../../../MakeTeam/types";
-import { IFormValues } from "../../../../components/PlayerForm";
+import { EGender, IFormValues } from "../../../../components/PlayerForm";
 import PlayerModalForm from "../../../../components/PlayerModalForm";
 import useEditPlayer from "../../../../dal/player/useEditPlayer";
 
@@ -25,9 +25,9 @@ function EditPlayerModalForm({ player, isOpen, onClose }: IProps) {
     () => ({
       firstName: player.firstName,
       lastName: player.lastName,
-      gender: undefined,
+      gender: EGender.OTHER,
       number: player.number,
-      position: undefined,
+      position: "gl",
     }),
     [player]
   );

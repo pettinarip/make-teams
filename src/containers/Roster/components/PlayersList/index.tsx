@@ -63,6 +63,11 @@ function PlayersList({
     editDisclosure.onOpen();
   }
 
+  function handleClose() {
+    setEditPlayer(undefined);
+    editDisclosure.onClose();
+  }
+
   if (isRemoveLoading) {
     return (
       <Stack data-testid="loading">
@@ -123,7 +128,7 @@ function PlayersList({
           player={editPlayer}
           isOpen={editDisclosure.isOpen}
           onOpen={editDisclosure.onOpen}
-          onClose={editDisclosure.onClose}
+          onClose={handleClose}
         />
       )}
     </>
