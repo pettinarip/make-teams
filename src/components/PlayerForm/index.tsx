@@ -44,7 +44,7 @@ export default function PlayerForm(props: IProps) {
       validateOnChange={false}
       validateOnBlur={false}
     >
-      {({ submitForm }: FormikProps<IFormValues>) => {
+      {({ submitForm, setFieldValue }: FormikProps<IFormValues>) => {
         props.bindSubmitForm(submitForm);
         return (
           <Form>
@@ -69,7 +69,13 @@ export default function PlayerForm(props: IProps) {
               isRequired
               name="number"
               label="Number"
-              numberInputProps={{ min: 0, max: 99 }}
+              numberInputProps={{
+                onChange: (value) => {
+                  setFieldValue("number", parseInt(value));
+                },
+                min: 0,
+                max: 99,
+              }}
               mt={6}
             />
             <RadioGroupControl
