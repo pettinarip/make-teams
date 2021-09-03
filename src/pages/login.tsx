@@ -17,7 +17,7 @@ import {
   Input,
   Link,
 } from "@chakra-ui/react";
-import { FaFacebook, FaGithub, FaTwitter } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 import useLogin from "../dal/user/useLogin";
 
