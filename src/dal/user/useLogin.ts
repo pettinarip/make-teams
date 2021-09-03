@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { User } from "../../graphql/API";
 
@@ -12,7 +12,12 @@ interface ILoginResponse extends Pick<User, "id" | "email"> {
 }
 
 export default function useLogin() {
+  const queryClient = useQueryClient();
+
   return useMutation<ILoginResponse, any, IArgs>(async (variables) => {
+    queryClient.invalidateQueries();
+    queryClient.clear();
+
     const formData = new URLSearchParams();
     formData.append("email", variables.email);
     formData.append("password", variables.password);

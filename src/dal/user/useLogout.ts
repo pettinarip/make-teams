@@ -7,6 +7,7 @@ export default function useLogout() {
   const queryClient = useQueryClient();
 
   return useMutation<LogoutMutation, FieldError[]>(() => {
+    queryClient.invalidateQueries();
     queryClient.clear();
     return sdk.Logout();
   });
