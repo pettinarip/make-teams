@@ -18,7 +18,9 @@ export default function Controls({
 }: IProps) {
   return (
     <FormControl as={Center} {...restProps}>
-      <FormLabel htmlFor="show-names">Show names</FormLabel>
+      <FormLabel htmlFor="show-names" mb={0}>
+        Show names
+      </FormLabel>
       <Switch
         id="show-names"
         isChecked={showNames}

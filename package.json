@@ -11,14 +11,14 @@
     "format": "prettier --write \"./src/**/*.{js,ts,jsx,tsx}\""
   },
   "dependencies": {
-    "@chakra-ui/icons": "^1.0.3",
-    "@chakra-ui/react": "^1.1.4",
+    "@chakra-ui/icons": "^1.1.7",
+    "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "@seznam/compose-react-refs": "^1.0.5",
     "formik": "^2.2.6",
     "formik-chakra-ui": "^1.4.7",
-    "framer-motion": "^3.2.1",
+    "framer-motion": "^4.0.0",
     "graphql": "^15.4.0",
     "graphql-request": "^3.4.0",
     "immer": "^8.0.1",
