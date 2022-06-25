@@ -20,3 +20,8 @@ export interface ILayout extends Pick<Layout, "id" | "name" | "createdAt"> {
 export interface IShareTeam extends ShareLink {}
 
 export interface IShareLinkPosition extends ShareLinkPosition {}
+
+export enum ItemType {
+  POSITION = "position",
+  PLAYER = "player",
+}

@@ -15,7 +15,6 @@ export interface IProps extends IStaticProps {
 export interface IDragPosition {
   index: number;
   position: IPosition;
-  type: string;
 }
 
 export default function PositionDrag({
@@ -26,12 +25,15 @@ export default function PositionDrag({
   const dragPosition: IDragPosition = {
     index,
     position,
-    type: ITEM_TYPE,
   };
 
-  const [{ isDragging }, drag, preview] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
+    type: ITEM_TYPE,
     item: dragPosition,
-  });
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
 
   // Disable the default drag and drop preview image
   useEffect(() => {

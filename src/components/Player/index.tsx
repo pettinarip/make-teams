@@ -2,9 +2,7 @@ import React from "react";
 import { Avatar, Flex, Box, Text, Badge } from "@chakra-ui/react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
-import { IPlayer } from "../../containers/MakeTeam/types";
-
-export const ITEM_TYPE = "player";
+import { IPlayer, ItemType } from "../../containers/MakeTeam/types";
 
 export interface IProps {
   player: IPlayer;
@@ -13,8 +11,9 @@ export interface IProps {
 }
 
 export default function Player({ player, onDropInPosition, onClick }: IProps) {
-  const [, drag] = useDrag({
-    item: { player, type: ITEM_TYPE },
+  const [, drag] = useDrag(() => ({
+    type: ItemType.PLAYER,
+    item: { player },
     end: (
       __item: { player: IPlayer } | undefined,
       monitor: DragSourceMonitor
@@ -24,7 +23,7 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
         onDropInPosition(player, dropResult.index);
       }
     },
-  });
+  }));
 
   function handleOnClick() {
     onClick(player);

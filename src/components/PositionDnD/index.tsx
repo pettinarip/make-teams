@@ -1,8 +1,11 @@
 import React from "react";
 import { useDrag, DragSourceMonitor } from "react-dnd";
 
-import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
-import ItemTypes from "./ItemTypes";
+import {
+  IPosition,
+  IShareLinkPosition,
+  ItemType,
+} from "../../containers/MakeTeam/types";
 import PositionDrop, { IProps as IPositionDropProps } from "../PositionDrop";
 
 export interface IProps extends IPositionDropProps {
@@ -18,7 +21,6 @@ export interface IProps extends IPositionDropProps {
 export interface IDragPosition {
   index: number;
   position: IPosition | IShareLinkPosition;
-  type: string;
 }
 
 export default function PositionDnD({
@@ -31,10 +33,10 @@ export default function PositionDnD({
   const dragPosition: IDragPosition = {
     index,
     position,
-    type: ItemTypes.POSITION,
   };
 
-  const [, drag] = useDrag({
+  const [, drag] = useDrag(() => ({
+    type: ItemType.POSITION,
     item: dragPosition,
     end: (
       __item: { index: number } | undefined,
@@ -45,7 +47,7 @@ export default function PositionDnD({
         onPositionDropInPosition(index, dropResult.index);
       }
     },
-  });
+  }));
 
   return (
     <PositionDrop
