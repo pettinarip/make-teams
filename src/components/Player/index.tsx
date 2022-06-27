@@ -1,8 +1,16 @@
 import React from "react";
-import { Avatar, Flex, Box, Text, Badge } from "@chakra-ui/react";
-import { useDrag, DragSourceMonitor } from "react-dnd";
+import { Avatar, Box, Text, Badge } from "@chakra-ui/react";
+import { useSpring, animated } from "@react-spring/web";
+import { useGesture } from "@use-gesture/react";
+import styled from "@emotion/styled";
 
-import { IPlayer, ItemType } from "../../containers/MakeTeam/types";
+import { IPlayer } from "../../containers/MakeTeam/types";
+
+const Container = styled(animated.div)`
+  display: flex;
+  cursor: pointer;
+  touch-action: none;
+`;
 
 export interface IProps {
   player: IPlayer;
@@ -10,34 +18,30 @@ export interface IProps {
   onClick: (player: IPlayer) => void;
 }
 
-export default function Player({ player, onDropInPosition, onClick }: IProps) {
-  const [, drag] = useDrag(() => ({
-    type: ItemType.PLAYER,
-    item: { player },
-    end: (
-      __item: { player: IPlayer } | undefined,
-      monitor: DragSourceMonitor
-    ) => {
-      const dropResult = monitor.getDropResult();
-      if (player && dropResult && dropResult.index > -1) {
-        onDropInPosition(player, dropResult.index);
-      }
-    },
-  }));
+export default function Player({ player, onClick }: IProps) {
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
-  function handleOnClick() {
-    onClick(player);
-  }
+  const bind = useGesture(
+    {
+      onDrag: ({ down, movement: [mx, my], tap }) => {
+        if (tap) {
+          onClick(player);
+        }
+
+        api.start({ x: down ? mx : 0, y: down ? my : 0, immediate: down });
+      },
+    },
+    {
+      drag: {
+        filterTaps: true,
+      },
+    }
+  );
 
   const playerName = `${player.lastName}, ${player.firstName}`;
 
   return (
-    <Flex
-      ref={drag}
-      onClick={handleOnClick}
-      data-testid="player"
-      cursor="pointer"
-    >
+    <Container {...bind()} style={{ x, y }} data-testid="player">
       <Avatar name={playerName} />
       <Box ml="3">
         <Text fontWeight="bold">
@@ -48,6 +52,6 @@ export default function Player({ player, onDropInPosition, onClick }: IProps) {
           Defender
         </Text>
       </Box>
-    </Flex>
+    </Container>
   );
 }

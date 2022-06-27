@@ -80,7 +80,7 @@ function PlayersList({
 
   return (
     <>
-      <List overflow="auto" flex={1}>
+      <List flex={1}>
         {players
           .filter((player: IPlayer) => !usedPlayersIds.includes(player.id))
           .map((player: IPlayer) => (
