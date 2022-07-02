@@ -1,7 +1,7 @@
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { Box } from "@chakra-ui/react";
+
+import { DndContextProvider } from "../../contexts/dnd";
 
 import MakeTeam from "./MakeTeam";
 import Menu from "../../components/Menu";
@@ -12,9 +12,9 @@ function MakeTeamManager(__props: IProps) {
   return (
     <Box maxW={{ xl: 1200 }} m="0 auto">
       <Menu mb={12} />
-      <DndProvider backend={HTML5Backend}>
+      <DndContextProvider>
         <MakeTeam />
-      </DndProvider>
+      </DndContextProvider>
     </Box>
   );
 }

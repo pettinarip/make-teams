@@ -25,7 +25,6 @@ export interface IProps extends FlexProps, Omit<IPlayersListProps, "players"> {
 export default function Roster({
   selected,
   usedPlayersIds,
-  onPlayerDropInPosition,
   onPlayerClick,
   onResetClick,
   ...restProps
@@ -57,7 +56,6 @@ export default function Roster({
             selected={selected}
             usedPlayersIds={usedPlayersIds}
             onPlayerClick={onPlayerClick}
-            onPlayerDropInPosition={onPlayerDropInPosition}
           />
           <Box data-testid="roster-buttons" mt={6}>
             {hasReachedMaxNumber(players) && (

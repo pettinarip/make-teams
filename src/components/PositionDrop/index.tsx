@@ -1,8 +1,8 @@
 import React, { forwardRef, Ref, useCallback } from "react";
-import { useDrop } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
 
 import {
+  IPlayer,
   IPosition,
   IShareLinkPosition,
   ItemType,
@@ -10,40 +10,44 @@ import {
 import PositionStatic, {
   IProps as IPositionStaticProps,
 } from "../PositionStatic";
+import { useDrop } from "../../contexts/dnd";
 
-export interface IProps extends Omit<IPositionStaticProps, "onClick"> {
+export interface IProps
+  extends Omit<IPositionStaticProps, "onClick" | "onDrop"> {
   index: number;
   position: IPosition | IShareLinkPosition;
   onClick?: (index: number) => void;
-}
-
-export interface IDropPosition {
-  index: number;
-  position: IPosition | IShareLinkPosition;
+  onPlayerDrop?: (player: IPlayer, positionIndex: number) => void;
+  onPositionDrop?: (index: number, positionIndex: number) => void;
 }
 
 function PositionDrop(
-  { index, position, onClick, ...restProps }: IProps,
-  ref: Ref<HTMLDivElement>
-) {
-  const dropPosition: IDropPosition = {
+  {
     index,
     position,
-  };
-
-  const [{ canDrop, isOver }, drop] = useDrop({
+    onClick,
+    isActive,
+    onPlayerDrop,
+    onPositionDrop,
+    ...restProps
+  }: IProps,
+  ref: Ref<HTMLDivElement>
+) {
+  const { ref: drop } = useDrop({
     accept: [ItemType.POSITION, ItemType.PLAYER],
-    drop: () => dropPosition,
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
+    onDrop: (type, [item]) => {
+      if (type === ItemType.PLAYER && onPlayerDrop) {
+        onPlayerDrop(item as IPlayer, index);
+      }
+
+      if (type === ItemType.POSITION && onPositionDrop) {
+        onPositionDrop(item as number, index);
+      }
+    },
   });
 
-  const isActive = canDrop && isOver;
-
   const handleClick = useCallback(() => {
-    if (onClick) onClick(index);
+    // if (onClick) onClick(index);
   }, [onClick, index]);
 
   return (

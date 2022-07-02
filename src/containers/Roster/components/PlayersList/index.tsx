@@ -16,7 +16,6 @@ export interface IProps {
   players: Array<IPlayer>;
   selected?: IPlayer;
   usedPlayersIds: Array<string>;
-  onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPlayerClick: (player: IPlayer) => void;
 }
 
@@ -24,7 +23,6 @@ function PlayersList({
   players,
   selected,
   usedPlayersIds,
-  onPlayerDropInPosition,
   onPlayerClick,
 }: IProps) {
   const toast = useToast();
@@ -98,11 +96,7 @@ function PlayersList({
                 player.id === selected?.id ? selectedItemColor : "transparent"
               }
             >
-              <Player
-                player={player}
-                onDropInPosition={onPlayerDropInPosition}
-                onClick={onPlayerClick}
-              />
+              <Player player={player} onClick={onPlayerClick} />
               <div>
                 <IconButton
                   opacity={0}

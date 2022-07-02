@@ -2,7 +2,11 @@ import React from "react";
 
 import Field from "../Field";
 
-import { IPosition, IShareLinkPosition } from "../../containers/MakeTeam/types";
+import {
+  IPlayer,
+  IPosition,
+  IShareLinkPosition,
+} from "../../containers/MakeTeam/types";
 import PositionDnD from "../PositionDnD";
 import PositionStatic from "../PositionStatic";
 import PositionDrop from "../PositionDrop";
@@ -13,6 +17,7 @@ interface IProps {
   showNames?: boolean;
   positions: Array<IPosition | IShareLinkPosition>;
   highlight?: boolean;
+  onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
     positionDroppedIndex: number
@@ -38,7 +43,10 @@ export default function FieldStatic(props: IProps) {
           <PositionDnD
             index={index}
             showRemoveButton
-            onPositionDropInPosition={props.onPositionDropInPosition}
+            onPositionDrop={(index, positionIndex) =>
+              props.onPositionDropInPosition(index, positionIndex)
+            }
+            onPlayerDrop={props.onPlayerDropInPosition}
             onPositionClick={props.onPositionClick}
             onRemoveClick={() => {
               if (props.onPositionRemove) {
@@ -52,6 +60,10 @@ export default function FieldStatic(props: IProps) {
           <PositionDrop
             index={index}
             onClick={props.onPositionClick}
+            onPositionDrop={(index, positionIndex) =>
+              props.onPositionDropInPosition(index, positionIndex)
+            }
+            onPlayerDrop={props.onPlayerDropInPosition}
             {...commonProps}
           />
         );

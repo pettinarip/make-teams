@@ -122,6 +122,7 @@ export default function MakeTeam(props: IProps) {
               // has selected a player in the Roster and want to assign it to a
               // position in the field
               highlight={!!selectedPlayer}
+              onPlayerDropInPosition={handlePlayerDropInPosition}
               onPositionDropInPosition={handlePositionDropInPosition}
               onPositionClick={handlePositionClick}
               onPositionRemove={handlePositionRemove}
@@ -132,7 +133,6 @@ export default function MakeTeam(props: IProps) {
             flex={1}
             selected={selectedPlayer}
             usedPlayersIds={usedPlayersIds}
-            onPlayerDropInPosition={handlePlayerDropInPosition}
             onPlayerClick={handlePlayerClick}
             onResetClick={handleOnClear}
           />
