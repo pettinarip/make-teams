@@ -27,6 +27,7 @@ export default function PositionDnD({
   return (
     <PositionDrop
       {...bind(index)}
+      // @ts-ignore
       style={{ x, y, touchAction: "none" }}
       index={index}
       position={position}

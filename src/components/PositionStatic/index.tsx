@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref } from "react";
+import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 
 import Position, { IProps as IPositionProps } from "../Position";
@@ -7,16 +7,15 @@ export interface IProps extends IPositionProps {
   onClick?: () => void;
 }
 
-function PositionStatic(
-  { position, onClick, ...restProps }: IProps,
-  ref: Ref<HTMLDivElement>
-) {
-  return (
-    <Wrapper ref={ref} x={position.x} y={position.y} onClick={onClick}>
-      <Position position={position} {...restProps} />
-    </Wrapper>
-  );
-}
+const PositionStatic = forwardRef<HTMLDivElement, IProps>(
+  ({ position, onClick, ...restProps }, ref) => {
+    return (
+      <Wrapper ref={ref} x={position.x} y={position.y} onClick={onClick}>
+        <Position position={position} {...restProps} />
+      </Wrapper>
+    );
+  }
+);
 
 const Wrapper = styled.div<{ x: number; y: number }>(
   {
@@ -31,4 +30,4 @@ const Wrapper = styled.div<{ x: number; y: number }>(
   })
 );
 
-export default forwardRef(PositionStatic);
+export default PositionStatic;

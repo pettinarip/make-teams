@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref, useCallback } from "react";
+import React, { forwardRef, useCallback } from "react";
 import composeRefs from "@seznam/compose-react-refs";
 
 import {
@@ -21,44 +21,46 @@ export interface IProps
   onPositionDrop?: (draggedIndex: number, positionIndex: number) => void;
 }
 
-function PositionDrop(
-  {
-    index,
-    position,
-    onClick,
-    isActive,
-    onPlayerDrop,
-    onPositionDrop,
-    ...restProps
-  }: IProps,
-  ref: Ref<HTMLDivElement>
-) {
-  const { ref: drop } = useDrop({
-    accept: [ItemType.POSITION, ItemType.PLAYER],
-    onDrop: (type, [item]) => {
-      if (type === ItemType.PLAYER && onPlayerDrop) {
-        onPlayerDrop(item as IPlayer, index);
-      }
-
-      if (type === ItemType.POSITION && onPositionDrop) {
-        onPositionDrop(item as number, index);
-      }
+const PositionDrop = forwardRef<HTMLDivElement, IProps>(
+  (
+    {
+      index,
+      position,
+      onClick,
+      isActive,
+      onPlayerDrop,
+      onPositionDrop,
+      ...restProps
     },
-  });
+    ref
+  ) => {
+    const { ref: drop } = useDrop({
+      accept: [ItemType.POSITION, ItemType.PLAYER],
+      onDrop: (type, [item]) => {
+        if (type === ItemType.PLAYER && onPlayerDrop) {
+          onPlayerDrop(item as IPlayer, index);
+        }
 
-  const handleClick = useCallback(() => {
-    if (onClick) onClick(index);
-  }, [onClick, index]);
+        if (type === ItemType.POSITION && onPositionDrop) {
+          onPositionDrop(item as number, index);
+        }
+      },
+    });
 
-  return (
-    <PositionStatic
-      ref={composeRefs(ref, drop) as () => void}
-      position={position}
-      isActive={isActive}
-      onClick={handleClick}
-      {...restProps}
-    />
-  );
-}
+    const handleClick = useCallback(() => {
+      if (onClick) onClick(index);
+    }, [onClick, index]);
 
-export default forwardRef(PositionDrop);
+    return (
+      <PositionStatic
+        ref={composeRefs(ref, drop) as () => void}
+        position={position}
+        isActive={isActive}
+        onClick={handleClick}
+        {...restProps}
+      />
+    );
+  }
+);
+
+export default PositionDrop;
