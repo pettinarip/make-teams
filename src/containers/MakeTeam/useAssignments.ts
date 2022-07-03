@@ -31,7 +31,7 @@ export default function useAssignments(
         produce((positions: Array<IPosition>) => {
           // Check if the player was not in another position. If so, then
           // unassign it from there
-          const prevPositionIndex = assignments.findIndex(
+          const prevPositionIndex = positions.findIndex(
             (p) => p?.player?.id === player.id
           );
           if (prevPositionIndex > -1) {

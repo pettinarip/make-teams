@@ -18,7 +18,7 @@ export interface IProps
   position: IPosition | IShareLinkPosition;
   onClick?: (index: number) => void;
   onPlayerDrop?: (player: IPlayer, positionIndex: number) => void;
-  onPositionDrop?: (index: number, positionIndex: number) => void;
+  onPositionDrop?: (draggedIndex: number, positionIndex: number) => void;
 }
 
 function PositionDrop(
@@ -47,7 +47,7 @@ function PositionDrop(
   });
 
   const handleClick = useCallback(() => {
-    // if (onClick) onClick(index);
+    if (onClick) onClick(index);
   }, [onClick, index]);
 
   return (

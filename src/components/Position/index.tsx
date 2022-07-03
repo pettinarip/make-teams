@@ -49,6 +49,7 @@ export default function Position({
   return (
     <Box
       as={animated.div}
+      role="group"
       data-testid="position"
       cursor={isActive ? "pointer" : "inherit"}
       userSelect="none"
@@ -62,6 +63,8 @@ export default function Position({
       >
         {player && showRemoveButton && (
           <AvatarBadge
+            display="none"
+            _groupHover={{ display: "flex" }}
             left={-2}
             top={-2}
             right="inherit"

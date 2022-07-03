@@ -14,11 +14,6 @@ export interface IProps extends IPositionDropProps {
   onPositionClick?: (positionIndex: number) => void;
 }
 
-export interface IDragPosition {
-  index: number;
-  position: IPosition | IShareLinkPosition;
-}
-
 export default function PositionDnD({
   index,
   position,
