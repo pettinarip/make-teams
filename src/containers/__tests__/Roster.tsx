@@ -1,6 +1,4 @@
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 import {
   fireEvent,
@@ -11,6 +9,7 @@ import {
   within,
 } from "../../test/appTestUtils";
 import * as playersDB from "../../test/data/players";
+import { DndContextProvider } from "../../contexts/dnd";
 
 import Roster from "../Roster";
 
@@ -18,14 +17,9 @@ const noop = () => {};
 
 function renderRoster() {
   return render(
-    <DndProvider backend={HTML5Backend}>
-      <Roster
-        onPlayerClick={noop}
-        onPlayerDropInPosition={noop}
-        onResetClick={noop}
-        usedPlayersIds={[]}
-      />
-    </DndProvider>
+    <DndContextProvider>
+      <Roster onPlayerClick={noop} onResetClick={noop} usedPlayersIds={[]} />
+    </DndContextProvider>
   );
 }
 

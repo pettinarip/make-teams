@@ -1,6 +1,5 @@
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+
 import {
   renderWithAuth as render,
   screen,
@@ -10,18 +9,18 @@ import {
   within,
   RenderResult,
 } from "../../test/appTestUtils";
-
 import TeamLayout from "../TeamLayout";
 import * as layoutsDB from "../../test/data/layouts";
+import { DndContextProvider } from "../../contexts/dnd";
 
 const noop = () => {};
 
 function renderTeamLayout(): RenderResult {
   layoutsDB.reset();
   return render(
-    <DndProvider backend={HTML5Backend}>
+    <DndContextProvider>
       <TeamLayout onChange={noop} />
-    </DndProvider>
+    </DndContextProvider>
   );
 }
 
