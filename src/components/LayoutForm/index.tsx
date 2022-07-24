@@ -19,6 +19,7 @@ import { IPosition } from "../../containers/MakeTeam/types";
 import fillPositions from "../CreateLayoutButton/fillPositions";
 import validate from "./validate";
 import FieldEdit from "../FieldEdit";
+import produce from "immer";
 
 export const MAX_NUMBER_POSITIONS = 11;
 
@@ -101,8 +102,15 @@ export default function CreateLayoutForm(props: IProps) {
                 {({ field }: FieldProps) => (
                   <FieldEdit
                     positions={field.value}
-                    onChange={(positions) => {
-                      setFieldValue("positions", positions);
+                    onChange={(index, position) => {
+                      const newPositions = produce(
+                        field.value,
+                        (_positions: Array<IPosition>) => {
+                          _positions[index].x = position.x;
+                          _positions[index].y = position.y;
+                        }
+                      );
+                      setFieldValue("positions", newPositions);
                     }}
                   />
                 )}

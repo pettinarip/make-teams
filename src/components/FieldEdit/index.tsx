@@ -1,66 +1,43 @@
 import React, { useState } from "react";
-import { useDrop, XYCoord } from "react-dnd";
 import composeRefs from "@seznam/compose-react-refs";
-import produce from "immer";
-import { clamp } from "lodash";
 
-import { IPosition } from "../../containers/MakeTeam/types";
-import PositionDrag, {
-  ITEM_TYPE as POSITION_DRAG_ITEM_TYPE,
-  IDragPosition,
-} from "../PositionDrag";
+import { IPosition, ItemType } from "../../containers/MakeTeam/types";
+import PositionDrag from "../PositionDrag";
 import Field from "../Field";
-import FieldDragLayer from "../FieldDragLayer";
 import useDimensions from "../../hooks/useDimensions";
-import snapToGrid from "./snapToGrid";
 import FieldGrid, { IGridPosition } from "../FieldGrid";
+import { useDrop } from "../../contexts/dnd";
 
 interface IProps {
   positions: Array<IPosition>;
-  onChange: (positions: Array<IPosition>) => void;
+  onChange: (index: number, position: IPosition) => void;
 }
 
-export default function FieldEdit(props: IProps) {
+export default function FieldEdit({ positions, onChange }: IProps) {
   const [dropArea, dimensions] = useDimensions();
   const [selectedPosition, setSelectedPosition] = useState<IPosition>();
 
-  const [, drop] = useDrop({
-    accept: POSITION_DRAG_ITEM_TYPE,
-    drop: (item: IDragPosition, monitor) => {
-      const delta = monitor.getDifferenceFromInitialOffset() as XYCoord;
+  const dropWidth = dropArea?.current?.clientWidth || 0;
+  const dropHeight = dropArea?.current?.clientHeight || 0;
 
-      // Calulate the new x and y positions in percentages
-      const dropWidth = dropArea?.current?.clientWidth || 0;
-      const dropHeight = dropArea?.current?.clientHeight || 0;
-      const x = Math.round(item.position.x + (delta.x / dropWidth) * 100);
-      const y = Math.round(item.position.y + (delta.y / dropHeight) * 100);
-      const snapped = snapToGrid(x, y);
+  const { ref: drop } = useDrop(
+    {
+      accept: [ItemType.POSITION],
+      onDrop: (_type, { offset, args: [index] }) => {
+        // Calulate the new x and y positions in percentages
+        const x = (offset[0] / dropWidth) * 100;
+        const y = (offset[1] / dropHeight) * 100;
 
-      // Snap the new positions to the grid
-      updatePositions(item.index, {
-        x: clamp(snapped.x, 0, 100),
-        y: clamp(snapped.y, 0, 100),
-      });
-      return undefined;
+        onChange(index, { x, y });
+      },
     },
-  });
-
-  function updatePositions(index: number, position: IPosition) {
-    const newPositions = produce(
-      props.positions,
-      (positions: Array<IPosition>) => {
-        positions[index].x = position.x;
-        positions[index].y = position.y;
-      }
-    );
-
-    props.onChange(newPositions);
-  }
+    [onChange]
+  );
 
   function handleGridPositionClick(gridPosition: IGridPosition) {
-    const positionIndex = props.positions.indexOf(selectedPosition!);
+    const positionIndex = positions.indexOf(selectedPosition!);
     setSelectedPosition(undefined);
-    updatePositions(positionIndex, { ...selectedPosition, ...gridPosition });
+    onChange(positionIndex, gridPosition);
   }
 
   function handleGridClick() {
@@ -73,17 +50,25 @@ export default function FieldEdit(props: IProps) {
 
   return (
     <Field ref={composeRefs(drop, dropArea) as (arg: HTMLDivElement) => void}>
-      {props.positions.map((position, index) => (
-        <PositionDrag
-          key={index}
-          index={index}
-          position={position}
-          onClick={() => handlePositionClick(position)}
-          isActive={selectedPosition && selectedPosition === position}
-          cursor="pointer"
-          opacity={selectedPosition ? 0.6 : 1}
-        />
-      ))}
+      {dropWidth &&
+        dropHeight &&
+        positions.map((position, index) => {
+          const x = (position.x / 100) * dropWidth;
+          const y = (position.y / 100) * dropHeight;
+
+          return (
+            <PositionDrag
+              key={index}
+              index={index}
+              style={{ x, y }}
+              position={position}
+              onClick={() => handlePositionClick(position)}
+              isActive={selectedPosition && selectedPosition === position}
+              cursor="pointer"
+              opacity={selectedPosition ? 0.6 : 1}
+            />
+          );
+        })}
       <FieldGrid
         visible={!!selectedPosition}
         width={dimensions.width}
@@ -91,7 +76,6 @@ export default function FieldEdit(props: IProps) {
         onClick={handleGridPositionClick}
         onGridClick={handleGridClick}
       />
-      <FieldDragLayer width={dimensions.width} height={dimensions.height} />
     </Field>
   );
 }

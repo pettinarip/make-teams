@@ -36,7 +36,7 @@ const PositionDrop = forwardRef<HTMLDivElement, IProps>(
   ) => {
     const { ref: drop } = useDrop({
       accept: [ItemType.POSITION, ItemType.PLAYER],
-      onDrop: (type, [item]) => {
+      onDrop: (type, { args: [item] }) => {
         if (type === ItemType.PLAYER && onPlayerDrop) {
           onPlayerDrop(item as IPlayer, index);
         }

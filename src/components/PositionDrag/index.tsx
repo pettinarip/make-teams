@@ -1,51 +1,40 @@
-import React, { useEffect } from "react";
-import { useDrag } from "react-dnd";
-import { getEmptyImage } from "react-dnd-html5-backend";
+import React from "react";
 
-import { IPosition } from "../../containers/MakeTeam/types";
+import { IPosition, ItemType } from "../../containers/MakeTeam/types";
+import { useDrag } from "../../contexts/dnd";
 import PositionStatic, { IProps as IStaticProps } from "../PositionStatic";
-
-export const ITEM_TYPE = "positionDrag";
 
 export interface IProps extends IStaticProps {
   index: number;
   position: IPosition;
 }
 
-export interface IDragPosition {
-  index: number;
-  position: IPosition;
-}
-
 export default function PositionDrag({
   index,
+  style,
   position,
   ...restProps
 }: IProps) {
-  const dragPosition: IDragPosition = {
-    index,
-    position,
-  };
-
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: ITEM_TYPE,
-    item: dragPosition,
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
-
-  // Disable the default drag and drop preview image
-  useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
-  }, [preview]);
+  const { x, y, bind } = useDrag({
+    x: style.x,
+    y: style.y,
+    type: ItemType.POSITION,
+  });
 
   // Just to be sure that we don't see any other thing while dragging the
   // position. Remember that we are showing the FieldDragLayer when we are
   // performing a drag
-  if (isDragging) {
-    return null;
-  }
+  // if (isDragging) {
+  //   return null;
+  // }
 
-  return <PositionStatic ref={drag} position={position} {...restProps} />;
+  return (
+    <PositionStatic
+      {...bind(index, position)}
+      // @ts-ignore
+      style={{ x, y, touchAction: "none" }}
+      position={position}
+      {...restProps}
+    />
+  );
 }

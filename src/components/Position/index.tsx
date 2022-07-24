@@ -8,7 +8,6 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { animated } from "@react-spring/web";
 import { FiUser } from "react-icons/fi";
 import { FaTimes } from "react-icons/fa";
 
@@ -48,7 +47,6 @@ export default function Position({
 
   return (
     <Box
-      as={animated.div}
       role="group"
       data-testid="position"
       cursor={isActive ? "pointer" : "inherit"}
