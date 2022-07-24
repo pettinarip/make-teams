@@ -16,7 +16,7 @@ export function create(player: CreatePlayerMutationVariables): IPlayer {
 
 export function edit(player: EditPlayerMutationVariables) {
   const players = read();
-  const index = players.findIndex((player) => player.id === player.id);
+  const index = players.findIndex((p) => p.id === player.id);
   if (index > -1) {
     ls.set(QUERY_KEY, [
       ...players.slice(0, index),

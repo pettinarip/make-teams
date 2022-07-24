@@ -2,7 +2,7 @@ import React from "react";
 
 import {
   fireEvent,
-  renderWithAuth as render,
+  render,
   screen,
   userEvent,
   waitForElementToBeRemoved,

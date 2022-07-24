@@ -17,6 +17,7 @@ next({});
 import { setupServer, SetupServerApi } from "msw/node";
 import { QueryClient } from "react-query";
 import apiHandlers from "./test/apiHandlers";
+import "./test/localStorageMock";
 
 // make debug output for TestingLibrary Errors larger
 process.env.DEBUG_PRINT_LIMIT = "15000";
@@ -47,6 +48,7 @@ afterEach(() => {
   queryClient.clear();
   jest.clearAllMocks();
   server.resetHandlers();
+  localStorage.reset();
 });
 // Clean up after the tests are finished.
 afterAll(() => server.close());

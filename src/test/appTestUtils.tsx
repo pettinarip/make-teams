@@ -2,16 +2,12 @@ import React from "react";
 import * as rtl from "@testing-library/react";
 import { QueryClientProvider } from "react-query";
 
-import { AuthContext } from "../contexts/auth";
 import { queryClient } from "../setupTests";
-import { IUser } from "../dal/user/types";
 
 function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
   function Wrapper({ children }: any) {
     return (
-      <QueryClientProvider client={queryClient}>
-        <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
   }
   return {
@@ -20,21 +16,6 @@ function render(ui: any, { ...renderOptions }: any = {}): rtl.RenderResult {
       ...renderOptions,
     }),
   };
-}
-
-function renderWithAuth(ui: any, renderOptions: any = {}) {
-  const user: IUser = { id: "test", email: "test@test.com" };
-
-  return render(
-    <AuthContext.Provider
-      value={{
-        user,
-      }}
-    >
-      {ui}
-    </AuthContext.Provider>,
-    renderOptions
-  );
 }
 
 // TODO: open an issue on DOM Testing Library to make this built-in...
@@ -64,10 +45,4 @@ function dragAndDrop(src: Element, dst: Element) {
 
 export { default as userEvent } from "@testing-library/user-event";
 export * from "@testing-library/react";
-export {
-  render,
-  renderWithAuth,
-  waitForElementToBeRemoved,
-  sleep,
-  dragAndDrop,
-};
+export { render, waitForElementToBeRemoved, sleep, dragAndDrop };
