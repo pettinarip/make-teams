@@ -1,15 +1,19 @@
-import { useRef, useState, MutableRefObject, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 interface IDimensions {
   width: number;
   height: number;
 }
 
-export default function useDimensions(): [
-  MutableRefObject<HTMLElement | undefined>,
+type UseDimensionsType<T extends HTMLElement> = [
+  React.RefObject<T>,
   IDimensions
-] {
-  const element = useRef<HTMLElement>();
+];
+
+export default function useDimensions<
+  T extends HTMLElement
+>(): UseDimensionsType<T> {
+  const element = useRef<T>(null);
   const [dimensions, setDimensions] = useState<IDimensions>({
     width: 0,
     height: 0,

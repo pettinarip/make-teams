@@ -16,12 +16,16 @@ export interface IProps extends IPositionDropProps {
 
 export default function PositionDnD({
   index,
+  style,
   position,
   onPositionClick,
   ...restProps
 }: IProps) {
   const { x, y, bind } = useDrag({
+    x: style.x,
+    y: style.y,
     type: ItemType.POSITION,
+    returnToOrigin: true,
   });
 
   return (

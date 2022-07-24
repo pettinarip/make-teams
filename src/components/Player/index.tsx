@@ -23,6 +23,7 @@ export default function Player({ player, onClick }: IProps) {
   const { x, y, bind } = useDrag({
     type: ItemType.PLAYER,
     onTap: () => onClick(player),
+    returnToOrigin: true,
   });
 
   const playerName = `${player.lastName}, ${player.firstName}`;

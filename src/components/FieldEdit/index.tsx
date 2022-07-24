@@ -14,13 +14,13 @@ interface IProps {
 }
 
 export default function FieldEdit({ positions, onChange }: IProps) {
-  const [dropArea, dimensions] = useDimensions();
+  const [dropArea, dimensions] = useDimensions<HTMLDivElement>();
   const [selectedPosition, setSelectedPosition] = useState<IPosition>();
 
   const dropWidth = dropArea?.current?.clientWidth || 0;
   const dropHeight = dropArea?.current?.clientHeight || 0;
 
-  const { ref: drop } = useDrop(
+  const { ref: drop } = useDrop<HTMLDivElement>(
     {
       accept: [ItemType.POSITION],
       onDrop: (_type, { offset, args: [index] }) => {
@@ -49,7 +49,7 @@ export default function FieldEdit({ positions, onChange }: IProps) {
   }
 
   return (
-    <Field ref={composeRefs(drop, dropArea) as (arg: HTMLDivElement) => void}>
+    <Field ref={composeRefs(drop, dropArea)}>
       {dropWidth &&
         dropHeight &&
         positions.map((position, index) => {

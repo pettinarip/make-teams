@@ -46,9 +46,14 @@ interface IDropProps {
   onDrop: OnDropFunction;
 }
 
-export function useDrop({ accept, onDrop }: IDropProps, deps: Array<any> = []) {
+type UseDropType<T extends HTMLElement> = { ref: React.RefObject<T> };
+
+export function useDrop<T extends HTMLElement>(
+  { accept, onDrop }: IDropProps,
+  deps: Array<any> = []
+): UseDropType<T> {
   const { addTarget, removeTarget } = useDndContext();
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     if (ref.current) {
@@ -73,28 +78,34 @@ interface IDragProps {
   x?: number;
   y?: number;
   type: string;
+  returnToOrigin?: boolean;
   onTap?: () => void;
 }
 
-export function useDrag({ x = 0, y = 0, type, onTap }: IDragProps) {
+export function useDrag({
+  x = 0,
+  y = 0,
+  type,
+  returnToOrigin = false,
+  onTap,
+}: IDragProps) {
   const { notify } = useDndContext();
 
   const [style, api] = useSpring(() => ({ x, y }), [x, y]);
 
   const bind = useGesture(
     {
-      onDrag: ({ down, offset: [x, y], tap }) => {
+      onDrag: ({ down, offset: [ox, oy], tap }) => {
         if (tap && onTap) {
           onTap();
         }
 
-        // if (!down) {
-        //   return;
-        // }
-
         // animate
-        // api.start({ x: down ? mx : 0, y: down ? my : 0, immediate: down });
-        api.start({ x, y, immediate: down });
+        if (returnToOrigin) {
+          api.start({ x: down ? ox : x, y: down ? oy : y, immediate: down });
+        } else {
+          api.start({ x: ox, y: oy, immediate: down });
+        }
       },
       onDragEnd: (dragState) => {
         notify(type, dragState);
