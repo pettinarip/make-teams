@@ -18,7 +18,7 @@ interface IProps {
   showNames?: boolean;
   positions: Array<IPosition | IShareLinkPosition>;
   highlight?: boolean;
-  onPlayerDropInPosition: (player: IPlayer, positionIndex: number) => void;
+  onPlayerDropInPosition?: (player: IPlayer, positionIndex: number) => void;
   onPositionDropInPosition: (
     positionDraggedIndex: number,
     positionDroppedIndex: number
