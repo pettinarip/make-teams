@@ -84,7 +84,7 @@ export default function ExportForm({ id, showNames, ...restProps }: IProps) {
           </Button>
         </Center>
       )}
-      <Center my={4} direction="row">
+      <Center my={4} flexDirection="row">
         <Link href={facebookLink(link)} mx={1}>
           <IconButton icon={<FaFacebook />} aria-label="Share in Facebook" />
         </Link>
