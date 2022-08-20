@@ -2,7 +2,7 @@ export const listLayouts = [
   {
     id: "1",
     name: "4-3-3",
-    createdAt: "2020-04-27T08:06:36.977Z",
+    createdAt: "1587974796977",
     positions: [
       {
         x: 25,
@@ -53,7 +53,7 @@ export const listLayouts = [
   {
     id: "3",
     name: "4-4-2 (new)",
-    createdAt: "2020-06-30T08:06:36.977Z",
+    createdAt: "1593504396977",
     positions: [
       {
         x: 25,
@@ -64,7 +64,7 @@ export const listLayouts = [
   {
     id: "2",
     name: "4-4-2",
-    createdAt: "2020-04-30T08:06:36.977Z",
+    createdAt: "1588233996977",
     positions: [
       {
         x: 25,
@@ -78,7 +78,8 @@ export const listCustomLayouts = [
   {
     id: "3",
     name: "custom1",
-    createdAt: "2020-05-05T08:06:36.977Z",
+    createdAt: "1588665996977",
+    isCustom: true,
     positions: [
       {
         x: 45,
@@ -89,7 +90,8 @@ export const listCustomLayouts = [
   {
     id: "4",
     name: "custom2",
-    createdAt: "2020-04-01T08:06:36.977Z",
+    createdAt: "1585728396977",
+    isCustom: true,
     positions: [
       {
         x: 25,
@@ -140,7 +142,8 @@ export const listCustomLayouts = [
   {
     id: "5",
     name: "custom3",
-    createdAt: "2020-04-05T08:06:36.977Z",
+    createdAt: "1586073996977",
+    isCustom: true,
     positions: [
       {
         x: 45,

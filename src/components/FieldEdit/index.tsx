@@ -19,6 +19,7 @@ export default function FieldEdit({ positions, onChange }: IProps) {
 
   const dropWidth = dropArea?.current?.clientWidth || 0;
   const dropHeight = dropArea?.current?.clientHeight || 0;
+  const fieldIsLoaded = dropWidth !== 0 && dropHeight !== 0;
 
   const { ref: drop } = useDrop<HTMLDivElement>(
     {
@@ -50,8 +51,7 @@ export default function FieldEdit({ positions, onChange }: IProps) {
 
   return (
     <Field ref={composeRefs(drop, dropArea)}>
-      {dropWidth &&
-        dropHeight &&
+      {fieldIsLoaded &&
         positions.map((position, index) => {
           const x = (position.x / 100) * dropWidth;
           const y = (position.y / 100) * dropHeight;

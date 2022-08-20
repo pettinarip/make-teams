@@ -8,14 +8,19 @@ import {
 } from "../../graphql/API";
 
 export function create(layout: CreateLayoutMutationVariables): ILayout {
-  const layouts = ls.get<Array<ILayout>>(QUERY_KEY) || [];
+  const layouts = read();
+  const latestId = layouts.reduce((id, layout) => {
+    const num = Number(layout.id);
+    return num > id ? num : id;
+  }, 0);
+
   ls.set(QUERY_KEY, [
     ...layouts,
     {
       ...layout,
       createdAt: new Date().getTime().toString(),
       isCustom: true,
-      id: (layouts.length + 1).toString(),
+      id: (latestId + 1).toString(),
     },
   ]);
   return layout as ILayout;

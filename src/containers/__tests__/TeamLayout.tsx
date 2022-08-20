@@ -17,6 +17,7 @@ const noop = () => {};
 
 function renderTeamLayout(): RenderResult {
   layoutsDB.reset();
+
   return render(
     <DndContextProvider>
       <TeamLayout onChange={noop} />
@@ -25,6 +26,19 @@ function renderTeamLayout(): RenderResult {
 }
 
 describe("TeamLayout", () => {
+  beforeEach(() => {
+    jest
+      .spyOn(Element.prototype, "clientWidth", "get")
+      .mockImplementation(() => 100);
+    jest
+      .spyOn(Element.prototype, "clientHeight", "get")
+      .mockImplementation(() => 500);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   test.skip("show layouts separated by defaults and custom (user's layouts) and sorted by created date", async () => {
     renderTeamLayout();
 
